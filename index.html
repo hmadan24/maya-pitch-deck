@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maya — Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0350AF;
+    --blue-2: #0351AF;
+    --blue-deep: #023269;
+    --paper: #ffffff;
+    --paper-tint: #f3f7fc;
+    --ink: #0d1b30;
+    --ink-soft: #51607a;
+    --ink-faint: #9aa6ba;
+    --line: #e2e9f2;
+    --line-blue: rgba(255,255,255,0.22);
+    --accent: var(--blue);
+    --accent-wash: #e7f0fb;
+    --bar-alt: #c3d2e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #021c3d;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  #deck { height: 100vh; width: 100vw; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--paper);
+    padding: 9vh 10vw;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; opacity: 1; }
+  .slide > * { position: relative; z-index: 2; }
+
+  /* Blue hero slides */
+  .slide.hero {
+    background: linear-gradient(180deg, #0350AF 0%, #0351AF 55%, #023a82 100%);
+    color: #fff;
+  }
+  .slide.hero .eyebrow { color: rgba(255,255,255,0.8); }
+  .slide.hero .lead, .slide.hero .kicker { color: rgba(255,255,255,0.88); }
+  .slide.hero em { color: #cfe0f7; }
+  .slide.hero .u { background: linear-gradient(transparent 60%, rgba(255,255,255,0.28) 60%); }
+
+  /* Cloud band pinned to top of hero slides */
+  .slide.hero .clouds {
+    position: absolute; top: 0; left: 0; width: 100%; height: auto;
+    z-index: 1; opacity: 0.5; pointer-events: none;
+    transform: scaleY(-1);
+  }
+
+  /* Full-bleed art slides */
+  .slide.art-title {
+    background-image:
+      linear-gradient(95deg, rgba(2,42,110,0.97) 0%, rgba(3,80,175,0.84) 34%, rgba(3,80,175,0.22) 62%, rgba(3,80,175,0) 100%),
+      url("maya-assets/hero-maya.png");
+    background-size: cover; background-position: center right;
+    color: #fff;
+  }
+  .slide.art-close {
+    background-image:
+      linear-gradient(180deg, rgba(3,80,175,0.93) 0%, rgba(3,80,175,0.6) 42%, rgba(2,50,105,0.92) 100%),
+      url("maya-assets/landscape.png");
+    background-size: cover; background-position: center bottom;
+    color: #fff;
+  }
+  .art-title .title-foot, .art-close .title-foot { color: rgba(255,255,255,0.82); border-top-color: var(--line-blue); }
+
+  /* Typography scale */
+  .eyebrow {
+    font-size: 0.8rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 2.4rem;
+  }
+  h1, h2 { font-size: clamp(2.1rem, 4.6vw, 3.7rem); line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; max-width: 20ch; }
+  .lead { font-size: clamp(1.15rem, 2vw, 1.7rem); line-height: 1.5; color: var(--ink-soft); max-width: 34ch; margin-top: 1.8rem; font-weight: 400; }
+  .kicker { font-size: clamp(1.1rem, 1.7vw, 1.45rem); color: var(--ink-soft); margin-top: 1.6rem; max-width: 42ch; line-height: 1.5; font-weight: 400; }
+  em { font-style: normal; color: var(--accent); font-weight: 600; }
+  .u { background: linear-gradient(transparent 60%, var(--accent-wash) 60%); }
+
+  /* Logo mark */
+  .mark svg { display: block; }
+
+  /* Title slide */
+  .title-slide { justify-content: space-between; padding: 8vh 9vw; }
+  .wordmark { display: flex; align-items: center; gap: 1.4rem; }
+  .wordmark .mark svg { width: clamp(64px, 9vw, 124px); height: auto; }
+  .wordmark .name { font-size: clamp(3rem, 8vw, 7rem); font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+  .title-tag { font-size: clamp(1.3rem, 2.7vw, 2.4rem); line-height: 1.2; font-weight: 500; max-width: 24ch; letter-spacing: -0.015em; }
+  .title-foot { display: flex; justify-content: space-between; align-items: flex-end; font-size: 0.95rem; color: rgba(255,255,255,0.74); border-top: 1px solid var(--line-blue); padding-top: 1.4rem; font-weight: 500; gap: 2rem; }
+
+  /* Metric grids */
+  .metrics { display: grid; gap: 2.4rem 4vw; margin-top: 1rem; }
+  .metrics.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .metrics.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .metric .big { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: var(--blue); }
+  .slide.hero .metric .big { color: #fff; }
+  .metric .big small { font-size: 0.45em; font-weight: 700; color: var(--ink-faint); letter-spacing: 0; }
+  .metric .lbl { margin-top: 0.7rem; font-size: 1rem; color: var(--ink-soft); line-height: 1.4; max-width: 26ch; font-weight: 500; }
+  .slide.hero .metric .lbl { color: rgba(255,255,255,0.82); }
+
+  /* Split layout: text + illustration */
+  .split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 5vw; align-items: center; }
+  .split .art-card {
+    border-radius: 18px; overflow: hidden; box-shadow: 0 24px 60px -24px rgba(3,80,175,0.55);
+    border: 1px solid var(--line); aspect-ratio: 1300 / 758;
+  }
+  .split .art-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .split .copy h2 { max-width: none; }
+
+  /* Reason / list rows */
+  .rows { margin-top: 2.4rem; display: flex; flex-direction: column; gap: 1.7rem; max-width: 54ch; }
+  .row { display: flex; gap: 1.4rem; align-items: baseline; }
+  .row .n { color: var(--accent); font-weight: 700; font-size: 1.1rem; min-width: 1.4em; }
+  .row .t { font-size: clamp(1.05rem, 1.7vw, 1.35rem); line-height: 1.45; font-weight: 500; }
+  .row .t b { font-weight: 700; }
+  .row .t span { color: var(--ink-soft); font-weight: 400; }
+  .slide.hero .row .t span { color: rgba(255,255,255,0.82); }
+
+  /* Bar charts */
+  .bars { margin-top: 2.6rem; display: flex; flex-direction: column; gap: 1.3rem; max-width: 62ch; }
+  .bar-row { display: grid; grid-template-columns: 15rem 1fr; align-items: center; gap: 1.4rem; }
+  .bar-row .name { font-weight: 600; font-size: clamp(0.95rem, 1.5vw, 1.2rem); }
+  .bar-row .name small { display: block; color: var(--ink-faint); font-weight: 500; font-size: 0.78rem; margin-top: 0.15rem; }
+  .bar-track { background: var(--paper-tint); border-radius: 7px; height: 2.5rem; position: relative; }
+  .bar-fill { height: 100%; border-radius: 7px; background: var(--blue); display: flex; align-items: center; justify-content: flex-end; padding-right: 0.9rem; color: #fff; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
+  .bar-fill.alt { background: var(--bar-alt); color: var(--ink); }
+  .bar-note { margin-top: 1.6rem; font-size: 0.95rem; color: var(--ink-soft); font-weight: 500; }
+  .bar-note b { color: var(--blue); font-weight: 700; }
+
+  /* Leaderboard (WER) */
+  .lead-wrap { display: grid; grid-template-columns: auto 1fr; gap: 4vw; align-items: center; margin-top: 2.4rem; }
+  .lead-hero .big { font-size: clamp(3.4rem, 8vw, 6rem); font-weight: 700; color: var(--blue); letter-spacing: -0.04em; line-height: 1; }
+  .lead-hero .cap { font-size: 1rem; color: var(--ink-soft); font-weight: 600; margin-top: 0.5rem; max-width: 18ch; }
+  .lead-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .lead-list .item { display: flex; align-items: center; gap: 0.9rem; font-size: clamp(1rem, 1.6vw, 1.3rem); padding: 0.7rem 1.1rem; border: 1px solid var(--line); border-radius: 10px; font-weight: 600; }
+  .lead-list .item .x { color: var(--blue); font-weight: 800; }
+  .lead-list .head { border: none; padding: 0 0 0 0; color: var(--ink-faint); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74rem; }
+
+  /* Flywheel */
+  .flow { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 2.6rem; }
+  .flow .node { border: 1px solid var(--line); background: var(--paper-tint); color: var(--blue); border-radius: 999px; padding: 0.85rem 1.5rem; font-size: clamp(0.95rem, 1.5vw, 1.25rem); font-weight: 600; }
+  .flow .arr { color: var(--accent); font-size: 1.3rem; font-weight: 700; }
+
+  /* Table */
+  table { border-collapse: collapse; margin-top: 2.2rem; width: 100%; font-size: clamp(0.78rem, 1.25vw, 1.05rem); }
+  th, td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); font-weight: 500; }
+  th { color: var(--ink-faint); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
+  tr.me td { background: var(--blue); color: #fff; font-weight: 700; }
+  td .focus { color: var(--ink-faint); }
+  tr.me .focus { color: rgba(255,255,255,0.85); }
+
+  /* Team */
+  .team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 4vw; margin-top: 2.4rem; max-width: 62ch; }
+  .person .nm { font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 700; }
+  .person .rl { color: var(--accent); font-size: 0.95rem; font-weight: 700; margin-top: 0.2rem; }
+  .person .bio { color: var(--ink-soft); font-size: 0.98rem; margin-top: 0.5rem; line-height: 1.45; font-weight: 400; }
+
+  /* Founders */
+  .founders { display: flex; flex-direction: column; gap: 2rem; }
+  .founder { display: flex; gap: 1.3rem; align-items: center; }
+  .founder img { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; flex: none; border: 3px solid var(--accent-wash); }
+  .founder .nm { font-size: clamp(1.2rem, 1.9vw, 1.55rem); font-weight: 700; line-height: 1.1; }
+  .founder .rl { color: var(--accent); font-weight: 700; font-size: 0.92rem; margin-top: 0.15rem; }
+  .founder .bio { color: var(--ink-soft); font-size: 0.96rem; margin-top: 0.4rem; line-height: 1.4; max-width: 32ch; }
+
+  /* Figures (chart artifacts) */
+  .figure { border: 1px solid var(--line); border-radius: 16px; padding: 0.7rem; background: #fff; box-shadow: 0 22px 55px -30px rgba(3,80,175,0.5); }
+  .figure img { width: 100%; height: auto; display: block; border-radius: 9px; }
+  .figure.full { margin-top: 2.2rem; }
+
+  /* Cards (3-up) */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6vw; margin-top: 2.6rem; }
+  .card { border: 1px solid var(--line); border-radius: 16px; padding: 1.6rem 1.5rem; background: var(--paper-tint); }
+  .card .card-n { font-weight: 800; color: var(--accent); font-size: 0.85rem; letter-spacing: 0.12em; margin-bottom: 0.8rem; }
+  .card h3 { font-size: clamp(1.05rem, 1.6vw, 1.3rem); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.7rem; line-height: 1.15; }
+  .card p { color: var(--ink-soft); font-size: 0.97rem; line-height: 1.5; }
+  .card ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .card li { color: var(--ink-soft); font-size: 0.96rem; line-height: 1.35; padding-left: 1.1rem; position: relative; }
+  .card li::before { content: "–"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* Ask slide bullets */
+  .uses { margin-top: 2.4rem; display: flex; flex-direction: column; gap: 1.3rem; max-width: 52ch; }
+  .use { font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.4; padding-left: 1.7rem; position: relative; font-weight: 400; }
+  .use::before { content: "→"; position: absolute; left: 0; color: #cfe0f7; font-weight: 700; }
+  .use b { font-weight: 700; color: #fff; }
+
+  /* Quote */
+  .quote { font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.22; font-weight: 700; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* Chrome */
+  .pageno { position: fixed; bottom: 3.2vh; right: 4vw; font-size: 0.8rem; color: var(--ink-faint); z-index: 30; font-variant-numeric: tabular-nums; font-weight: 600; mix-blend-mode: difference; }
+  .brand-mini { position: fixed; bottom: 2.9vh; left: 4vw; z-index: 30; opacity: 0.85; }
+  .brand-mini svg { width: 30px; height: auto; display: block; }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--blue); z-index: 40; transition: width 0.35s ease; }
+  .slide.hero ~ .progress {}
+  .source { margin-top: 1.6rem; font-size: 0.85rem; color: var(--ink-faint); font-weight: 400; max-width: 50ch; }
+  .slide.hero .source { color: rgba(255,255,255,0.72); }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="brand-mini" id="brandmini">
+  <svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z"/>
+    <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z"/>
+    <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z"/>
+  </svg>
+</div>
+<div class="pageno" id="pageno"></div>
+
+<div id="deck">
+
+  <!-- 1 — Title (full-bleed landscape) -->
+  <section class="slide art-close title-slide" style="justify-content:center;">
+    <div class="wordmark">
+      <span class="mark"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#fff"/>
+        <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#fff"/>
+        <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z" fill="#fff"/>
+      </svg></span>
+      <span class="name">maya</span>
+    </div>
+    <div class="title-tag" style="margin-top:1.5rem;">Frontier voice models for India, SEA, and MENA.</div>
+  </section>
+
+  <!-- 2 — Who we are (story + team) -->
+  <section class="slide">
+    <div class="eyebrow">Who we are</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5vw; align-items:center;">
+      <div>
+        <h2 style="max-width:none;">We're passionate about technology access for the rest of the world.</h2>
+        <p class="kicker">We grew up in small towns in Andhra Pradesh — access to technology changed the trajectory of our lives. Now a lean team, <em>outperforming labs 100× our size.</em></p>
+      </div>
+      <div class="founders">
+        <div class="founder">
+          <img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" />
+          <div>
+            <div class="nm">Dheemanth Reddy</div>
+            <div class="rl">Co-founder &amp; CEO</div>
+            <div class="bio">MS, NYU Courant &amp; Stern. Emergent Ventures grantee.</div>
+          </div>
+        </div>
+        <div class="founder">
+          <img src="maya-assets/bharath.jpg" alt="Bharath Kumar" />
+          <div>
+            <div class="nm">Bharath Kumar</div>
+            <div class="rl">Co-founder &amp; CTO</div>
+            <div class="bio">MS Computer Engineering, NYU. Previously at Oracle.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 — Vision -->
+  <section class="slide">
+    <div class="eyebrow">The mission</div>
+    <h1>Models that talk like a <span class="u">native</span> to the next 5 billion people.</h1>
+    <p class="lead">India, Southeast Asia and MENA — the largest voice-first markets on earth, and the ones global labs ignore.</p>
+  </section>
+
+  <!-- 3 — Problem -->
+  <section class="slide">
+    <div class="eyebrow">The problem</div>
+    <h2>The world is conversational. Models are not — yet.</h2>
+    <p class="kicker">Conversation is how humans discover, compare, trust and decide. But software was built around navigation: arrive, search, click, choose.</p>
+    <p class="kicker">Today's non-English voice models still don't feel human. The tone is off, latency too high, pacing wrong, cultural cues missing. There's a vast gap from talking to a friend.</p>
+  </section>
+
+  <!-- 4 — Solution -->
+  <section class="slide">
+    <div class="eyebrow">The solution</div>
+    <h2>Maya speaks in the dialect, tone and rhythm people grew up with.</h2>
+    <p class="kicker">It talks like a local, shows things as it talks, and holds a conversation — even when the user doesn't yet know what to ask.</p>
+    <p class="kicker"><em>Within the conversation, people discover, decide, shop and act.</em></p>
+  </section>
+
+  <!-- 6 — The proof / how lean -->
+  <section class="slide">
+    <div class="eyebrow">What we've done</div>
+    <h2>3 frontier models in 12 months. Lean to the bone.</h2>
+    <div class="metrics cols-3" style="margin-top:2.6rem;">
+      <div class="metric"><div class="big">5</div><div class="lbl">people on the team</div></div>
+      <div class="metric"><div class="big">~$1<small>M</small></div><div class="lbl">total spend to date</div></div>
+      <div class="metric"><div class="big">100×</div><div class="lbl">we outperform labs of this size</div></div>
+    </div>
+  </section>
+
+  <!-- 7 — Maya 1 (real Elo chart) -->
+  <section class="slide">
+    <div class="eyebrow">Maya 1 · emotive voice</div>
+    <h2>Matches GPT-Realtime-2 quality — at <em>1% of the budget.</em></h2>
+    <div class="figure full"><img src="maya-assets/elo-chart.png" alt="Text to Speech Arena Quality Elo — Maya1 scores 1051, tied with OpenAI GPT-Realtime-2" /></div>
+    <p class="source">Text-to-Speech Arena Quality Elo (Artificial Analysis) — head-to-head human preference, higher is better.</p>
+  </section>
+
+  <!-- 8 — Maya 2 (real reach map) -->
+  <section class="slide">
+    <div class="split">
+      <div class="copy">
+        <div class="eyebrow">Maya 2 · our biggest leap</div>
+        <h2>One model, 31 languages — at 50% lower cost.</h2>
+        <p class="kicker">Trained to preserve the <em>acoustic meaning</em> inside speech: tone changes intent, rhythm changes warmth, dialect makes the model feel local or foreign.</p>
+      </div>
+      <div class="figure"><img src="maya-assets/maya2-reach.png" alt="Maya 2 expands reach from 2 billion to 4 billion people across India, SEA and MENA" /></div>
+    </div>
+  </section>
+
+  <!-- 9 — Maya Listen (real Kathbath chart) -->
+  <section class="slide">
+    <div class="split">
+      <div class="copy">
+        <div class="eyebrow">Maya Listen 1 · speech understanding</div>
+        <h2>SOTA on Kathbath — the hardest Indian-language benchmark.</h2>
+        <p class="kicker">At <em>17.23% Word Error Rate</em> it beats Gemini 3.1 Pro, ElevenLabs Scribe and Sarvam Saaras v3 — the base layer for every conversation.</p>
+      </div>
+      <div class="figure"><img src="maya-assets/kathbath-wer.png" alt="Kathbath benchmark Word Error Rate — Maya Listen 17.23%, the lowest and best score" /></div>
+    </div>
+  </section>
+
+  <!-- Traction headline metrics -->
+  <section class="slide">
+    <div class="eyebrow">Traction</div>
+    <h2>Adoption is already here.</h2>
+    <div class="metrics cols-2" style="margin-top:2.6rem;">
+      <div class="metric"><div class="big">440K+</div><div class="lbl">model downloads on Hugging Face</div></div>
+      <div class="metric"><div class="big">3M</div><div class="lbl">consumer app downloads, 20%+ week-1 retention</div></div>
+      <div class="metric"><div class="big">31</div><div class="lbl">languages spoken with dialect &amp; emotion</div></div>
+      <div class="metric"><div class="big">4B</div><div class="lbl">people now in our addressable base (up from 2B)</div></div>
+    </div>
+  </section>
+
+  <!-- 11 — Why we win -->
+  <section class="slide">
+    <div class="eyebrow">Why Maya wins</div>
+    <h2>When OpenAI or Google decides these languages matter, our lead compounds.</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-n">01</div>
+        <h3>Growing data velocity</h3>
+        <p>Millions of conversations, climbing daily. Every month widens a gap money alone can't close.</p>
+      </div>
+      <div class="card">
+        <div class="card-n">02</div>
+        <h3>Razor focus on non-English</h3>
+        <p>Judging if a model sounds local in 31 languages needs native judgment at every step — our founding DNA, an SF lab's hiring problem.</p>
+      </div>
+      <div class="card">
+        <div class="card-n">03</div>
+        <h3>Ruthless cost focus</h3>
+        <p>Frugal data curation and training efficiency — a must-have for these markets, a culture incumbents lack.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — Roadmap -->
+  <section class="slide">
+    <div class="eyebrow">The roadmap</div>
+    <h2>Our next unlock: full-duplex conversation.</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Models</h3>
+        <ul>
+          <li>Ship Maya 3 — full-duplex, speech-native</li>
+          <li>Expand 31 → 40+ languages</li>
+          <li>Quantize for 3–4× lower cost</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Consumer app</h3>
+        <ul>
+          <li>Proactively start conversations</li>
+          <li>Memory &amp; personalization</li>
+          <li>Personas &amp; personalities</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Enterprise</h3>
+        <ul>
+          <li>Hosted streaming + batch APIs</li>
+          <li>10–15 design partners</li>
+          <li>Brand-voice fine-tuning</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 — Ask -->
+  <section class="slide">
+    <div class="eyebrow">The ask</div>
+    <h1>Raising <em>$8M</em> to make Maya the default way billions talk to technology.</h1>
+  </section>
+
+  <!-- 14 — Close (simple end) -->
+  <section class="slide title-slide" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="wordmark" style="justify-content:center;">
+      <span class="mark"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#0350AF"/>
+        <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#0350AF"/>
+        <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z" fill="#0350AF"/>
+      </svg></span>
+      <span class="name" style="color:var(--ink);">maya</span>
+    </div>
+    <div style="margin-top:1.6rem; color:var(--ink-soft); font-size:clamp(1.1rem,1.9vw,1.55rem); font-weight:500;">Thank you.</div>
+  </section>
+
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let i = 0;
+  const pageno = document.getElementById('pageno');
+  const progress = document.getElementById('progress');
+  const brandmini = document.getElementById('brandmini');
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    pageno.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    const cls = slides[i].classList;
+    const onDark = cls.contains('hero') || cls.contains('art-title') || cls.contains('art-close');
+    brandmini.querySelectorAll('path').forEach(p => p.setAttribute('fill', onDark ? '#fff' : '#0350AF'));
+    brandmini.style.display = cls.contains('title-slide') ? 'none' : 'block';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+  document.addEventListener('click', (e) => { if (e.clientX > window.innerWidth * 0.3) show(i + 1); else show(i - 1); });
+
+  show(0);
+</script>
+</body>
+</html>
