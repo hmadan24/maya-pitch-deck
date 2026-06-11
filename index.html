@@ -118,6 +118,15 @@
   .metric .lbl { margin-top: 0.7rem; font-size: 1rem; color: var(--ink-soft); line-height: 1.4; max-width: 26ch; font-weight: 500; }
   .slide.hero .metric .lbl { color: rgba(255,255,255,0.82); }
 
+  /* Stat bar (impact stats) */
+  .statbar { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 3.6rem; }
+  .statbar .stat { padding: 0.4rem 2.8vw; }
+  .statbar .stat:first-child { padding-left: 0; }
+  .statbar .stat + .stat { border-left: 1px solid var(--line); }
+  .statbar .num { font-size: clamp(3rem, 7.5vw, 5.4rem); font-weight: 700; color: var(--blue); letter-spacing: -0.04em; line-height: 1; }
+  .statbar .num small { font-size: 0.42em; font-weight: 700; color: var(--ink-faint); letter-spacing: 0; }
+  .statbar .cap { margin-top: 0.95rem; color: var(--ink-soft); font-size: 1.05rem; font-weight: 500; line-height: 1.35; max-width: 22ch; }
+
   /* Split layout: text + illustration */
   .split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 5vw; align-items: center; }
   .split .art-card {
@@ -177,11 +186,13 @@
 
   /* Founders */
   .founders { display: flex; flex-direction: column; gap: 2rem; }
-  .founder { display: flex; gap: 1.3rem; align-items: center; }
-  .founder img { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; flex: none; border: 3px solid var(--accent-wash); }
-  .founder .nm { font-size: clamp(1.2rem, 1.9vw, 1.55rem); font-weight: 700; line-height: 1.1; }
-  .founder .rl { color: var(--accent); font-weight: 700; font-size: 0.92rem; margin-top: 0.15rem; }
-  .founder .bio { color: var(--ink-soft); font-size: 0.96rem; margin-top: 0.4rem; line-height: 1.4; max-width: 32ch; }
+  .founders.row { flex-direction: row; gap: 3vw; margin-top: 2.8rem; }
+  .founders.row .founder { flex: 1; }
+  .founder { display: flex; gap: 1.4rem; align-items: center; }
+  .founder img { width: 124px; height: 124px; border-radius: 50%; object-fit: cover; flex: none; border: 4px solid var(--accent-wash); box-shadow: 0 14px 36px -18px rgba(3,80,175,0.6); }
+  .founder .nm { font-size: clamp(1.3rem, 2.1vw, 1.75rem); font-weight: 700; line-height: 1.1; }
+  .founder .rl { color: var(--accent); font-weight: 700; font-size: 0.98rem; margin-top: 0.25rem; }
+  .founder .bio { color: var(--ink-soft); font-size: 0.96rem; margin-top: 0.5rem; line-height: 1.4; max-width: 28ch; }
 
   /* Figures (chart artifacts) */
   .figure { border: 1px solid var(--line); border-radius: 16px; padding: 0.7rem; background: #fff; box-shadow: 0 22px 55px -30px rgba(3,80,175,0.5); }
@@ -243,30 +254,26 @@
     <div class="title-tag" style="margin-top:1.5rem;">Frontier voice models for India, SEA, and MENA.</div>
   </section>
 
-  <!-- 2 — Who we are (story + team) -->
+  <!-- 2 — Who we are (story + founders) -->
   <section class="slide">
     <div class="eyebrow">Who we are</div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5vw; align-items:center;">
-      <div>
-        <h2 style="max-width:none;">We're passionate about technology access for the rest of the world.</h2>
-        <p class="kicker">We grew up in small towns in Andhra Pradesh — access to technology changed the trajectory of our lives. Now a lean team, <em>outperforming labs 100× our size.</em></p>
-      </div>
-      <div class="founders">
-        <div class="founder">
-          <img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" />
-          <div>
-            <div class="nm">Dheemanth Reddy</div>
-            <div class="rl">Co-founder &amp; CEO</div>
-            <div class="bio">MS, NYU Courant &amp; Stern. Emergent Ventures grantee.</div>
-          </div>
+    <h2 style="max-width:34ch;">We're passionate about technology access for the rest of the world.</h2>
+    <p class="kicker" style="max-width:66ch;">We grew up in small towns in Andhra Pradesh — access to technology changed the trajectory of our lives. Now a lean team, <em>outperforming labs 100× our size.</em></p>
+    <div class="founders row">
+      <div class="founder">
+        <img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" />
+        <div>
+          <div class="nm">Dheemanth Reddy</div>
+          <div class="rl">Co-founder &amp; CEO</div>
+          <div class="bio">MS, NYU Courant &amp; Stern. Emergent Ventures grantee.</div>
         </div>
-        <div class="founder">
-          <img src="maya-assets/bharath.jpg" alt="Bharath Kumar" />
-          <div>
-            <div class="nm">Bharath Kumar</div>
-            <div class="rl">Co-founder &amp; CTO</div>
-            <div class="bio">MS Computer Engineering, NYU. Previously at Oracle.</div>
-          </div>
+      </div>
+      <div class="founder">
+        <img src="maya-assets/bharath.jpg" alt="Bharath Kumar" />
+        <div>
+          <div class="nm">Bharath Kumar</div>
+          <div class="rl">Co-founder &amp; CTO</div>
+          <div class="bio">MS Computer Engineering, NYU. Previously at Oracle.</div>
         </div>
       </div>
     </div>
@@ -292,17 +299,17 @@
     <div class="eyebrow">The solution</div>
     <h2>Maya speaks in the dialect, tone and rhythm people grew up with.</h2>
     <p class="kicker">It talks like a local, shows things as it talks, and holds a conversation — even when the user doesn't yet know what to ask.</p>
-    <p class="kicker"><em>Within the conversation, people discover, decide, shop and act.</em></p>
+    <p class="kicker">Within the conversation, people <em>discover, decide, shop and act.</em></p>
   </section>
 
   <!-- 6 — The proof / how lean -->
   <section class="slide">
     <div class="eyebrow">What we've done</div>
-    <h2>3 frontier models in 12 months. Lean to the bone.</h2>
-    <div class="metrics cols-3" style="margin-top:2.6rem;">
-      <div class="metric"><div class="big">5</div><div class="lbl">people on the team</div></div>
-      <div class="metric"><div class="big">~$1<small>M</small></div><div class="lbl">total spend to date</div></div>
-      <div class="metric"><div class="big">100×</div><div class="lbl">we outperform labs of this size</div></div>
+    <h2>3 frontier models in 12 months — lean to the bone.</h2>
+    <div class="statbar">
+      <div class="stat"><div class="num">5</div><div class="cap">people on the team</div></div>
+      <div class="stat"><div class="num">~$1<small>M</small></div><div class="cap">total spend to date</div></div>
+      <div class="stat"><div class="num">100×</div><div class="cap">we outperform labs of this size</div></div>
     </div>
   </section>
 
@@ -352,8 +359,8 @@
 
   <!-- 11 — Why we win -->
   <section class="slide">
-    <div class="eyebrow">Why Maya wins</div>
-    <h2>When OpenAI or Google decides these languages matter, our lead compounds.</h2>
+    <div class="eyebrow">The moat</div>
+    <h2>Why Maya Wins</h2>
     <div class="cards">
       <div class="card">
         <div class="card-n">01</div>
@@ -376,7 +383,7 @@
   <!-- 12 — Roadmap -->
   <section class="slide">
     <div class="eyebrow">The roadmap</div>
-    <h2>Our next unlock: full-duplex conversation.</h2>
+    <h2>Building across model, product, and enterprise.</h2>
     <div class="cards">
       <div class="card">
         <h3>Models</h3>
@@ -421,7 +428,6 @@
       </svg></span>
       <span class="name" style="color:var(--ink);">maya</span>
     </div>
-    <div style="margin-top:1.6rem; color:var(--ink-soft); font-size:clamp(1.1rem,1.9vw,1.55rem); font-weight:500;">Thank you.</div>
   </section>
 
 </div>
