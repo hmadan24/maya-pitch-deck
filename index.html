@@ -183,11 +183,11 @@
   .fly .fc { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; font-weight:700; color:var(--ink); font-size:clamp(.92rem,1.3vw,1.18rem); max-width:8.5ch; line-height:1.2; }
 
   /* dual compounding flywheel */
-  .dualfly { position:relative; width:min(84vw,960px); aspect-ratio:1200/620; margin:1.4rem auto 0; }
+  .dualfly { position:relative; width:min(86vw,1000px); aspect-ratio:1200/560; margin:1.6rem auto 0; }
   .dualfly svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
-  .dnode { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:10px; padding:.6rem 1.05rem; font-weight:600; font-size:clamp(.78rem,1.05vw,1rem); color:var(--ink); box-shadow:0 6px 16px -8px rgba(2,31,68,.25); white-space:nowrap; z-index:2; text-align:center; }
-  .dnode.hub { background:var(--blue); color:#fff; border-color:var(--blue); font-weight:700; box-shadow:0 10px 24px -12px rgba(3,80,175,.5); z-index:3; }
-  .dnode.train { border:2px solid var(--blue); color:var(--blue); font-weight:700; }
+  .dnode { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:9px; padding:.55rem .95rem; font-weight:600; font-size:clamp(.76rem,1.02vw,.98rem); color:var(--ink); box-shadow:0 5px 14px -8px rgba(2,31,68,.22); white-space:nowrap; z-index:2; text-align:center; }
+  .dnode.hub { background:var(--blue); color:#fff; border-color:var(--blue); box-shadow:0 8px 20px -10px rgba(3,80,175,.45); z-index:3; }
+  .dnode.train { border:1.5px solid var(--blue); color:var(--blue); }
   .focusbadge { position:absolute; transform:translate(-50%,-50%); background:var(--accent-wash); color:var(--blue); border:1px solid #cfe0f7; border-radius:9999px; padding:.3rem .8rem; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; z-index:2; white-space:nowrap; }
   .loopcap { position:absolute; transform:translate(-50%,-50%); font-size:clamp(.72rem,1vw,.92rem); font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); z-index:1; text-align:center; line-height:1.3; }
 
@@ -434,32 +434,32 @@
     <div class="eyebrow">Compounding advantage</div>
     <h2 style="max-width:30ch;">Two flywheels, one engine that makes every model <em>better.</em></h2>
     <div class="dualfly">
-      <svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <svg viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <defs>
           <marker id="dar" markerWidth="8.5" markerHeight="8.5" refX="3.6" refY="4.25" orient="auto"><path d="M0 0 L8.5 4.25 L0 8.5 Z" fill="#0351AF"/></marker>
         </defs>
-        <g fill="none" stroke="#0351AF" stroke-width="3" marker-end="url(#dar)">
+        <g fill="none" stroke="#0351AF" stroke-width="2.6" marker-end="url(#dar)">
           <!-- center spine: better training -> better model -->
-          <path d="M600 456 L600 282"/>
+          <path d="M600 376 L600 204"/>
           <!-- consumer (left) wing -->
-          <path d="M548 244 C448 212, 384 188, 326 180"/>
-          <path d="M212 200 C150 270, 150 332, 173 376"/>
-          <path d="M200 426 C322 540, 432 512, 518 484"/>
+          <path d="M524 166 Q418 120 352 120"/>
+          <path d="M236 146 Q150 245 180 336"/>
+          <path d="M250 382 Q402 462 520 404"/>
           <!-- enterprise (right) wing -->
-          <path d="M652 244 C752 212, 816 188, 874 180"/>
-          <path d="M988 200 C1050 270, 1050 332, 1027 376"/>
-          <path d="M1000 426 C878 540, 768 512, 682 484"/>
+          <path d="M676 166 Q782 120 848 120"/>
+          <path d="M964 146 Q1050 245 1020 336"/>
+          <path d="M950 382 Q798 462 680 404"/>
         </g>
       </svg>
-      <div class="focusbadge" style="left:20%; top:13.5%;">Current focus</div>
-      <div class="dnode" style="left:20%; top:28.2%;">More consumers</div>
-      <div class="dnode" style="left:14.6%; top:64.5%;">More data</div>
-      <div class="dnode hub" style="left:50%; top:40.3%;">Better Model</div>
-      <div class="dnode train" style="left:50%; top:77.4%;">Better training</div>
-      <div class="dnode" style="left:80%; top:28.2%;">Enterprise adoption</div>
-      <div class="dnode" style="left:85.4%; top:64.5%;">More revenue</div>
-      <div class="loopcap" style="left:20%; top:93%;">Consumer flywheel</div>
-      <div class="loopcap" style="left:80%; top:93%;">Enterprise flywheel</div>
+      <div class="focusbadge" style="left:22.5%; top:9.5%;">Current focus</div>
+      <div class="dnode" style="left:22.5%; top:21.4%;">More consumers</div>
+      <div class="dnode" style="left:15%; top:64.3%;">More data</div>
+      <div class="dnode hub" style="left:50%; top:31.3%;">Better Model</div>
+      <div class="dnode train" style="left:50%; top:71.4%;">Better training</div>
+      <div class="dnode" style="left:77.5%; top:21.4%;">Enterprise adoption</div>
+      <div class="dnode" style="left:85%; top:64.3%;">More revenue</div>
+      <div class="loopcap" style="left:22.5%; top:92%;">Consumer flywheel</div>
+      <div class="loopcap" style="left:77.5%; top:92%;">Enterprise flywheel</div>
     </div>
     <p class="foot">Consumers generate <b>data</b>, enterprises generate <b>revenue</b> — both compound into better models.</p>
   </section>
