@@ -49,15 +49,15 @@
   .backed img { height:clamp(30px,3.2vw,40px); width:auto; display:block; }
   .backed .spc { font-weight:700; color:var(--ink-soft); font-size:clamp(1rem,1.4vw,1.3rem); letter-spacing:-0.01em; }
 
-  /* horizontal stepper (single aligned rail) */
+  /* horizontal stepper (left-anchored: dots start each segment) */
   .stepper { display:flex; align-items:flex-start; margin-top:2.8rem; }
-  .step { flex:1; position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; padding-top:36px; }
-  .step .ln { position:absolute; top:18px; left:50%; width:100%; height:2px; background:#cfe0f7; z-index:1; }
+  .step { flex:1; position:relative; display:flex; flex-direction:column; align-items:flex-start; text-align:left; padding-top:36px; }
+  .step .ln { position:absolute; top:18px; left:9px; width:100%; height:2px; background:#cfe0f7; z-index:1; }
   .step:last-child .ln { display:none; }
-  .step .dot { position:absolute; top:18px; left:50%; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; background:#A6C9F2; border:3px solid var(--cream); box-shadow:0 0 0 2px #A6C9F2; z-index:2; }
+  .step .dot { position:absolute; top:18px; left:9px; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; background:#A6C9F2; border:3px solid var(--cream); box-shadow:0 0 0 2px #A6C9F2; z-index:2; }
   .step .yr { font-size:.74rem; font-weight:700; color:var(--ink-faint); }
   .step .nm2 { font-size:clamp(.84rem,1.15vw,1.1rem); font-weight:600; color:var(--ink-soft); margin-top:.35rem; max-width:11ch; line-height:1.25; }
-  .step.now .dot { width:26px; height:26px; background:radial-gradient(circle at 30% 30%, #3d8fe0, #0351AF); box-shadow:0 0 0 6px var(--accent-wash); }
+  .step.now .dot { width:26px; height:26px; left:13px; background:radial-gradient(circle at 30% 30%, #3d8fe0, #0351AF); box-shadow:0 0 0 6px var(--accent-wash); }
   .step.now .yr { color:var(--blue); }
   .step.now .nm2 { color:var(--blue); font-weight:700; font-size:clamp(.98rem,1.35vw,1.25rem); }
 
@@ -292,10 +292,10 @@
   </section>
 
   <!-- 2 — WHO WE ARE -->
-  <section class="slide">
+  <section class="slide" style="align-items:center; text-align:center;">
     <div class="eyebrow">Who we are</div>
     <h2 style="max-width:26ch;">We're obsessed with making technology accessible to the rest of the world.</h2>
-    <div class="founders" style="margin-top:2.6rem; justify-content:flex-start; gap:5vw;">
+    <div class="founders" style="margin-top:2.8rem;">
       <div class="founder"><img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" /><div><div class="nm">Dheemanth Reddy</div><div class="rl">Co-founder &amp; CEO · NYU</div></div></div>
       <div class="founder"><img src="maya-assets/bharath.jpg" alt="Bharath Kumar" /><div><div class="nm">Bharath Kumar</div><div class="rl">Co-founder &amp; CTO · NYU · ex-Oracle</div></div></div>
     </div>
@@ -332,7 +332,7 @@
         <div class="pfoot">Flat. High latency. Robotic. No context.</div>
       </div>
     </div>
-    <p class="foot">Same words. <b>Nothing you can buy today does the first one.</b></p>
+    <p class="foot">Same words, but <b>leading models don't speak like real people yet.</b></p>
   </section>
 
   <!-- 5 — WHAT IT TAKES -->
