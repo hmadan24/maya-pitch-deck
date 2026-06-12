@@ -131,6 +131,8 @@
   .phone img { width:62px; height:62px; border-radius:15px; }
   .phone .play { width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:#fff; }
   .phone .plab { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#bcd6f5; }
+  .phone.has-video { padding:0; gap:0; overflow:hidden; }
+  .phone.has-video video { width:100%; height:100%; object-fit:cover; border-radius:23px; display:block; }
   .phonewrap { display:flex; flex-direction:column; align-items:center; gap:.9rem; }
   .phonewrap .pnote { font-size:.8rem; color:var(--ink-faint); font-weight:600; text-align:center; max-width:24ch; }
 
@@ -152,7 +154,7 @@
   /* chart image framed (balance the two graphs) */
   .chartimg { height:clamp(150px,28vh,300px); display:flex; align-items:center; justify-content:center; padding:.4rem 0; }
   .chartimg img { max-width:100%; max-height:100%; width:auto; height:auto; display:block; border-radius:6px; }
-  .cap3 { font-size:.96rem; color:var(--ink-soft); font-weight:600; line-height:1.4; }
+  .cap3 { font-size:clamp(1.05rem,1.4vw,1.32rem); color:var(--ink-soft); font-weight:500; line-height:1.45; }
   .cap3 b { color:var(--blue); font-weight:700; }
 
   /* vertical bar chart */
@@ -357,7 +359,7 @@
           <div class="req"><span class="rn">5</span><span><b>The focus to go 100% on these markets</b></span></div>
         </div>
       </div>
-      <div class="figure bare" style="max-width:30vw; margin:0 auto;"><img src="maya-assets/crowd.jpg" alt="A vast, diverse crowd, the scale and diversity of these markets" style="border-radius:10px; height:30vh; width:100%; object-fit:cover;" /></div>
+      <div class="figure bare" style="max-width:40vw; margin:0 auto;"><img src="maya-assets/crowd.jpg" alt="A vast, diverse crowd, the scale and diversity of these markets" style="border-radius:10px; height:44vh; width:100%; object-fit:cover;" /></div>
     </div>
     <p class="foot" style="font-size:clamp(1.1rem,1.7vw,1.5rem); color:var(--ink); font-weight:600; margin-top:1.4rem;">An <em>insider</em> wins this, not the big labs.</p>
   </section>
@@ -365,15 +367,7 @@
   <!-- 6 — MAYA GETS IT RIGHT (consumer app) -->
   <section class="slide">
     <div class="eyebrow">The product · people love it</div>
-    <div class="split" style="grid-template-columns:0.82fr 1.18fr; gap:5vw; margin-top:0.2rem; align-items:center;">
-      <div class="phonewrap">
-        <div class="phone">
-          <img src="maya-assets/app-icon.png" alt="Maya app" />
-          <div class="play">▶</div>
-          <div class="plab">App demo</div>
-        </div>
-        <div class="pnote">Placeholder — Maya app screen recording</div>
-      </div>
+    <div class="split" style="grid-template-columns:1.18fr 0.82fr; gap:5vw; margin-top:0.2rem; align-items:center;">
       <div>
         <h2 style="max-width:14ch;">Maya gets it <em>right.</em></h2>
         <p class="kicker" style="max-width:46ch; margin-top:1.1rem;">People love how Maya talks — and how effortlessly it gets them to the tools they need: web search, photo editing, everyday conversations.</p>
@@ -388,6 +382,12 @@
           <div class="uc"><div class="uch">🎨 Images</div><div class="ucd">Create and edit photos just by describing them.</div></div>
           <div class="uc"><div class="uch">🎬 Video</div><div class="ucd">Trim and edit clips with a sentence.</div></div>
         </div>
+      </div>
+      <div class="phonewrap">
+        <div class="phone has-video">
+          <video src="maya-assets/maya-app-demo.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="pnote">Maya app — live demo</div>
       </div>
     </div>
   </section>
@@ -406,7 +406,7 @@
             <div class="col me"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">Maya 1</span></div>
           </div>
         </div>
-        <div class="cap3" style="margin-top:1.4rem; max-width:38ch;"><b>Maya 1</b> matches OpenAI's GPT-Realtime-2 on <b>1% of the budget.</b> The only company from India to do this.</div>
+        <div class="cap3" style="margin-top:1.4rem; max-width:40ch;"><b>Maya 1</b> ranks <b>#7 in the global top 10</b> — matching OpenAI's GPT-Realtime-2 on <b>1% of the budget.</b> The only company from India to do it.</div>
       </div>
       <div>
         <div class="chart">
@@ -425,29 +425,7 @@
     </div>
   </section>
 
-  <!-- 8 — DEVELOPER TRACTION -->
-  <section class="slide">
-    <div class="eyebrow">Traction · Developers &amp; enterprise</div>
-    <h2 style="max-width:28ch;">Developers love our models — and now providers <em>sell them.</em></h2>
-    <div class="twostat">
-      <div class="sblock">
-        <div class="n">500<small>K</small></div>
-        <div class="d">developer downloads on Hugging Face</div>
-      </div>
-      <div class="mid">
-        <span class="arr">→</span>
-        <span class="midlab">demand so loud that inference providers host it</span>
-      </div>
-      <div class="sblock">
-        <div class="n">$0.002<small> / sec</small></div>
-        <div class="d">Fal sells Maya commercially</div>
-        <div class="pchips"><span class="pchip">Maya</span><span class="pchip">Maya Batch</span><span class="pchip">Maya Stream</span></div>
-      </div>
-    </div>
-    <p class="foot">Cloud providers already host Maya and serve it to enterprises.</p>
-  </section>
-
-  <!-- 7 — THE ENGINE (compounding dual flywheel) -->
+  <!-- THE ENGINE (compounding dual flywheel) -->
   <section class="slide">
     <div class="eyebrow">Compounding advantage</div>
     <h2 style="max-width:30ch;">Two flywheels, one engine that makes every model <em>better.</em></h2>
@@ -480,6 +458,28 @@
       <div class="loopcap" style="left:64.5%; top:53%;">Enterprise<br>flywheel</div>
     </div>
     <p class="foot">Consumers generate <b>data</b>, enterprises generate <b>revenue</b> — both compound into better models.</p>
+  </section>
+
+  <!-- DEVELOPER TRACTION (moved after the flywheel) -->
+  <section class="slide">
+    <div class="eyebrow">Traction · Developers &amp; enterprise</div>
+    <h2 style="max-width:28ch;">Developers love our models — and now providers <em>sell them.</em></h2>
+    <div class="twostat">
+      <div class="sblock">
+        <div class="n">500K</div>
+        <div class="d">developer downloads on Hugging Face</div>
+      </div>
+      <div class="mid">
+        <span class="arr">→</span>
+        <span class="midlab">demand so loud that inference providers host it</span>
+      </div>
+      <div class="sblock">
+        <div class="n">$0.002<small> / sec</small></div>
+        <div class="d">Fal sells Maya commercially</div>
+        <div class="pchips"><span class="pchip">Maya</span><span class="pchip">Maya Batch</span><span class="pchip">Maya Stream</span></div>
+      </div>
+    </div>
+    <p class="foot">Cloud providers already host Maya and serve it to enterprises.</p>
   </section>
 
   <!-- 13 — THE OPPORTUNITY -->
