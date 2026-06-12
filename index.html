@@ -182,7 +182,11 @@
   .fnode2 { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:9999px; padding:.6rem 1.1rem; font-weight:700; font-size:clamp(.78rem,1.1vw,1.05rem); color:var(--blue); box-shadow:0 8px 20px -10px rgba(2,31,68,.3); white-space:nowrap; }
   .fly .fc { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; font-weight:700; color:var(--ink); font-size:clamp(.92rem,1.3vw,1.18rem); max-width:8.5ch; line-height:1.2; }
 
-  /* dual compounding flywheel */
+  /* flywheel image */
+  .flywheelimg { width:fit-content; max-width:min(86vw,920px); margin:1.4rem auto 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.6rem; box-shadow:0 16px 44px -24px rgba(2,31,68,.3); }
+  .flywheelimg img { max-width:100%; max-height:58vh; width:auto; height:auto; display:block; border-radius:8px; }
+
+  /* dual compounding flywheel (legacy) */
   .dualfly { position:relative; width:min(82vw,920px); aspect-ratio:1200/600; margin:1.5rem auto 0; }
   .dualfly svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
   .dnode { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:10px; padding:.6rem 1rem; font-weight:600; font-size:clamp(.8rem,1.05vw,1rem); color:var(--ink); box-shadow:0 5px 14px -8px rgba(2,31,68,.22); white-space:nowrap; z-index:2; text-align:center; }
@@ -433,32 +437,7 @@
   <section class="slide">
     <div class="eyebrow">Compounding advantage</div>
     <h2 style="max-width:30ch;">Two flywheels, one engine that makes every model <em>better.</em></h2>
-    <div class="dualfly">
-      <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <defs>
-          <marker id="dar" markerWidth="8.5" markerHeight="8.5" refX="3.6" refY="4.25" orient="auto"><path d="M0 0 L8.5 4.25 L0 8.5 Z" fill="#0351AF"/></marker>
-        </defs>
-        <g fill="none" stroke="#0351AF" stroke-width="2.6" marker-end="url(#dar)">
-          <!-- consumer loop: better models -> more consumers -> more data -> better models -->
-          <path d="M505 285 Q395 150 290 138"/>
-          <path d="M178 165 Q70 300 178 435"/>
-          <path d="M290 462 Q395 450 505 318"/>
-          <!-- enterprise loop: better models -> enterprise adoption -> more revenue -> better models -->
-          <path d="M695 285 Q805 150 910 138"/>
-          <path d="M1022 165 Q1130 300 1022 435"/>
-          <path d="M910 462 Q805 450 695 318"/>
-        </g>
-      </svg>
-      <div class="focusbadge" style="left:13.3%; top:9.2%;">Current Focus</div>
-      <div class="dnode" style="left:15.8%; top:21.7%;">More Consumers</div>
-      <div class="dnode" style="left:15.8%; top:78.3%;">More Data</div>
-      <div class="dnode hub" style="left:50%; top:50%;">Better Models</div>
-      <div class="dnode" style="left:84.2%; top:21.7%;">Enterprise Adoption</div>
-      <div class="dnode" style="left:84.2%; top:78.3%;">More Revenue</div>
-      <div class="loopcap" style="left:15.8%; top:93.3%;">Consumer Flywheel</div>
-      <div class="loopcap" style="left:84.2%; top:93.3%;">Enterprise Flywheel</div>
-    </div>
-    <p class="foot">Consumers generate <b>data</b>, enterprises generate <b>revenue</b> — both compound into better models.</p>
+    <div class="flywheelimg"><img src="maya-assets/flywheel.jpg" alt="Maya compounding advantage — Consumer and Enterprise flywheels feeding Better Models" /></div>
   </section>
 
   <!-- DEVELOPER TRACTION (moved after the flywheel) -->
