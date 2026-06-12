@@ -146,10 +146,10 @@
   .appstats > div { display:flex; flex-direction:column; }
   .appstats .an { font-size:clamp(1.7rem,2.8vw,2.5rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; }
   .appstats .ac { font-size:.84rem; color:var(--ink-soft); font-weight:600; margin-top:.35rem; max-width:14ch; line-height:1.25; }
-  .usecases { display:grid; grid-template-columns:1fr 1fr; gap:.85rem; margin-top:1.9rem; max-width:54ch; }
-  .uc { background:#fff; border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; box-shadow:var(--shadow-1,0 1px 3px rgba(2,31,68,.08)); }
-  .uc .uch { font-weight:700; font-size:clamp(.92rem,1.2vw,1.05rem); color:var(--ink); display:flex; align-items:center; gap:.5rem; }
-  .uc .ucd { font-size:.84rem; color:var(--ink-soft); font-weight:500; line-height:1.3; margin-top:.2rem; }
+  .usecases { display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1.9rem; max-width:52ch; }
+  .uc { background:#fff; border:1px solid var(--line); border-radius:10px; padding:.62rem .8rem; box-shadow:var(--shadow-1,0 1px 3px rgba(2,31,68,.08)); display:flex; align-items:center; gap:.55rem; }
+  .uc .uci { font-size:1.15rem; line-height:1; flex:none; }
+  .uc .ucl { font-weight:600; font-size:clamp(.8rem,1.02vw,.96rem); color:var(--ink); line-height:1.15; }
 
   /* chart image framed (balance the two graphs) */
   .chartimg { height:clamp(150px,28vh,300px); display:flex; align-items:center; justify-content:center; padding:.4rem 0; }
@@ -370,17 +370,22 @@
     <div class="split" style="grid-template-columns:1.18fr 0.82fr; gap:5vw; margin-top:0.6rem; align-items:start;">
       <div>
         <h2 style="max-width:14ch;">Maya gets it <em>right.</em></h2>
-        <p class="kicker" style="max-width:46ch; margin-top:1.1rem;">People love how Maya talks — and how effortlessly it gets them to the tools they need: web search, photo editing, everyday conversations.</p>
+        <p class="kicker" style="max-width:46ch; margin-top:1.1rem;">People love how Maya talks — and bring it into every part of their lives.</p>
         <div class="appstats">
           <div><span class="an">3M</span><span class="ac">downloads</span></div>
           <div><span class="an">50K+</span><span class="ac">daily active users</span></div>
           <div><span class="an">20%+</span><span class="ac">week-1 retention</span></div>
         </div>
         <div class="usecases">
-          <div class="uc"><div class="uch">💬 Companion</div><div class="ucd">Someone to talk to, in your own language.</div></div>
-          <div class="uc"><div class="uch">🔎 Web search</div><div class="ucd">Ask anything — Maya finds it for you.</div></div>
-          <div class="uc"><div class="uch">🎨 Images</div><div class="ucd">Create and edit photos just by describing them.</div></div>
-          <div class="uc"><div class="uch">🎬 Video</div><div class="ucd">Trim and edit clips with a sentence.</div></div>
+          <div class="uc"><span class="uci">🌿</span><span class="ucl">Life</span></div>
+          <div class="uc"><span class="uci">❤️</span><span class="ucl">Relationships</span></div>
+          <div class="uc"><span class="uci">💼</span><span class="ucl">Business</span></div>
+          <div class="uc"><span class="uci">🎨</span><span class="ucl">Image creation</span></div>
+          <div class="uc"><span class="uci">🛍️</span><span class="ucl">Shopping</span></div>
+          <div class="uc"><span class="uci">🙏</span><span class="ucl">Faith</span></div>
+          <div class="uc"><span class="uci">👨‍👩‍👧</span><span class="ucl">Family</span></div>
+          <div class="uc"><span class="uci">📚</span><span class="ucl">Learning</span></div>
+          <div class="uc"><span class="uci">📰</span><span class="ucl">News</span></div>
         </div>
       </div>
       <div class="phonewrap">
