@@ -3,440 +3,455 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Maya — Pitch</title>
+<title>Maya — Series A</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Maya Research design-system tokens (derived from mayaresearch.ai) */
-    --cobalt-50:#E9F2FC; --cobalt-100:#D3E4F9; --cobalt-200:#A6C9F2; --cobalt-300:#6FA6E8;
-    --cobalt-400:#3D7FD6; --cobalt-500:#0F5FC4; --cobalt-600:#0351AF; --cobalt-700:#033F88;
-    --cobalt-800:#022E64; --cobalt-900:#021F44;
-    --cream:#FAF7F1; --mist:#F0F0F0;
-
-    /* semantic aliases */
-    --blue: #0351AF;            /* cobalt-600 — brand primary */
-    --blue-2: #0F5FC4;
-    --blue-deep: #022E64;
-    --paper: #FFFFFF;
-    --paper-tint: #FAF7F1;      /* cream */
-    --ink: #141414;
-    --ink-soft: #55534D;        /* gray-700, warm */
-    --ink-faint: #8A877F;       /* gray-500, warm */
-    --line: #E3E0DA;            /* warm hairline */
-    --line-blue: rgba(255,255,255,0.22);
-    --accent: var(--blue);
-    --accent-wash: #E9F2FC;     /* cobalt-50 */
-    --bar-alt: #A6C9F2;         /* cobalt-200 */
-    --shadow-1: 0 1px 3px rgba(2,31,68,.08);
-    --shadow-2: 0 6px 24px rgba(2,31,68,.10);
+    /* Maya Research design system (derived from mayaresearch.ai) */
+    --cobalt-50:#E9F2FC; --cobalt-200:#A6C9F2; --cobalt-500:#0F5FC4; --cobalt-700:#033F88;
+    --blue:#0351AF; --blue-deep:#022E64;
+    --paper:#FFFFFF; --paper-tint:#FFFFFF;
+    --cream:#FAF7F1;
+    --ink:#141414; --ink-soft:#55534D; --ink-faint:#8A877F;
+    --line:#E3E0DA; --accent:var(--blue); --accent-wash:#E9F2FC;
   }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; background:var(--cream); font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; overflow:hidden; }
+  #deck { height:100vh; width:100vw; }
+  .slide { position:absolute; inset:0; display:none; flex-direction:column; justify-content:center; background:var(--cream); padding:9vh 9vw; opacity:0; transition:opacity 0.35s ease; overflow:hidden; }
+  .slide.active { display:flex; opacity:1; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .eyebrow { font-size:0.8rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:2rem; }
+  h1, h2 { font-size:clamp(2.1rem,4.4vw,3.6rem); line-height:1.1; font-weight:500; letter-spacing:-0.04em; max-width:21ch; }
+  .kicker { font-size:clamp(1.05rem,1.6vw,1.4rem); color:var(--ink-soft); margin-top:1.5rem; max-width:52ch; line-height:1.5; font-weight:400; }
+  em { font-style:normal; color:var(--accent); font-weight:700; }
+  .foot { margin-top:1.6rem; font-size:clamp(1rem,1.5vw,1.3rem); color:var(--ink-soft); font-weight:500; max-width:62ch; }
+  .foot b { color:var(--blue); font-weight:700; }
+  .source { margin-top:1.3rem; font-size:0.84rem; color:var(--ink-faint); font-weight:400; max-width:62ch; }
 
-  html, body {
-    height: 100%;
-    background: #021c3d;
-    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-  }
+  /* cover */
+  .cover { align-items:flex-start; justify-content:center; }
+  .wordmark { display:flex; align-items:center; gap:1.4rem; }
+  .wordmark .mark svg { width:clamp(70px,9vw,130px); height:auto; display:block; }
+  .wordmark .name { font-size:clamp(3.4rem,9vw,8rem); font-weight:600; letter-spacing:-0.05em; line-height:1; color:var(--ink); }
+  .cover .tag { font-size:clamp(1.3rem,2.5vw,2.3rem); font-weight:500; letter-spacing:-0.015em; color:var(--ink-soft); margin-top:1.8rem; max-width:22ch; }
 
-  #deck { height: 100vh; width: 100vw; }
+  /* founders */
+  .founders { display:flex; gap:7vw; margin-top:3rem; justify-content:center; }
+  .founder { display:flex; flex-direction:column; align-items:center; text-align:center; gap:.9rem; }
+  .founder img { width:clamp(120px,13vw,168px); height:clamp(120px,13vw,168px); border-radius:50%; object-fit:cover; border:4px solid var(--accent-wash); box-shadow:0 14px 36px -18px rgba(3,80,175,0.6); }
+  .founder .nm { font-size:clamp(1.25rem,1.9vw,1.65rem); font-weight:700; line-height:1.1; }
+  .founder .rl { color:var(--accent); font-weight:700; font-size:0.95rem; margin-top:0.3rem; }
+  .backed { margin-top:2.6rem; display:flex; align-items:center; gap:0.7rem; }
+  .backed .lab { font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; }
+  .backed img { height:clamp(30px,3.2vw,40px); width:auto; display:block; }
+  .backed .spc { font-weight:700; color:var(--ink-soft); font-size:clamp(1rem,1.4vw,1.3rem); letter-spacing:-0.01em; }
 
-  .slide {
-    position: absolute;
-    inset: 0;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--cream);
-    padding: 9vh 10vw;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    overflow: hidden;
-  }
-  .slide.active { display: flex; opacity: 1; }
-  .slide > * { position: relative; z-index: 2; }
+  /* horizontal stepper (straight line) */
+  .stepper { display:flex; align-items:flex-start; margin-top:3rem; }
+  .step { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+  .step .ln { position:absolute; top:9px; left:50%; width:100%; height:3px; background:#dbe6f5; z-index:1; }
+  .step:last-child .ln { display:none; }
+  .step .dot { width:20px; height:20px; border-radius:50%; background:#bcd2ee; border:3px solid #fff; box-shadow:0 0 0 2px #bcd2ee; z-index:2; }
+  .step .yr { font-size:.72rem; font-weight:700; color:var(--ink-faint); margin-top:1.1rem; }
+  .step .nm2 { font-size:clamp(.84rem,1.15vw,1.1rem); font-weight:600; color:var(--ink-soft); margin-top:.3rem; max-width:11ch; line-height:1.2; }
+  .step.now .dot { width:28px; height:28px; margin-top:-4px; background:radial-gradient(circle at 30% 30%, #3d8fe0, #0351AF); box-shadow:0 0 0 6px var(--accent-wash); }
+  .step.now .nm2 { color:var(--blue); font-weight:700; font-size:clamp(.98rem,1.35vw,1.25rem); }
+  .step.now .yr { color:var(--blue); }
 
-  /* Blue hero slides */
-  .slide.hero {
-    background: linear-gradient(180deg, #0350AF 0%, #0351AF 55%, #023a82 100%);
-    color: #fff;
-  }
-  .slide.hero .eyebrow { color: rgba(255,255,255,0.8); }
-  .slide.hero .lead, .slide.hero .kicker { color: rgba(255,255,255,0.88); }
-  .slide.hero em { color: #cfe0f7; }
-  .slide.hero .u { background: linear-gradient(transparent 60%, rgba(255,255,255,0.28) 60%); }
+  /* contrast panels */
+  .vs { display:grid; grid-template-columns:1fr 1fr; gap:2.4vw; margin-top:2.2rem; }
+  .panel { border-radius:10px; padding:1.6rem 1.6rem 1.4rem; display:flex; flex-direction:column; }
+  .panel.dim { background:var(--paper-tint); border:1px solid var(--line); }
+  .panel.live { background:linear-gradient(180deg,#0a4fb0,#0351AF); color:#fff; box-shadow:0 24px 60px -28px rgba(3,80,175,.6); }
+  .panel .ptag { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:1.1rem; }
+  .panel.dim .ptag { color:var(--ink-faint); } .panel.live .ptag { color:#bcd6f5; }
+  .bub { border-radius:10px; padding:.65rem 1rem; font-size:clamp(.85rem,1.1vw,1.05rem); line-height:1.35; margin-bottom:.55rem; max-width:90%; }
+  .panel.dim .bub.you { background:#e7edf6; color:var(--ink-soft); align-self:flex-end; border-bottom-right-radius:4px; }
+  .panel.dim .bub.it { background:#fff; border:1px solid var(--line); color:var(--ink); border-bottom-left-radius:4px; }
+  .panel.live .bub { background:rgba(255,255,255,.16); color:#fff; }
+  .panel.live .bub.r { align-self:flex-end; background:rgba(255,255,255,.26); border-bottom-right-radius:4px; }
+  .panel.live .bub.l { border-bottom-left-radius:4px; }
+  .pfoot { margin-top:auto; padding-top:1rem; font-size:.92rem; font-weight:700; }
+  .panel.dim .pfoot { color:var(--ink-faint); } .panel.live .pfoot { color:#fff; }
 
-  /* Cloud band pinned to top of hero slides */
-  .slide.hero .clouds {
-    position: absolute; top: 0; left: 0; width: 100%; height: auto;
-    z-index: 1; opacity: 0.5; pointer-events: none;
-    transform: scaleY(-1);
-  }
+  /* audio panels (the gap) */
+  .panel.aud { justify-content:center; }
+  .panel.aud .ptag { margin-bottom:1rem; font-size:.78rem; }
+  .panel.aud audio { width:100%; margin:0.3rem 0 1.1rem; }
+  .panel.aud .pfoot { margin-top:0; padding-top:0; font-size:1rem; }
+  .panel.human { background:var(--accent-wash); border:1px solid #cfe0f7; }
+  .panel.human .ptag, .panel.human .pfoot { color:var(--blue); }
+  .panel.model { background:var(--paper-tint); border:1px solid var(--line); }
+  .panel.model .ptag, .panel.model .pfoot { color:var(--ink-faint); }
 
-  /* Full-bleed art slides */
-  .slide.art-title {
-    background-image:
-      linear-gradient(95deg, rgba(2,42,110,0.97) 0%, rgba(3,80,175,0.84) 34%, rgba(3,80,175,0.22) 62%, rgba(3,80,175,0) 100%),
-      url("maya-assets/hero-maya.png");
-    background-size: cover; background-position: center right;
-    color: #fff;
-  }
-  .slide.art-close {
-    background-image:
-      linear-gradient(180deg, rgba(3,80,175,0.93) 0%, rgba(3,80,175,0.6) 42%, rgba(2,50,105,0.92) 100%),
-      url("maya-assets/landscape.png");
-    background-size: cover; background-position: center bottom;
-    color: #fff;
-  }
-  .art-title .title-foot, .art-close .title-foot { color: rgba(255,255,255,0.82); border-top-color: var(--line-blue); }
+  /* hub */
+  .hub { display:grid; grid-template-columns:1fr 1.15fr 1fr; grid-template-rows:repeat(3,1fr); gap:1rem 2.4vw; margin-top:1.6rem; align-items:center; }
+  .node { display:flex; align-items:center; justify-content:center; gap:.5rem; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; font-weight:600; font-size:clamp(.85rem,1.1vw,1.05rem); color:var(--ink-soft); box-shadow:0 2px 10px rgba(2,31,68,.05); }
+  .node .ic { width:9px; height:9px; border-radius:50%; background:#6fa6e8; flex:none; }
+  .core { grid-column:2; grid-row:2; background:linear-gradient(180deg,#0a4fb0,#023269); color:#fff; border:none; border-radius:10px; padding:1.4rem 1rem; flex-direction:column; gap:.2rem; box-shadow:0 24px 56px -26px rgba(3,80,175,.7); }
+  .core .big { font-size:clamp(1.2rem,1.9vw,1.6rem); font-weight:700; } .core .small { font-size:.8rem; color:#bcd6f5; font-weight:500; }
 
-  /* Typography scale */
-  .eyebrow {
-    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); font-weight: 700; margin-bottom: 2.4rem;
-  }
-  h1, h2 { font-size: clamp(2.1rem, 4.6vw, 3.7rem); line-height: 1.12; font-weight: 500; letter-spacing: -0.04em; max-width: 20ch; }
-  .lead { font-size: clamp(1.15rem, 2vw, 1.7rem); line-height: 1.5; color: var(--ink-soft); max-width: 34ch; margin-top: 1.8rem; font-weight: 400; }
-  .kicker { font-size: clamp(1.1rem, 1.7vw, 1.45rem); color: var(--ink-soft); margin-top: 1.6rem; max-width: 42ch; line-height: 1.5; font-weight: 400; }
-  em { font-style: normal; color: var(--accent); font-weight: 700; }
-  .u { background: linear-gradient(transparent 60%, var(--accent-wash) 60%); }
+  /* figures + split */
+  .figure { border:1px solid var(--line); border-radius:10px; padding:0.7rem; background:#fff; box-shadow:0 22px 55px -30px rgba(3,80,175,0.5); }
+  .figure img { width:100%; height:auto; display:block; border-radius:9px; max-height:50vh; object-fit:contain; }
+  .figure.bare { border:none; box-shadow:none; padding:0; background:transparent; }
+  .figure.bare img { box-shadow:0 22px 55px -30px rgba(3,80,175,0.5); border-radius:12px; max-height:54vh; }
+  .split { display:grid; grid-template-columns:1.05fr 0.95fr; gap:5vw; align-items:center; }
+  .split .copy h2 { max-width:none; }
 
-  /* Logo mark */
-  .mark svg { display: block; }
+  /* big number + reach + chips */
+  .giant { font-size:clamp(4rem,13vw,11rem); font-weight:400; letter-spacing:-0.05em; line-height:0.9; color:var(--blue); font-variant-numeric:tabular-nums; }
+  .giant small { font-size:0.26em; font-weight:700; color:var(--ink-faint); }
+  .gsub { display:block; font-size:0.3em; font-weight:600; color:var(--ink-soft); letter-spacing:-0.01em; margin-top:.3rem; }
+  .reach { display:inline-flex; align-items:baseline; gap:.7rem; margin-top:1.4rem; font-weight:700; }
+  .reach .from { font-size:clamp(1.6rem,3vw,2.6rem); color:var(--ink-faint); letter-spacing:-0.03em; }
+  .reach .ar { color:#4E7818; font-size:1.5rem; }
+  .reach .to { font-size:clamp(2.2rem,4.4vw,4rem); color:var(--blue); letter-spacing:-0.04em; }
+  .reach .ppl { font-size:1rem; color:var(--ink-soft); font-weight:600; align-self:center; }
+  .statchips { display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.4rem; }
+  .statchips span { background:var(--paper-tint); border:1px solid var(--line); border-radius:9999px; padding:.5rem 1.1rem; font-weight:700; font-size:clamp(.85rem,1.15vw,1.1rem); color:var(--blue); }
+  .pchips { display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.2rem; }
+  .pchip { background:#fff; border:1px solid var(--line); border-radius:9999px; padding:.5rem 1.1rem; font-weight:700; font-size:clamp(.85rem,1.1vw,1.05rem); color:var(--blue); box-shadow:0 2px 10px rgba(2,31,68,.05); }
 
-  /* Title slide */
-  .title-slide { justify-content: space-between; padding: 8vh 9vw; }
-  .wordmark { display: flex; align-items: center; gap: 1.4rem; }
-  .wordmark .mark svg { width: clamp(64px, 9vw, 124px); height: auto; }
-  .wordmark .name { font-size: clamp(3rem, 8vw, 7rem); font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
-  .title-tag { font-size: clamp(1.3rem, 2.7vw, 2.4rem); line-height: 1.2; font-weight: 500; max-width: 24ch; letter-spacing: -0.015em; }
-  .title-foot { display: flex; justify-content: space-between; align-items: flex-end; font-size: 0.95rem; color: rgba(255,255,255,0.74); border-top: 1px solid var(--line-blue); padding-top: 1.4rem; font-weight: 500; gap: 2rem; }
+  /* dev + enterprise two-stat */
+  .twostat { display:grid; grid-template-columns:1fr auto 1fr; gap:2.6vw; align-items:center; margin-top:2.2rem; }
+  .sblock .n { font-size:clamp(2.8rem,6.5vw,5rem); font-weight:400; color:var(--blue); letter-spacing:-0.04em; line-height:1; }
+  .sblock .n small { font-size:0.34em; color:var(--ink-faint); }
+  .sblock .d { margin-top:.6rem; color:var(--ink-soft); font-weight:600; font-size:clamp(.95rem,1.3vw,1.15rem); max-width:24ch; }
+  .twostat .mid { color:#9aa6ba; font-weight:700; font-size:clamp(1rem,1.5vw,1.3rem); text-align:center; line-height:1.3; }
+  .twostat .mid small { display:block; font-size:.7rem; color:var(--ink-faint); font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-top:.3rem; }
 
-  /* Metric grids */
-  .metrics { display: grid; gap: 2.4rem 4vw; margin-top: 1rem; }
-  .metrics.cols-2 { grid-template-columns: repeat(2, 1fr); }
-  .metrics.cols-3 { grid-template-columns: repeat(3, 1fr); }
-  .metric .big { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 400; letter-spacing: -0.045em; line-height: 1; color: var(--blue); }
-  .slide.hero .metric .big { color: #fff; }
-  .metric .big small { font-size: 0.45em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0; }
-  .metric .lbl { margin-top: 0.7rem; font-size: 1rem; color: var(--ink-soft); line-height: 1.4; max-width: 26ch; font-weight: 500; }
-  .slide.hero .metric .lbl { color: rgba(255,255,255,0.82); }
+  /* vertical bar chart */
+  .chart { background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 40px -20px rgba(2,31,68,.25); padding:1.6rem 1.8rem 1.2rem; max-width:80vw; }
+  .chart-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:1.2rem; }
+  .chart-title { font-size:1rem; font-weight:700; } .chart-note { font-size:.74rem; color:var(--ink-faint); font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+  .cols { display:flex; align-items:flex-end; gap:clamp(.5rem,1.4vw,1.6rem); height:clamp(150px,28vh,300px); }
+  .col { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; min-width:0; }
+  .col .val { font-size:clamp(.74rem,1.05vw,1rem); font-weight:700; color:var(--ink-soft); margin-bottom:.45rem; } .col.me .val { color:var(--blue); }
+  .col .bar { width:100%; border-radius:8px 8px 3px 3px; background:#d3e4f9; }
+  .col.me .bar { background:linear-gradient(180deg,#0f5fc4,#033f88); box-shadow:0 8px 20px -8px rgba(3,81,175,.55); }
+  .col .lab { font-size:clamp(.62rem,.85vw,.85rem); color:var(--ink-faint); font-weight:600; margin-top:.7rem; text-align:center; line-height:1.18; max-width:12ch; } .col.me .lab { color:var(--blue); font-weight:700; }
+  .axis { border-top:1px solid var(--line); }
 
-  /* Stat bar (impact stats) */
-  .statbar { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 3.6rem; }
-  .statbar .stat { padding: 0.4rem 2.8vw; }
-  .statbar .stat:first-child { padding-left: 0; }
-  .statbar .stat + .stat { border-left: 1px solid var(--line); }
-  .statbar .num { font-size: clamp(3rem, 7.5vw, 5.4rem); font-weight: 400; color: var(--blue); letter-spacing: -0.045em; line-height: 1; }
-  .statbar .num small { font-size: 0.42em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0; }
-  .statbar .cap { margin-top: 0.95rem; color: var(--ink-soft); font-size: 1.05rem; font-weight: 500; line-height: 1.35; max-width: 22ch; }
+  /* cohort cards */
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.1rem; background:var(--paper-tint); }
+  .card h3 { font-size:clamp(1.05rem,1.6vw,1.35rem); font-weight:700; color:var(--blue); margin-bottom:0.1rem; }
+  .card .sub { font-size:0.74rem; color:var(--ink-faint); font-weight:700; margin-bottom:0.7rem; }
+  .card ul { list-style:none; display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .card li { color:var(--ink-soft); font-size:0.82rem; font-weight:600; background:#fff; border:1px solid var(--line); border-radius:7px; padding:0.24rem 0.5rem; }
 
-  /* Split layout: text + illustration */
-  .split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 5vw; align-items: center; }
-  .split .art-card {
-    border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-2);
-    border: 1px solid var(--line); aspect-ratio: 1300 / 758;
-  }
-  .split .art-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .split .copy h2 { max-width: none; }
+  /* circular flywheel (4 nodes) */
+  .fly { position:relative; width:min(44vh,440px); aspect-ratio:1; margin:0 auto; }
+  .fly .ring { position:absolute; inset:0; width:100%; height:100%; }
+  .fnode2 { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:9999px; padding:.6rem 1.1rem; font-weight:700; font-size:clamp(.78rem,1.1vw,1.05rem); color:var(--blue); box-shadow:0 8px 20px -10px rgba(2,31,68,.3); white-space:nowrap; }
+  .fly .fc { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; font-weight:700; color:var(--ink); font-size:clamp(.92rem,1.3vw,1.18rem); max-width:8.5ch; line-height:1.2; }
 
-  /* Reason / list rows */
-  .rows { margin-top: 2.4rem; display: flex; flex-direction: column; gap: 1.7rem; max-width: 54ch; }
-  .row { display: flex; gap: 1.4rem; align-items: baseline; }
-  .row .n { color: var(--accent); font-weight: 700; font-size: 1.1rem; min-width: 1.4em; }
-  .row .t { font-size: clamp(1.05rem, 1.7vw, 1.35rem); line-height: 1.45; font-weight: 500; }
-  .row .t b { font-weight: 700; }
-  .row .t span { color: var(--ink-soft); font-weight: 400; }
-  .slide.hero .row .t span { color: rgba(255,255,255,0.82); }
+  /* dual compounding flywheel */
+  .dualfly { position:relative; width:min(94vw,1080px); aspect-ratio:1000/440; margin:1.4rem auto 0; }
+  .dualfly svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .dnode { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:9999px; padding:.62rem 1.15rem; font-weight:700; font-size:clamp(.8rem,1.15vw,1.08rem); color:var(--blue); box-shadow:0 8px 20px -10px rgba(2,31,68,.3); white-space:nowrap; z-index:2; }
+  .dnode.hub { background:linear-gradient(180deg,#0a4fb0,#022E64); color:#fff; border:none; padding:.9rem 1.6rem; font-size:clamp(.95rem,1.4vw,1.3rem); box-shadow:0 18px 40px -16px rgba(3,80,175,.6); z-index:3; }
+  .loopcap { position:absolute; transform:translate(-50%,-50%); font-size:clamp(.66rem,.9vw,.8rem); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); z-index:1; white-space:nowrap; }
 
-  /* Bar charts */
-  .bars { margin-top: 2.6rem; display: flex; flex-direction: column; gap: 1.3rem; max-width: 62ch; }
-  .bar-row { display: grid; grid-template-columns: 15rem 1fr; align-items: center; gap: 1.4rem; }
-  .bar-row .name { font-weight: 600; font-size: clamp(0.95rem, 1.5vw, 1.2rem); }
-  .bar-row .name small { display: block; color: var(--ink-faint); font-weight: 500; font-size: 0.78rem; margin-top: 0.15rem; }
-  .bar-track { background: var(--paper-tint); border-radius: 7px; height: 2.5rem; position: relative; }
-  .bar-fill { height: 100%; border-radius: 7px; background: var(--blue); display: flex; align-items: center; justify-content: flex-end; padding-right: 0.9rem; color: #fff; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
-  .bar-fill.alt { background: var(--bar-alt); color: var(--ink); }
-  .bar-note { margin-top: 1.6rem; font-size: 0.95rem; color: var(--ink-soft); font-weight: 500; }
-  .bar-note b { color: var(--blue); font-weight: 700; }
+  /* the plan (S2S) */
+  .plan { display:flex; align-items:stretch; gap:1.4vw; margin-top:2.2rem; flex-wrap:wrap; }
+  .pcard { flex:1; min-width:13rem; border-radius:10px; padding:1.5rem 1.4rem; }
+  .pcard.now { background:var(--paper-tint); border:1px solid var(--line); }
+  .pcard.build { background:linear-gradient(180deg,#0a4fb0,#023269); color:#fff; box-shadow:0 24px 56px -26px rgba(3,80,175,.7); }
+  .pcard.unlock { background:#fff; border:1px solid var(--line); box-shadow:0 10px 30px -14px rgba(2,31,68,.18); }
+  .pcard .ph { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:.5rem; }
+  .pcard.now .ph { color:var(--ink-faint); } .pcard.build .ph { color:#bcd6f5; } .pcard.unlock .ph { color:var(--blue); }
+  .pcard .pt2 { font-size:clamp(1.05rem,1.5vw,1.35rem); font-weight:700; letter-spacing:-0.01em; margin-bottom:.7rem; }
+  .pcard ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
+  .pcard li { font-size:clamp(.84rem,1.1vw,1rem); font-weight:500; line-height:1.3; padding-left:1.2rem; position:relative; }
+  .pcard.now li { color:var(--ink-soft); } .pcard.now li::before { content:"–"; position:absolute; left:0; color:var(--ink-faint); font-weight:700; }
+  .pcard.build li { color:#eaf2fc; } .pcard.build li::before { content:"✓"; position:absolute; left:0; color:#9fc6f3; font-weight:700; }
+  .pcard.unlock li { color:var(--ink-soft); } .pcard.unlock li::before { content:"→"; position:absolute; left:0; color:var(--blue); font-weight:700; }
+  .parr { align-self:center; color:#9aa6ba; font-size:1.5rem; font-weight:700; }
 
-  /* Leaderboard (WER) */
-  .lead-wrap { display: grid; grid-template-columns: auto 1fr; gap: 4vw; align-items: center; margin-top: 2.4rem; }
-  .lead-hero .big { font-size: clamp(3.4rem, 8vw, 6rem); font-weight: 400; color: var(--blue); letter-spacing: -0.045em; line-height: 1; }
-  .lead-hero .cap { font-size: 1rem; color: var(--ink-soft); font-weight: 600; margin-top: 0.5rem; max-width: 18ch; }
-  .lead-list { display: flex; flex-direction: column; gap: 0.9rem; }
-  .lead-list .item { display: flex; align-items: center; gap: 0.9rem; font-size: clamp(1rem, 1.6vw, 1.3rem); padding: 0.7rem 1.1rem; border: 1px solid var(--line); border-radius: 10px; font-weight: 600; }
-  .lead-list .item .x { color: var(--blue); font-weight: 700; }
-  .lead-list .head { border: none; padding: 0 0 0 0; color: var(--ink-faint); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74rem; }
+  /* trajectory curve (ask) */
+  .curvewrap { position:relative; margin-top:2rem; height:clamp(170px,30vh,320px); width:100%; }
+  .curve { position:absolute; inset:0; width:100%; height:100%; }
+  .pt { position:absolute; transform:translate(-50%,50%); width:14px; height:14px; border-radius:50%; background:#fff; border:3px solid var(--blue); box-shadow:0 0 0 3px #fff; z-index:3; }
+  .pt.big { width:22px; height:22px; background:var(--blue); box-shadow:0 0 0 5px var(--accent-wash); }
+  .ptlab { position:absolute; transform:translate(-50%,-100%); text-align:center; z-index:3; }
+  .ptlab .t { font-size:clamp(.74rem,1vw,1rem); font-weight:700; color:var(--ink); line-height:1.15; white-space:nowrap; }
+  .ptlab .t.dim { color:var(--ink-soft); font-weight:600; }
+  .ptlab .s { font-size:.7rem; color:var(--ink-faint); font-weight:600; margin-top:.2rem; }
+  .ptlab.now .t { color:var(--blue); }
+  .ann { position:absolute; transform:translate(-50%,-50%); background:var(--blue); color:#fff; font-weight:700; font-size:clamp(.9rem,1.4vw,1.25rem); border-radius:9999px; padding:.4rem 1rem; z-index:4; box-shadow:0 12px 26px -10px rgba(3,80,175,.6); }
 
-  /* Flywheel */
-  .flow { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 2.6rem; }
-  .flow .node { border: 1px solid var(--line); background: var(--paper-tint); color: var(--blue); border-radius: 999px; padding: 0.85rem 1.5rem; font-size: clamp(0.95rem, 1.5vw, 1.25rem); font-weight: 600; }
-  .flow .arr { color: var(--accent); font-size: 1.3rem; font-weight: 700; }
+  /* requirements (why us / team) */
+  .reqs { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem 1.4vw; margin-top:2rem; max-width:64ch; }
+  .reqlist { display:flex; flex-direction:column; gap:.65rem; margin-top:1.3rem; max-width:46ch; }
+  .req { background:var(--paper-tint); border:1px solid var(--line); border-radius:10px; padding:.85rem 1.2rem; font-size:clamp(.92rem,1.25vw,1.15rem); font-weight:500; color:var(--ink-soft); line-height:1.3; }
+  .reqlist .req { display:flex; align-items:center; gap:.9rem; }
+  .reqlist .rn { flex:none; width:1.7rem; height:1.7rem; border-radius:50%; background:var(--blue); color:#fff; font-weight:700; font-size:.85rem; display:flex; align-items:center; justify-content:center; }
+  /* dual pillars (model + product) */
+  .dual { display:grid; grid-template-columns:1fr 1fr; gap:2vw; margin-top:1.8rem; }
+  .pill { background:rgba(243,247,252,.85); border:1px solid var(--line); border-radius:10px; padding:1.4rem 1.5rem 1.5rem; }
+  .pill .ph2 { font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--blue); margin-bottom:1rem; }
+  .pill .req { background:#fff; margin-bottom:.7rem; } .pill .req:last-child { margin-bottom:0; }
+  .req b { color:var(--ink); font-weight:700; }
 
-  /* Table */
-  table { border-collapse: collapse; margin-top: 2.2rem; width: 100%; font-size: clamp(0.78rem, 1.25vw, 1.05rem); }
-  th, td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); font-weight: 500; }
-  th { color: var(--ink-faint); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
-  tr.me td { background: var(--blue); color: #fff; font-weight: 700; }
-  td .focus { color: var(--ink-faint); }
-  tr.me .focus { color: rgba(255,255,255,0.85); }
+  /* equals (1051 = 1051) */
+  .equals { display:flex; align-items:flex-end; gap:clamp(1rem,2.6vw,2.6rem); }
+  .equals .col2 { text-align:center; }
+  .equals .lbl { font-size:clamp(.72rem,1.1vw,.95rem); font-weight:700; margin-bottom:.7rem; color:var(--ink-faint); }
+  .equals .us .lbl, .equals .us .gg { color:var(--blue); }
+  .equals .gg { font-size:clamp(2.4rem,6vw,4.6rem); font-weight:400; letter-spacing:-0.05em; line-height:1; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .equals .op { font-size:clamp(2rem,5vw,3.6rem); font-weight:400; color:#4E7818; line-height:1; padding-bottom:.3rem; }
 
-  /* Team */
-  .team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 4vw; margin-top: 2.4rem; max-width: 62ch; }
-  .person .nm { font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 700; }
-  .person .rl { color: var(--accent); font-size: 0.95rem; font-weight: 700; margin-top: 0.2rem; }
-  .person .bio { color: var(--ink-soft); font-size: 0.98rem; margin-top: 0.5rem; line-height: 1.45; font-weight: 400; }
+  /* use-case groups (consumer) */
+  .usegroups { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; margin-top:2.4rem; }
+  .ug { background:var(--paper-tint); border:1px solid var(--line); border-radius:10px; padding:1.4rem 1.4rem 1.5rem; }
+  .ug .ugh { font-size:clamp(1.05rem,1.5vw,1.35rem); font-weight:700; color:var(--blue); margin-bottom:1rem; }
+  .ug .ugc { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .ug .ugc span { background:#fff; border:1px solid var(--line); border-radius:9999px; padding:.4rem .85rem; font-size:clamp(.85rem,1.1vw,1.02rem); font-weight:600; color:var(--ink-soft); }
 
-  /* Founders */
-  .founders { display: flex; flex-direction: column; gap: 2rem; }
-  .founders.row { flex-direction: row; gap: 3vw; margin-top: 2.8rem; }
-  .founders.row .founder { flex: 1; }
-  .founder { display: flex; gap: 1.4rem; align-items: center; }
-  .founder img { width: 124px; height: 124px; border-radius: 50%; object-fit: cover; flex: none; border: 4px solid var(--accent-wash); box-shadow: var(--shadow-2); }
-  .founder .nm { font-size: clamp(1.3rem, 2.1vw, 1.75rem); font-weight: 600; line-height: 1.1; }
-  .founder .rl { color: var(--accent); font-weight: 700; font-size: 0.98rem; margin-top: 0.25rem; }
-  .founder .bio { color: var(--ink-soft); font-size: 0.96rem; margin-top: 0.5rem; line-height: 1.4; max-width: 28ch; }
+  /* weighing (ask) */
+  .weigh { display:grid; grid-template-columns:0.84fr auto 1.16fr; gap:2vw; align-items:stretch; margin-top:2.2rem; }
+  .wcard { border-radius:10px; padding:1.6rem 1.6rem 1.7rem; }
+  .wcard.past { background:var(--paper-tint); border:1px solid var(--line); }
+  .wcard.future { background:linear-gradient(165deg,#0a4fb0,#023269); color:#fff; box-shadow:0 28px 60px -28px rgba(3,80,175,.6); }
+  .wcard .wamt { font-size:clamp(2.6rem,5.5vw,4.4rem); font-weight:400; letter-spacing:-0.04em; line-height:1; }
+  .wcard.past .wamt { color:var(--ink); } .wcard.future .wamt { color:#fff; }
+  .wcard .wlab { font-size:.8rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:.5rem 0 1.1rem; }
+  .wcard.past .wlab { color:var(--ink-faint); } .wcard.future .wlab { color:#bcd6f5; }
+  .wcard ul { list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+  .wcard li { font-size:clamp(.92rem,1.25vw,1.15rem); font-weight:500; line-height:1.3; padding-left:1.4rem; position:relative; }
+  .wcard.past li { color:var(--ink-soft); } .wcard.past li::before { content:"✓"; position:absolute; left:0; color:#4E7818; font-weight:700; }
+  .wcard.future li { color:#eaf2fc; } .wcard.future li::before { content:"→"; position:absolute; left:0; color:#9fc6f3; font-weight:700; }
+  .warr { align-self:center; color:#9aa6ba; font-size:2rem; font-weight:700; }
 
-  /* Figures (chart artifacts) */
-  .figure { border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem; background: var(--paper); box-shadow: var(--shadow-2); }
-  .figure img { width: 100%; height: auto; display: block; border-radius: 6px; }
-  .figure.full { margin-top: 2.2rem; }
+  /* close */
+  .close { align-items:center; justify-content:center; text-align:center; }
+  .closing { font-size:clamp(2.4rem,6vw,5.4rem); font-weight:500; letter-spacing:-0.04em; line-height:1.1; max-width:18ch; }
 
-  /* Cards (3-up) */
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6vw; margin-top: 2.6rem; }
-  .card { border: 1px solid var(--line); border-radius: 10px; padding: 1.6rem 1.5rem; background: var(--paper); box-shadow: var(--shadow-1); }
-  .card .card-n { font-weight: 700; color: var(--accent); font-size: 0.85rem; letter-spacing: 0.12em; margin-bottom: 0.8rem; }
-  .card h3 { font-size: clamp(1.05rem, 1.6vw, 1.3rem); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.7rem; line-height: 1.15; }
-  .card p { color: var(--ink-soft); font-size: 0.97rem; line-height: 1.5; }
-  .card ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-  .card li { color: var(--ink-soft); font-size: 0.96rem; line-height: 1.35; padding-left: 1.1rem; position: relative; }
-  .card li::before { content: "–"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  /* proof3 (maya is that team) */
+  .proof3 { display:grid; grid-template-columns:repeat(3,1fr); margin-top:2.8rem; }
+  .pf { padding:0 2.6vw; } .pf:first-child { padding-left:0; } .pf + .pf { border-left:1px solid var(--line); }
+  .pf .pn { font-size:clamp(2.2rem,4.6vw,3.8rem); font-weight:400; color:var(--blue); letter-spacing:-0.04em; line-height:1; }
+  .pf .pc { margin-top:.9rem; color:var(--ink-soft); font-size:1.02rem; font-weight:500; max-width:24ch; line-height:1.4; }
 
-  /* Ask slide bullets */
-  .uses { margin-top: 2.4rem; display: flex; flex-direction: column; gap: 1.3rem; max-width: 52ch; }
-  .use { font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.4; padding-left: 1.7rem; position: relative; font-weight: 400; }
-  .use::before { content: "→"; position: absolute; left: 0; color: #cfe0f7; font-weight: 700; }
-  .use b { font-weight: 700; color: #fff; }
+  /* three charts (secret sauce) */
+  .three { display:grid; grid-template-columns:repeat(3,1fr); gap:1.8vw; margin-top:1.6rem; align-items:start; }
+  .three .tfig { height:40vh; display:flex; align-items:center; justify-content:center; padding:.6rem; }
+  .three .tfig img { max-width:100%; max-height:100%; width:auto; height:auto; border-radius:8px; display:block; }
+  .three .cap3 { margin-top:.85rem; font-size:.92rem; color:var(--ink-soft); font-weight:600; line-height:1.35; max-width:30ch; }
+  .three .cap3 b { color:var(--blue); }
 
-  /* Quote */
-  .quote { font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.22; font-weight: 700; letter-spacing: -0.025em; max-width: 24ch; }
-
-  /* Chrome */
-  .pageno { position: fixed; bottom: 3.2vh; right: 4vw; font-size: 0.8rem; color: var(--ink-faint); z-index: 30; font-variant-numeric: tabular-nums; font-weight: 600; mix-blend-mode: difference; }
-  .brand-mini { position: fixed; bottom: 2.9vh; left: 4vw; z-index: 30; opacity: 0.85; }
-  .brand-mini svg { width: 30px; height: auto; display: block; }
-  .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--blue); z-index: 40; transition: width 0.35s ease; }
-  .slide.hero ~ .progress {}
-  .source { margin-top: 1.6rem; font-size: 0.85rem; color: var(--ink-faint); font-weight: 400; max-width: 50ch; }
-  .slide.hero .source { color: rgba(255,255,255,0.72); }
+  /* chrome */
+  .pageno { position:fixed; bottom:3.2vh; right:4vw; font-size:0.8rem; color:var(--ink-faint); z-index:30; font-variant-numeric:tabular-nums; font-weight:600; }
+  .brand-mini { position:fixed; bottom:2.9vh; left:4vw; z-index:30; opacity:0.85; }
+  .brand-mini svg { width:30px; height:auto; display:block; }
+  .progress { position:fixed; top:0; left:0; height:3px; background:var(--blue); z-index:40; transition:width 0.35s ease; }
+  @media (max-aspect-ratio:1/1){ .split,.vs,.twostat,.plan{grid-template-columns:1fr;gap:4vh;} .cards{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <div class="progress" id="progress"></div>
-<div class="brand-mini" id="brandmini">
-  <svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z"/>
-    <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z"/>
-    <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z"/>
-  </svg>
-</div>
 <div class="pageno" id="pageno"></div>
+<div class="brand-mini" id="brandmini"><svg viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z"/></svg></div>
 
 <div id="deck">
 
-  <!-- 1 — Title (full-bleed landscape) -->
-  <section class="slide art-close title-slide" style="justify-content:center;">
+  <!-- 1 — COVER -->
+  <section class="slide cover" style="background:linear-gradient(180deg, rgba(3,80,175,0.90) 0%, rgba(3,80,175,0.5) 44%, rgba(2,46,100,0.92) 100%), url('maya-assets/landscape.png'); background-size:cover; background-position:center bottom;">
     <div class="wordmark">
-      <span class="mark"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#fff"/>
-        <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#fff"/>
-        <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z" fill="#fff"/>
-      </svg></span>
-      <span class="name">maya</span>
+      <span class="mark"><svg viewBox="0 0 32 24" width="120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#fff"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#fff"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z" fill="#fff"/></svg></span>
+      <span class="name" style="color:#fff;">maya</span>
     </div>
-    <div class="title-tag" style="margin-top:1.5rem;">Frontier voice models for India, SEA, and MENA.</div>
+    <div class="tag" style="color:rgba(255,255,255,0.92);">The interface for the next five billion people.</div>
   </section>
 
-  <!-- 2 — Who we are (story + founders) -->
-  <section class="slide">
+  <!-- 2 — WHO WE ARE -->
+  <section class="slide" style="align-items:center; text-align:center;">
     <div class="eyebrow">Who we are</div>
-    <h2 style="max-width:34ch;">We're passionate about technology access for the rest of the world.</h2>
-    <p class="kicker" style="max-width:66ch;">We grew up in small towns in Andhra Pradesh — access to technology changed the trajectory of our lives. Now a lean team, <em>outperforming labs 100× our size.</em></p>
-    <div class="founders row">
-      <div class="founder">
-        <img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" />
-        <div>
-          <div class="nm">Dheemanth Reddy</div>
-          <div class="rl">Co-founder &amp; CEO</div>
-          <div class="bio">MS, NYU Courant &amp; Stern. Emergent Ventures grantee.</div>
+    <h2 style="max-width:26ch;">We're obsessed with making technology accessible to the rest of the world.</h2>
+    <div class="founders" style="margin-top:3.6rem;">
+      <div class="founder"><img src="maya-assets/dheemanth.jpg" alt="Dheemanth Reddy" /><div><div class="nm">Dheemanth Reddy</div><div class="rl">Co-founder &amp; CEO · NYU</div></div></div>
+      <div class="founder"><img src="maya-assets/bharath.jpg" alt="Bharath Kumar" /><div><div class="nm">Bharath Kumar</div><div class="rl">Co-founder &amp; CTO · NYU · ex-Oracle</div></div></div>
+    </div>
+    <div class="backed"><span class="lab">Backed by</span><img src="maya-assets/spc-full.png" alt="South Park Commons" style="height:clamp(34px,3.8vw,48px);" /></div>
+  </section>
+
+  <!-- 3 — THE SHIFT -->
+  <section class="slide">
+    <div class="eyebrow">The big change</div>
+    <h2 style="max-width:none;">Voice will be the default way<br>the next five billion <em>access everything.</em></h2>
+    <p class="kicker" style="max-width:48ch; margin-top:1.8rem;">They can't type their way in, but everyone can talk. Voice is the interface that finally lets them in.</p>
+    <div class="stepper" style="margin-top:4rem;">
+      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">1970s</span><span class="nm2">Command line</span></div>
+      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">1984</span><span class="nm2">GUI + mouse</span></div>
+      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">2000s</span><span class="nm2">Keypad phone</span></div>
+      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">2007</span><span class="nm2">Touchscreen</span></div>
+      <div class="step now"><span class="dot"></span><span class="yr">Now</span><span class="nm2">Voice interface</span></div>
+    </div>
+  </section>
+
+  <!-- 4 — THE BIG GAP -->
+  <section class="slide">
+    <div class="eyebrow">The big gap</div>
+    <h2 style="max-width:24ch;">The models are nowhere close to how five billion people <em>speak.</em></h2>
+    <div class="vs">
+      <div class="panel aud human">
+        <div class="ptag">▶ How five billion people talk</div>
+        <audio controls preload="metadata" src="maya-assets/human.mp3"></audio>
+        <div class="pfoot">Conversational. Real. Overlapping. Alive.</div>
+      </div>
+      <div class="panel aud model">
+        <div class="ptag">▶ How today's models talk</div>
+        <audio controls preload="metadata" src="maya-assets/model.mp3"></audio>
+        <div class="pfoot">Flat. High latency. Robotic. No context.</div>
+      </div>
+    </div>
+    <p class="foot">Same words. <b>Nothing you can buy today does the first one.</b></p>
+  </section>
+
+  <!-- 5 — WHAT IT TAKES -->
+  <section class="slide">
+    <div class="eyebrow">What it takes</div>
+    <h2 style="max-width:18ch;">Few teams can <em>win this interface.</em></h2>
+    <div class="split" style="grid-template-columns:1.08fr 0.92fr; margin-top:1.1rem; align-items:center;">
+      <div>
+        <p class="kicker" style="margin-top:0; max-width:42ch;">Winning the next five billion takes a rare combination:</p>
+        <div class="reqlist" style="gap:.5rem;">
+          <div class="req"><span class="rn">1</span><span><b>The instinct for which models to train</b>, and how to train them</span></div>
+          <div class="req"><span class="rn">2</span><span><b>The instinct for collecting and finding the right data</b></span></div>
+          <div class="req"><span class="rn">3</span><span><b>A lived understanding</b> of what people prefer, and why</span></div>
+          <div class="req"><span class="rn">4</span><span><b>Navigating the complex cultural differences</b></span></div>
+          <div class="req"><span class="rn">5</span><span><b>The focus to go 100% on these markets</b></span></div>
         </div>
       </div>
-      <div class="founder">
-        <img src="maya-assets/bharath.jpg" alt="Bharath Kumar" />
-        <div>
-          <div class="nm">Bharath Kumar</div>
-          <div class="rl">Co-founder &amp; CTO</div>
-          <div class="bio">MS Computer Engineering, NYU. Previously at Oracle.</div>
+      <div class="figure bare"><img src="maya-assets/crowd.jpg" alt="A vast, diverse crowd, the scale and diversity of these markets" style="border-radius:10px;" /></div>
+    </div>
+    <p class="foot" style="font-size:clamp(1.1rem,1.7vw,1.5rem); color:var(--ink); font-weight:600; margin-top:1.4rem;">An <em>insider</em> wins this, not the big labs.</p>
+  </section>
+
+  <!-- 6 — MAYA IS THAT TEAM -->
+  <section class="slide">
+    <div class="eyebrow">And Maya is that team</div>
+    <h2 style="max-width:16ch;">Maya is <em>that team.</em></h2>
+    <p class="kicker" style="max-width:52ch;">We build the product these markets love, and we have the technical chops to prove it.</p>
+    <div class="proof3">
+      <div class="pf"><div class="pn">3,000,000</div><div class="pc">downloads, on a technology that isn't even there yet</div></div>
+      <div class="pf"><div class="pn">Only&nbsp;one</div><div class="pc">company from India ever on the Speech Arena leaderboard</div></div>
+      <div class="pf"><div class="pn">1% budget</div><div class="pc">matched OpenAI's GPT-Realtime score, a year ago</div></div>
+    </div>
+    <p class="foot">The product instinct <b>and</b> the technical chops, in one team.</p>
+  </section>
+
+  <!-- 7 — SECRET SAUCE / WE TRAIN GOOD MODELS -->
+  <section class="slide">
+    <div class="eyebrow">Our secret sauce</div>
+    <h2 style="max-width:20ch;">We train really <em>good models.</em></h2>
+    <div class="split" style="grid-template-columns:1fr 1fr; gap:3vw; margin-top:1.3rem; align-items:start;">
+      <div>
+        <div class="figure bare"><img src="maya-assets/elo-chart.png" alt="Text-to-Speech Arena Elo, Maya 1 at 1051" style="border-radius:10px;" /></div>
+        <div class="cap3" style="margin-top:1rem; max-width:38ch;"><b>Maya 1</b> competes with the frontier, on <b>1% of the budget.</b> The only company from India to do this.</div>
+      </div>
+      <div>
+        <div class="chart">
+          <div class="chart-head"><div class="chart-title">Speech recognition accuracy · Kathbath</div><div class="chart-note">Higher is better →</div></div>
+          <div class="cols">
+            <div class="col"><span class="val">72.4%</span><span class="bar" style="height:14%"></span><span class="lab">Gemini 3 Flash</span></div>
+            <div class="col"><span class="val">73.6%</span><span class="bar" style="height:22%"></span><span class="lab">Sarvam v3</span></div>
+            <div class="col"><span class="val">74.2%</span><span class="bar" style="height:27%"></span><span class="lab">Scribe v1</span></div>
+            <div class="col"><span class="val">78.1%</span><span class="bar" style="height:55%"></span><span class="lab">Scribe v2</span></div>
+            <div class="col"><span class="val">79.5%</span><span class="bar" style="height:67%"></span><span class="lab">Gemini 3.1 Pro</span></div>
+            <div class="col me"><span class="val">82.8%</span><span class="bar" style="height:100%"></span><span class="lab">Maya Listen</span></div>
+          </div>
+          <div class="axis"></div>
         </div>
+        <div class="cap3" style="margin-top:1rem; max-width:38ch;">And <b>Maya Listen</b> understands these languages <b>better than Google.</b></div>
       </div>
     </div>
   </section>
 
-  <!-- 3 — Vision -->
+  <!-- 8 — DEVELOPER TRACTION -->
   <section class="slide">
-    <div class="eyebrow">The mission</div>
-    <h1>Models that talk like a <span class="u">native</span> to the next 5 billion people.</h1>
-    <p class="lead">India, Southeast Asia and MENA — the largest voice-first markets on earth, and the ones global labs ignore.</p>
-  </section>
-
-  <!-- 3 — Problem -->
-  <section class="slide">
-    <div class="eyebrow">The problem</div>
-    <h2>The world is conversational. Models are not — yet.</h2>
-    <p class="kicker">Conversation is how humans discover, compare, trust and decide. But software was built around navigation: arrive, search, click, choose.</p>
-    <p class="kicker">Today's non-English voice models still don't feel human. The tone is off, latency too high, pacing wrong, cultural cues missing. There's a vast gap from talking to a friend.</p>
-  </section>
-
-  <!-- 4 — Solution -->
-  <section class="slide">
-    <div class="eyebrow">The solution</div>
-    <h2>Maya speaks in the dialect, tone and rhythm people grew up with.</h2>
-    <p class="kicker">It talks like a local, shows things as it talks, and holds a conversation — even when the user doesn't yet know what to ask.</p>
-    <p class="kicker">Within the conversation, people <em>discover, decide, shop and act.</em></p>
-  </section>
-
-  <!-- 6 — The proof / how lean -->
-  <section class="slide">
-    <div class="eyebrow">What we've done</div>
-    <h2>3 frontier models in 12 months — lean to the bone.</h2>
-    <div class="statbar">
-      <div class="stat"><div class="num">5</div><div class="cap">people on the team</div></div>
-      <div class="stat"><div class="num">~$1<small>M</small></div><div class="cap">total spend to date</div></div>
-      <div class="stat"><div class="num">100×</div><div class="cap">we outperform labs of this size</div></div>
+    <div class="eyebrow">Traction · Developers &amp; enterprise</div>
+    <h2 style="max-width:28ch;">Developers pulled our models half a million times. Now providers <em>sell them.</em></h2>
+    <div class="twostat">
+      <div class="sblock"><div class="n">500<small>K</small></div><div class="d">developer downloads on Hugging Face</div></div>
+      <div class="mid">demand so loud<br>that<small>inference providers hosted it</small></div>
+      <div class="sblock"><div class="n">$0.002<small> / sec</small></div><div class="d">Fal sells Maya commercially: Maya, Batch &amp; Stream</div><div class="pchips"><span class="pchip">Maya</span><span class="pchip">Maya Batch</span><span class="pchip">Maya Stream</span></div></div>
     </div>
+    <p class="foot">Cloud providers already host Maya and serve it to enterprises. <b>We never made a sales call.</b></p>
   </section>
 
-  <!-- 7 — Maya 1 (real Elo chart) -->
+  <!-- 7 — THE ENGINE (compounding dual flywheel) -->
   <section class="slide">
-    <div class="eyebrow">Maya 1 · emotive voice</div>
-    <h2>Matches GPT-Realtime-2 quality — at <em>1% of the budget.</em></h2>
-    <div class="figure full"><img src="maya-assets/elo-chart.png" alt="Text to Speech Arena Quality Elo — Maya1 scores 1051, tied with OpenAI GPT-Realtime-2" /></div>
-    <p class="source">Text-to-Speech Arena Quality Elo (Artificial Analysis) — head-to-head human preference, higher is better.</p>
-  </section>
-
-  <!-- 8 — Maya 2 (real reach map) -->
-  <section class="slide">
-    <div class="split">
-      <div class="copy">
-        <div class="eyebrow">Maya 2 · our biggest leap</div>
-        <h2>One model, 31 languages — at 50% lower cost.</h2>
-        <p class="kicker">Trained to preserve the <em>acoustic meaning</em> inside speech: tone changes intent, rhythm changes warmth, dialect makes the model feel local or foreign.</p>
-      </div>
-      <div class="figure"><img src="maya-assets/maya2-reach.png" alt="Maya 2 expands reach from 2 billion to 4 billion people across India, SEA and MENA" /></div>
+    <div class="eyebrow">Why we keep winning · Compounding advantage</div>
+    <h2 style="max-width:30ch;">Two flywheels, one engine that makes every model <em>better.</em></h2>
+    <div class="dualfly">
+      <svg viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <marker id="dar" markerWidth="9" markerHeight="9" refX="4" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#0351AF"/></marker>
+        </defs>
+        <g fill="none" stroke="#0351AF" stroke-width="3.4" marker-end="url(#dar)" opacity="0.9" stroke-linecap="round">
+          <!-- left / consumer loop -->
+          <path d="M150 168 Q205 58 332 78"/>
+          <path d="M392 108 Q472 178 492 264"/>
+          <path d="M452 330 Q255 432 126 230"/>
+          <!-- right / enterprise loop -->
+          <path d="M850 168 Q795 58 668 78"/>
+          <path d="M608 108 Q528 178 508 264"/>
+          <path d="M548 330 Q745 432 874 230"/>
+        </g>
+      </svg>
+      <div class="dnode" style="left:12%; top:43%;">Consumer traction</div>
+      <div class="dnode" style="left:37%; top:17%;">More data</div>
+      <div class="dnode" style="left:63%; top:17%;">More revenue</div>
+      <div class="dnode" style="left:88%; top:43%;">Enterprise adoption</div>
+      <div class="dnode hub" style="left:50%; top:73%;">Better training</div>
+      <div class="loopcap" style="left:24%; top:92%;">Consumer flywheel</div>
+      <div class="loopcap" style="left:76%; top:92%;">Enterprise flywheel</div>
     </div>
+    <p class="foot">Consumers generate <b>data</b>, enterprises generate <b>revenue</b> — both compound into better models.</p>
   </section>
 
-  <!-- 9 — Maya Listen (real Kathbath chart) -->
+  <!-- 13 — THE OPPORTUNITY -->
   <section class="slide">
-    <div class="split">
-      <div class="copy">
-        <div class="eyebrow">Maya Listen 1 · speech understanding</div>
-        <h2>SOTA on Kathbath — the hardest Indian-language benchmark.</h2>
-        <p class="kicker">At <em>17.23% Word Error Rate</em> it beats Gemini 3.1 Pro, ElevenLabs Scribe and Sarvam Saaras v3 — the base layer for every conversation.</p>
-      </div>
-      <div class="figure"><img src="maya-assets/kathbath-wer.png" alt="Kathbath benchmark Word Error Rate — Maya Listen 17.23%, the lowest and best score" /></div>
-    </div>
-  </section>
-
-  <!-- Traction headline metrics -->
-  <section class="slide">
-    <div class="eyebrow">Traction</div>
-    <h2>Adoption is already here.</h2>
-    <div class="metrics cols-2" style="margin-top:2.6rem;">
-      <div class="metric"><div class="big">440K+</div><div class="lbl">model downloads on Hugging Face</div></div>
-      <div class="metric"><div class="big">3M</div><div class="lbl">consumer app downloads, 20%+ week-1 retention</div></div>
-      <div class="metric"><div class="big">31</div><div class="lbl">languages spoken with dialect &amp; emotion</div></div>
-      <div class="metric"><div class="big">4B</div><div class="lbl">people now in our addressable base (up from 2B)</div></div>
-    </div>
-  </section>
-
-  <!-- 11 — Why we win -->
-  <section class="slide">
-    <div class="eyebrow">The moat</div>
-    <h2>Why Maya Wins</h2>
-    <div class="cards">
-      <div class="card">
-        <div class="card-n">01</div>
-        <h3>Growing data velocity</h3>
-        <p>Millions of conversations, climbing daily. Every month widens a gap money alone can't close.</p>
-      </div>
-      <div class="card">
-        <div class="card-n">02</div>
-        <h3>Razor focus on non-English</h3>
-        <p>Judging if a model sounds local in 31 languages needs native judgment at every step — our founding DNA, an SF lab's hiring problem.</p>
-      </div>
-      <div class="card">
-        <div class="card-n">03</div>
-        <h3>Ruthless cost focus</h3>
-        <p>Frugal data curation and training efficiency — a must-have for these markets, a culture incumbents lack.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12 — Roadmap -->
-  <section class="slide">
-    <div class="eyebrow">The roadmap</div>
-    <h2>Building across model, product, and enterprise.</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Models</h3>
+    <div class="eyebrow">The opportunity</div>
+    <h2 style="max-width:24ch;">We did all this with $1.9M. Now <em>$8M makes Maya the default.</em></h2>
+    <div class="weigh">
+      <div class="wcard past">
+        <div class="wamt">$1.9M</div>
+        <div class="wlab">raised, and we already built</div>
         <ul>
-          <li>Ship Maya 3 — full-duplex, speech-native</li>
-          <li>Expand 31 → 40+ languages</li>
-          <li>Quantize for 3–4× lower cost</li>
+          <li>Models that beat OpenAI's latest at Elo</li>
+          <li>The most native speech model, 31 languages</li>
+          <li>The most accurate understanding model</li>
+          <li>Only company from India on the leaderboard</li>
+          <li>3M downloads · 500K developers</li>
+          <li>Enterprises &amp; cloud providers hosting us</li>
         </ul>
       </div>
-      <div class="card">
-        <h3>Consumer app</h3>
+      <span class="warr">→</span>
+      <div class="wcard future">
+        <div class="wamt">$8M</div>
+        <div class="wlab">to build next</div>
         <ul>
-          <li>Proactively start conversations</li>
-          <li>Memory &amp; personalization</li>
-          <li>Personas &amp; personalities</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Enterprise</h3>
-        <ul>
-          <li>Hosted streaming + batch APIs</li>
-          <li>10–15 design partners</li>
-          <li>Brand-voice fine-tuning</li>
+          <li>The speech-to-speech model, shipped</li>
+          <li>Live across India, SEA &amp; MENA</li>
+          <li>The default interface for the next five billion</li>
+          <li>The top voice company in the region</li>
         </ul>
       </div>
     </div>
+    <p class="foot">A year ago, $1M matched a frontier lab and brought three million people. <b>This is the round that makes Maya the default.</b></p>
   </section>
 
-  <!-- 13 — Ask -->
-  <section class="slide">
-    <div class="eyebrow">The ask</div>
-    <h1>Raising <em>$8M</em> to make Maya the default way billions talk to technology.</h1>
-  </section>
-
-  <!-- 14 — Close (simple end) -->
-  <section class="slide title-slide" style="justify-content:center; align-items:center; text-align:center;">
-    <div class="wordmark" style="justify-content:center;">
-      <span class="mark"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#0350AF"/>
-        <path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#0350AF"/>
-        <path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94183 0.0978861C11.707 0.373911 14.3387 1.16747 16.7407 1.84233C19.2103 2.53619 21.5255 3.13487 24.0057 3.25504C26.9404 3.39724 29.8931 2.86804 32.0091 2.32992V6.95967C29.6905 7.47569 26.764 7.89808 23.7877 7.75388C20.7494 7.60667 18 6.87464 15.5225 6.17855C12.9773 5.46346 10.7789 4.80772 8.49454 4.57969C5.07451 4.2383 2.30101 5.0469 0 5.76911V1.05181Z" fill="#0350AF"/>
-      </svg></span>
-      <span class="name" style="color:var(--ink);">maya</span>
-    </div>
+  <!-- 16 — CLOSE -->
+  <section class="slide close">
+    <span class="mark" style="display:block; margin-bottom:1.8rem;"><svg viewBox="0 0 32 24" width="58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#0351AF"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#0351AF"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z" fill="#0351AF"/></svg></span>
+    <h1 class="closing">Maya is where the next five billion <em>will be.</em></h1>
   </section>
 
 </div>
@@ -447,26 +462,22 @@
   const pageno = document.getElementById('pageno');
   const progress = document.getElementById('progress');
   const brandmini = document.getElementById('brandmini');
-
   function show(n) {
     i = Math.max(0, Math.min(slides.length - 1, n));
     slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
     pageno.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
     progress.style.width = ((i + 1) / slides.length * 100) + '%';
     const cls = slides[i].classList;
-    const onDark = cls.contains('hero') || cls.contains('art-title') || cls.contains('art-close');
-    brandmini.querySelectorAll('path').forEach(p => p.setAttribute('fill', onDark ? '#fff' : '#0350AF'));
-    brandmini.style.display = cls.contains('title-slide') ? 'none' : 'block';
+    const onDark = cls.contains('cover');
+    brandmini.querySelectorAll('path').forEach(p => p.setAttribute('fill', onDark ? '#fff' : '#0351AF'));
+    brandmini.style.display = (cls.contains('cover') || cls.contains('close')) ? 'none' : 'block';
   }
-
   document.addEventListener('keydown', (e) => {
-    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(i + 1); }
-    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
-    else if (e.key === 'Home') show(0);
-    else if (e.key === 'End') show(slides.length - 1);
+    if (['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)) { e.preventDefault(); show(i+1); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); show(i-1); }
+    else if (e.key === 'Home') show(0); else if (e.key === 'End') show(slides.length-1);
   });
-  document.addEventListener('click', (e) => { if (e.clientX > window.innerWidth * 0.3) show(i + 1); else show(i - 1); });
-
+  document.addEventListener('click', (e) => { if (e.target.closest('audio,video')) return; if (e.clientX > window.innerWidth*0.3) show(i+1); else show(i-1); });
   show(0);
 </script>
 </body>
