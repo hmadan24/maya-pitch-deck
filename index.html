@@ -213,6 +213,17 @@
   .apx-card p { font-size:clamp(.84rem,1.05vw,.98rem); color:var(--ink-soft); line-height:1.42; margin-bottom:.65rem; font-weight:500; }
   .apx-card .ev { font-size:clamp(.82rem,1vw,.95rem); color:var(--blue); font-weight:600; line-height:1.4; }
   .apx-card .ev b { font-weight:700; }
+  /* monetization — two verticals */
+  .mon2 { display:grid; grid-template-columns:1fr 1fr; gap:2vw; margin-top:1.8rem; }
+  .vert { border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); }
+  .vert.consumer { background:var(--accent-wash); border-color:#cfe0f7; }
+  .vert.enterprise { background:#fff; }
+  .vert .vh { font-size:.74rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--blue); margin-bottom:1.1rem; }
+  .mitem { margin-bottom:1.1rem; } .mitem:last-child { margin-bottom:0; }
+  .mitem h5 { font-size:clamp(.98rem,1.3vw,1.18rem); font-weight:700; color:var(--ink); margin-bottom:.25rem; letter-spacing:-0.01em; }
+  .mitem p { font-size:clamp(.83rem,1.05vw,.97rem); color:var(--ink-soft); line-height:1.35; }
+  .mitem .ev { font-size:clamp(.8rem,1vw,.92rem); color:var(--blue); font-weight:700; margin-top:.3rem; }
+  .funnelc { font-size:.7rem; font-weight:700; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; margin:.35rem 0 .85rem; }
   .apx-stats { display:flex; flex-wrap:wrap; gap:2.4rem; margin-top:1.5rem; }
   .apx-stats .s .n { font-size:clamp(1.7rem,2.7vw,2.4rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; }
   .apx-stats .s .l { font-size:.82rem; color:var(--ink-soft); font-weight:600; margin-top:.3rem; }
@@ -518,27 +529,34 @@
   <section class="slide">
     <div class="eyebrow">Revenue</div>
     <h2>Monetization</h2>
-    <p class="apx-lead" style="margin-top:1.2rem;">We monetize across four layers — spanning our consumer reach and our model — and we already see real, early pull in each.</p>
-    <div class="apx-cards" style="grid-template-columns:1fr 1fr; gap:1.3vw 1.6vw; margin-top:1.6rem;">
-      <div class="apx-card">
-        <h4>Consumer subscriptions</h4>
-        <p>Premium image &amp; video generation, custom personas and an ad-free tier for our most engaged users.</p>
-        <div class="ev">✓ Early paid bundles already earned <b>₹1 lakh+</b> in revenue — and usage dropped when we paused them. Real willingness to pay, on 50K+ daily users.</div>
+    <p class="apx-lead" style="margin-top:1.2rem;">Two engines of revenue — consumer and enterprise — each already showing real pull.</p>
+    <div class="mon2">
+      <div class="vert consumer">
+        <div class="vh">Consumer</div>
+        <div class="mitem">
+          <h5>Subscriptions</h5>
+          <p>Premium image &amp; video, personas, ad-free.</p>
+          <div class="ev">₹1 lakh+ from early bundles · 50K DAU</div>
+        </div>
+        <div class="mitem">
+          <h5>Advertising</h5>
+          <p>Voice-native ads to a huge free base.</p>
+          <div class="ev">4B+ attention-minutes</div>
+        </div>
       </div>
-      <div class="apx-card">
-        <h4>Developer &amp; enterprise API</h4>
-        <p>Hosted real-time (stream) and batch APIs for the developers and businesses building on Maya.</p>
-        <div class="ev">✓ <b>500K model downloads</b>; Fal already resells Maya at <b>$0.002 / audio-second</b> — developers paying today, with zero sales effort.</div>
-      </div>
-      <div class="apx-card">
-        <h4>Enterprise on-prem &amp; managed</h4>
-        <p>License the model on the client's own GPUs, or a fully managed deployment with support — for data-sensitive enterprises.</p>
-        <div class="ev">✓ Inference platforms already host us; inbound interest incl. <b>Tata</b> (on-prem) and <b>Samsung</b> (device).</div>
-      </div>
-      <div class="apx-card">
-        <h4>Advertising</h4>
-        <p>Hours of daily voice usage across India, SEA &amp; MENA — a native ad surface no global player can serve in these languages.</p>
-        <div class="ev"><b>4B+</b> attention-minutes · entirely untapped.</div>
+      <div class="vert enterprise">
+        <div class="vh">Enterprise</div>
+        <div class="mitem">
+          <h5>Open-source on Fal &amp; Hugging Face</h5>
+          <p>Free, best-in-class models pull in developers — our top of funnel.</p>
+          <div class="ev">500K downloads</div>
+        </div>
+        <div class="funnelc">↓ converts into</div>
+        <div class="mitem">
+          <h5>Premium API · managed · on-prem</h5>
+          <p>Paid hosted APIs, managed models &amp; on-prem licences.</p>
+          <div class="ev">Fal sells Maya at $0.002/sec · Tata, Samsung</div>
+        </div>
       </div>
     </div>
   </section>
