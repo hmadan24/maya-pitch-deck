@@ -211,6 +211,7 @@
   .apx-card li { font-size:clamp(.8rem,1vw,.94rem); color:var(--ink-soft); line-height:1.35; padding-left:.95rem; position:relative; font-weight:500; }
   .apx-card li::before { content:"–"; position:absolute; left:0; color:var(--blue); font-weight:700; }
   .apx-card p { font-size:clamp(.84rem,1.05vw,.98rem); color:var(--ink-soft); line-height:1.42; margin-bottom:.65rem; font-weight:500; }
+  .apx-card p b { color:var(--blue); font-weight:700; }
   .apx-card .ev { font-size:clamp(.82rem,1vw,.95rem); color:var(--blue); font-weight:600; line-height:1.4; }
   .apx-card .ev b { font-weight:700; }
   /* monetization — two verticals */
@@ -500,18 +501,9 @@
   <section class="slide">
     <div class="eyebrow">How it's possible</div>
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
-    <div class="pipe">
-      <div class="pstep">Text</div>
-      <div class="parr">→</div>
-      <div class="pstep big">3B Llama-style<br>transformer</div>
-      <div class="parr">→</div>
-      <div class="pstep">SNAC codec<br><small>~7 tokens / frame</small></div>
-      <div class="parr">→</div>
-      <div class="pstep">24 kHz<br>streaming audio</div>
-    </div>
-    <div class="pipecap">Speech as <b>next-token prediction</b> — so we inherit the entire LLM training &amp; inference stack.</div>
-    <div class="apx-cards" style="margin-top:1.6rem;">
-      <div class="apx-card"><h4>Architecture</h4><ul><li>3B decoder-only model predicts SNAC codec tokens, not raw audio</li><li>Real-time on a single 16 GB GPU via vLLM</li></ul></div>
+    <p class="apx-lead" style="margin-top:1.2rem;">We treat <b>speech as next-token prediction</b> — inheriting the entire LLM stack instead of building a bespoke, costly audio pipeline.</p>
+    <div class="apx-cards" style="margin-top:1.8rem;">
+      <div class="apx-card"><h4>Architecture</h4><p>Text → a <b>3B Llama-style decoder-only transformer</b> → <b>SNAC</b> neural-codec tokens → 24 kHz audio.</p><ul><li>~7 codec tokens/frame, not raw waveform — short sequences, real-time streaming</li><li>Runs on a single 16 GB GPU via vLLM</li></ul></div>
       <div class="apx-card"><h4>Data, not scraping</h4><ul><li>Broad pretrain → curated proprietary studio + real app conversations</li><li>XX native annotators label dialect, emotion &amp; code-mixing at the source</li></ul></div>
       <div class="apx-card"><h4>Frugal &amp; compounding</h4><ul><li>Small, quantized models — cheap to serve, run at the edge</li><li>Each release feeds the flywheel · Maya 1 matched the frontier on ~$XX</li></ul></div>
     </div>
@@ -639,17 +631,17 @@
     <h1 style="color:#fff; max-width:16ch;">Appendix</h1>
   </section>
 
-  <!-- A2 — Enterprise motion -->
+  <!-- HIRING PLAN -->
   <section class="slide">
     <div class="eyebrow">Appendix · 01</div>
-    <h2>Enterprise motion</h2>
-    <p class="apx-lead">Inbound, not outbound — providers like <b>Fal</b> already resell Maya. We convert that pull into direct enterprise revenue across three motions.</p>
-    <div class="apx-cards">
-      <div class="apx-card"><h4>On-prem licensing</h4><ul><li>Model deployed on the client's own GPUs</li><li>Monthly fee for updates &amp; support</li><li>For data-sensitive enterprises — e.g. Tata</li></ul></div>
-      <div class="apx-card"><h4>API / managed model</h4><ul><li>Maya hosts &amp; serves; pay-per-use</li><li>$0.002 / audio-second on Fal today</li><li>Middle ground: on-prem ↔ open source</li></ul></div>
-      <div class="apx-card"><h4>Device &amp; platform</h4><ul><li>Voice-level integration into devices / OS</li><li>e.g. Samsung integration</li><li>Pre-installed distribution to millions</li></ul></div>
+    <h2>Hiring plan</h2>
+    <p class="apx-lead" style="margin-top:1.2rem;">Most of the round goes into people — a world-class research, product &amp; GTM team, plus compute. From <b>XX</b> today to <b>~XX</b> in 12 months.</p>
+    <div class="apx-cards" style="grid-template-columns:1fr 1fr; margin-top:1.6rem;">
+      <div class="apx-card"><h4>Research &amp; model training</h4><p>ML researchers &amp; data scientists to push model quality and ship Maya 3 (full-duplex).</p><div class="ev">→ XX hires</div></div>
+      <div class="apx-card"><h4>Engineering &amp; infra</h4><p>Inference, platform &amp; efficiency — real-time serving at scale and low cost.</p><div class="ev">→ XX hires</div></div>
+      <div class="apx-card"><h4>Data &amp; annotation</h4><p>Native-language annotators &amp; data ops across India, SEA &amp; MENA.</p><div class="ev">→ XX hires</div></div>
+      <div class="apx-card"><h4>Product &amp; GTM</h4><p>Consumer product &amp; design, plus enterprise sales to convert pull into revenue.</p><div class="ev">→ XX hires</div></div>
     </div>
-    <p class="apx-note">Tata &amp; Samsung named per founders — confirm scope before external use. Target: 10–15 design partners.</p>
   </section>
 
   <!-- A5 — Retention -->
