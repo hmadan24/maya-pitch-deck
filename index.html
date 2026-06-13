@@ -186,6 +186,11 @@
   .flywheelimg { width:fit-content; max-width:min(69vw,736px); margin:3.2rem auto 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.6rem; box-shadow:0 16px 44px -24px rgba(2,31,68,.3); }
   .flywheelimg img { max-width:100%; max-height:46vh; width:auto; height:auto; display:block; border-radius:8px; }
 
+  /* appendix placeholders */
+  .ph-box { margin-top:2rem; border:2px dashed #c3cfdd; border-radius:14px; min-height:44vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.8rem; background:rgba(3,81,175,.025); padding:2rem 2.4rem; }
+  .ph-box .ph-t { font-weight:700; color:var(--ink-soft); font-size:clamp(1rem,1.4vw,1.25rem); letter-spacing:.05em; text-transform:uppercase; }
+  .ph-box .ph-h { font-size:clamp(.86rem,1.1vw,1.02rem); color:var(--ink-faint); max-width:74ch; line-height:1.55; font-weight:500; }
+
   /* dual compounding flywheel (legacy) */
   .dualfly { position:relative; width:min(82vw,920px); aspect-ratio:1200/600; margin:1.5rem auto 0; }
   .dualfly svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
@@ -493,6 +498,63 @@
   <section class="slide close">
     <span class="mark" style="display:block; margin-bottom:1.8rem;"><svg viewBox="0 0 32 24" width="58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#0351AF"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#0351AF"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z" fill="#0351AF"/></svg></span>
     <h1 class="closing">Maya is where the next five billion <em>will be.</em></h1>
+  </section>
+
+  <!-- APPENDIX divider -->
+  <section class="slide" style="background:linear-gradient(180deg,#0a4fb0,#022E64); align-items:flex-start; justify-content:center; color:#fff;">
+    <div class="eyebrow" style="color:rgba(255,255,255,.78);">For Q&amp;A · data appendix</div>
+    <h1 style="color:#fff; max-width:16ch;">Appendix</h1>
+    <p class="kicker" style="color:rgba(255,255,255,.85); max-width:48ch;">Supporting detail for deep-dive questions.</p>
+  </section>
+
+  <!-- A1 — Understanding the competition -->
+  <section class="slide">
+    <div class="eyebrow">Appendix · 01</div>
+    <h2>Understanding the competition</h2>
+    <div class="ph-box">
+      <div class="ph-t">Placeholder</div>
+      <div class="ph-h">Add: application-layer vs. model-layer positioning (10+ domestic players are app-layer; Maya is model-layer) · 3-column landscape — Maya vs. ElevenLabs ($750M raised) vs. Sarvam vs. Hydra (cascaded, ~300ms latency, English-only) · "they do X, we do Y, here's why it matters."</div>
+    </div>
+  </section>
+
+  <!-- A2 — Enterprise motion -->
+  <section class="slide">
+    <div class="eyebrow">Appendix · 02</div>
+    <h2>Enterprise motion</h2>
+    <div class="ph-box">
+      <div class="ph-t">Placeholder</div>
+      <div class="ph-h">Add: on-prem licensing — model on client GPUs + monthly update fee (Tata) · API / managed model (Maya hosts + support) · device integration (Samsung, voice-level) · design-partner pipeline &amp; sales motion.</div>
+    </div>
+  </section>
+
+  <!-- A3 — Product roadmap -->
+  <section class="slide">
+    <div class="eyebrow">Appendix · 03</div>
+    <h2>Product roadmap</h2>
+    <div class="ph-box">
+      <div class="ph-t">Placeholder</div>
+      <div class="ph-h">Add: open-source "Maya 3" family for developer adoption + flagship / pro series for revenue · full-duplex speech-to-speech · 31 → 40+ languages &amp; dialects · timeline with months.</div>
+    </div>
+  </section>
+
+  <!-- A4 — Monetization strategy -->
+  <section class="slide">
+    <div class="eyebrow">Appendix · 04</div>
+    <h2>Monetization strategy</h2>
+    <div class="ph-box">
+      <div class="ph-t">Placeholder</div>
+      <div class="ph-h">Add: 3–5 early monetization layers — enterprise on-prem licensing (Tata) · API / managed model · consumer micro-subscriptions (image &amp; video bundles) · advertising (4B+ attention minutes) · commerce / voice-native ordering. Frame as experiments, not one bet.</div>
+    </div>
+  </section>
+
+  <!-- A5 — Retention -->
+  <section class="slide">
+    <div class="eyebrow">Appendix · 05</div>
+    <h2>Retention</h2>
+    <div class="ph-box">
+      <div class="ph-t">Placeholder</div>
+      <div class="ph-h">Add: 50K → 500K DAU trajectory · week-1 retention % · cohort retention curves · engagement / sessions per user · what drives stickiness (companion + daily use cases).</div>
+    </div>
   </section>
 
 </div>
