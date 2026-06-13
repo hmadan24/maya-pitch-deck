@@ -197,6 +197,7 @@
   .apx-lead b { color:var(--blue); font-weight:700; }
   .apx-tbl { margin-top:1.5rem; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; font-size:clamp(.74rem,.96vw,.94rem); box-shadow:0 6px 20px -12px rgba(2,31,68,.22); }
   .apx-tbl .r { display:grid; grid-template-columns:1.15fr 1fr 0.82fr 2.15fr; }
+  .apx-tbl.mon .r { grid-template-columns:0.85fr 1.4fr 1.3fr 1.65fr; }
   .apx-tbl .r > div { padding:.44rem .75rem; border-top:1px solid var(--line); line-height:1.25; color:var(--ink-soft); }
   .apx-tbl .r:first-child > div { border-top:none; }
   .apx-tbl .hd > div { background:var(--accent-wash); font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.04em; font-size:.64rem; }
@@ -492,24 +493,6 @@
     <div class="flywheelimg"><img src="maya-assets/flywheel.jpg" alt="Maya compounding advantage — Consumer and Enterprise flywheels feeding Better Models" /></div>
   </section>
 
-  <!-- DEVELOPER TRACTION -->
-  <section class="slide">
-    <div class="eyebrow">Traction · Developers &amp; enterprise</div>
-    <h2 style="max-width:28ch;">Developers love our models — and now providers <em>sell them.</em></h2>
-    <div class="twostat">
-      <div class="sblock">
-        <div class="n">500K</div>
-        <div class="d">developer downloads on Hugging Face</div>
-      </div>
-      <div class="sblock">
-        <div class="n">$0.002<small> / sec</small></div>
-        <div class="d">Fal sells Maya commercially</div>
-        <div class="pchips"><span class="pchip">Maya</span><span class="pchip">Maya Batch</span><span class="pchip">Maya Stream</span></div>
-      </div>
-    </div>
-    <p class="foot">Cloud providers already host Maya and serve it to enterprises.</p>
-  </section>
-
   <!-- COMPETITION (moved to main) -->
   <section class="slide">
     <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.7rem .9rem; max-width:215px; font-size:.78rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Need to clearly establish we're better than Sarvam, Smallest AI &amp; Krutrim.</div>
@@ -530,17 +513,17 @@
 
   <!-- MONETIZATION (moved to main) -->
   <section class="slide">
-    <div class="eyebrow">Revenue</div>
-    <h2>Monetization strategy</h2>
-    <p class="apx-lead"><b>Early experiments across 3–5 layers</b> — not one bet. We're learning where willingness-to-pay is strongest, en route to $1M+ ARR.</p>
-    <div class="apx-cards" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));">
-      <div class="apx-card"><h4>1 · Enterprise on-prem</h4><ul><li>Model on client GPUs + monthly update fee</li><li>Named example: Tata</li></ul></div>
-      <div class="apx-card"><h4>2 · API / managed</h4><ul><li>Maya hosts; $0.002 / audio-sec via Fal</li><li>Convert HF &amp; Fal pull → contracts</li></ul></div>
-      <div class="apx-card"><h4>3 · Consumer subscriptions</h4><ul><li>Image &amp; video bundles</li><li>Demand signal: usage dropped when paused</li></ul></div>
-      <div class="apx-card"><h4>4 · Advertising</h4><ul><li>4B+ attention-minutes</li><li>Voice-native, untapped</li></ul></div>
-      <div class="apx-card"><h4>5 · Commerce</h4><ul><li>Voice-native ordering &amp; fulfillment</li><li>In local languages</li></ul></div>
+    <div class="eyebrow">Revenue · the OpenAI playbook</div>
+    <h2>Monetization</h2>
+    <p class="apx-lead" style="margin-top:1.2rem;">OpenAI proves <b>both consumer and enterprise</b> monetize at scale ($25B+ ARR). We run the same playbook for our markets — with <b>early signals</b> across every layer.</p>
+    <div class="apx-tbl mon">
+      <div class="r hd"><div>Layer</div><div>OpenAI's play</div><div>Maya's opportunity</div><div>Our evidence</div></div>
+      <div class="r"><div class="nm">Consumer subs</div><div>ChatGPT Plus / Pro · ~15M subs (~$4B)</div><div>Image &amp; video bundles, personas, ad-free</div><div>Usage fell when we paused paid bundles · 50K DAU</div></div>
+      <div class="r"><div class="nm">Advertising</div><div>Ads on Free &amp; Go tiers (2026)</div><div>Voice-native ads to a huge free base</div><div>4B+ attention-minutes · untapped</div></div>
+      <div class="r"><div class="nm">Developer API</div><div>API ≈ ⅓ of OpenAI's ARR</div><div>Hosted real-time + batch APIs</div><div>500K downloads · Fal already sells Maya at $0.002/sec</div></div>
+      <div class="r"><div class="nm">Enterprise</div><div>ChatGPT Enterprise · &gt;40% of revenue</div><div>On-prem + managed model</div><div>Inference platforms host us · Tata, Samsung inbound</div></div>
     </div>
-    <p class="apx-note">Frame as experiments; double down on the 1–2 layers that show pull.</p>
+    <p class="apx-note">OpenAI figures from public sources, Jun 2026. Tata &amp; Samsung per founders — confirm scope.</p>
   </section>
 
   <!-- PRODUCT ROADMAP (moved to main) -->
