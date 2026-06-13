@@ -499,13 +499,14 @@
 
   <!-- HOW WE TRAIN CHEAPLY -->
   <section class="slide">
+    <div style="position:absolute; top:9vh; right:5vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.7rem .9rem; max-width:200px; font-size:.78rem; font-weight:700; line-height:1.35; transform:rotate(2.5deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Fill the XX placeholders — training cost &amp; # of annotators.</div>
     <div class="eyebrow">How it's possible</div>
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
     <p class="apx-lead" style="margin-top:1.2rem;">We treat <b>speech as next-token prediction</b> — inheriting the entire LLM stack instead of building a bespoke, costly audio pipeline.</p>
     <div class="apx-cards" style="margin-top:1.8rem;">
       <div class="apx-card"><h4>Architecture</h4><p>Text → a <b>3B Llama-style decoder-only transformer</b> → <b>SNAC</b> neural-codec tokens → 24 kHz audio.</p><ul><li>~7 codec tokens/frame, not raw waveform — short sequences, real-time streaming</li><li>Runs on a single 16 GB GPU via vLLM</li></ul></div>
-      <div class="apx-card"><h4>Data, not scraping</h4><ul><li>Broad pretrain → curated proprietary studio + real app conversations</li><li>XX native annotators label dialect, emotion &amp; code-mixing at the source</li></ul></div>
-      <div class="apx-card"><h4>Frugal &amp; compounding</h4><ul><li>Small, quantized models — cheap to serve, run at the edge</li><li>Each release feeds the flywheel · Maya 1 matched the frontier on ~$XX</li></ul></div>
+      <div class="apx-card"><h4>Data curation, not scraping</h4><ul><li>Broad pretrain → curated proprietary studio + real app conversations</li><li>XX native annotators label dialect, emotion &amp; code-mixing at the source</li></ul></div>
+      <div class="apx-card"><h4>Frugal &amp; compounding</h4><ul><li>Small, quantized models — cheap to serve, run at the edge</li><li>Better model → more usage → more real conversations → a stronger next model</li><li>Maya 1 matched the frontier on ~$XX</li></ul></div>
     </div>
     <p class="foot" style="margin-top:1.3rem;"><b>Apache-2.0 open weights, our own pretraining &amp; proprietary data</b> — not distillation, not a fine-tune of someone else's model.</p>
   </section>
