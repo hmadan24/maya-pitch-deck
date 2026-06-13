@@ -224,6 +224,15 @@
   .mitem p { font-size:clamp(.83rem,1.05vw,.97rem); color:var(--ink-soft); line-height:1.35; }
   .mitem .ev { font-size:clamp(.8rem,1vw,.92rem); color:var(--blue); font-weight:700; margin-top:.3rem; }
   .funnelc { font-size:.7rem; font-weight:700; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; margin:.35rem 0 .85rem; }
+  /* training architecture pipeline */
+  .pipe { display:flex; align-items:center; justify-content:center; gap:.8vw; margin-top:1.4rem; }
+  .pstep { background:#fff; border:1px solid var(--line); border-radius:10px; padding:.65rem 1rem; font-weight:700; font-size:clamp(.8rem,1.02vw,.98rem); color:var(--ink); text-align:center; line-height:1.2; box-shadow:0 4px 14px -10px rgba(2,31,68,.2); }
+  .pstep.big { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .pstep small { display:block; font-weight:600; font-size:.78em; color:var(--ink-faint); margin-top:.12rem; }
+  .pstep.big small { color:#bcd6f5; }
+  .parr { color:var(--blue); font-weight:700; font-size:1.3rem; flex:none; }
+  .pipecap { text-align:center; margin-top:.85rem; font-size:clamp(.86rem,1.08vw,1.02rem); color:var(--ink-soft); font-weight:500; }
+  .pipecap b { color:var(--blue); font-weight:700; }
   .apx-stats { display:flex; flex-wrap:wrap; gap:2.4rem; margin-top:1.5rem; }
   .apx-stats .s .n { font-size:clamp(1.7rem,2.7vw,2.4rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; }
   .apx-stats .s .l { font-size:.82rem; color:var(--ink-soft); font-weight:600; margin-top:.3rem; }
@@ -491,12 +500,22 @@
   <section class="slide">
     <div class="eyebrow">How it's possible</div>
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
-    <div class="apx-cards" style="margin-top:1.9rem;">
-      <div class="apx-card"><h4>1 · Proprietary real data</h4><ul><li>Real human conversations from our 3M-download app</li><li>Not YouTube or movie scripts — actual speech</li><li>Graduates hired via our network annotate &amp; record</li></ul></div>
-      <div class="apx-card"><h4>2 · Smart training</h4><ul><li>Synthetic data generated from our best real examples</li><li>100% focus on these languages, dialects &amp; emotion</li><li>Every conversation trains the next model</li></ul></div>
-      <div class="apx-card"><h4>3 · Compute efficiency</h4><ul><li>Lean 3B models that run on a single GPU</li><li>Frugal data curation &amp; training</li><li>Quantization → 3–4× lower inference cost</li></ul></div>
+    <div class="pipe">
+      <div class="pstep">Text</div>
+      <div class="parr">→</div>
+      <div class="pstep big">3B Llama-style<br>transformer</div>
+      <div class="parr">→</div>
+      <div class="pstep">SNAC codec<br><small>~7 tokens / frame</small></div>
+      <div class="parr">→</div>
+      <div class="pstep">24 kHz<br>streaming audio</div>
     </div>
-    <p class="foot">Not distillation, not fine-tuning open source — <b>our own data and models, built ground-up for these markets.</b></p>
+    <div class="pipecap">Speech as <b>next-token prediction</b> — so we inherit the entire LLM training &amp; inference stack.</div>
+    <div class="apx-cards" style="margin-top:1.6rem;">
+      <div class="apx-card"><h4>Architecture</h4><ul><li>3B decoder-only model predicts SNAC codec tokens, not raw audio</li><li>Real-time on a single 16 GB GPU via vLLM</li></ul></div>
+      <div class="apx-card"><h4>Data, not scraping</h4><ul><li>Broad pretrain → curated proprietary studio + real app conversations</li><li>XX native annotators label dialect, emotion &amp; code-mixing at the source</li></ul></div>
+      <div class="apx-card"><h4>Frugal &amp; compounding</h4><ul><li>Small, quantized models — cheap to serve, run at the edge</li><li>Each release feeds the flywheel · Maya 1 matched the frontier on ~$XX</li></ul></div>
+    </div>
+    <p class="foot" style="margin-top:1.3rem;"><b>Apache-2.0 open weights, our own pretraining &amp; proprietary data</b> — not distillation, not a fine-tune of someone else's model.</p>
   </section>
 
   <!-- THE ENGINE (compounding dual flywheel) -->
