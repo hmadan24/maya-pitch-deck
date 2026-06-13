@@ -167,6 +167,7 @@
   .col .bar { width:100%; max-width:60px; border-radius:6px 6px 0 0; background:#d3e4f9; }
   .col.me .bar { background:linear-gradient(180deg,#0f5fc4,#033f88); box-shadow:0 8px 20px -8px rgba(3,81,175,.55); }
   .col .lab { position:absolute; top:calc(100% + .6rem); left:50%; transform:translateX(-50%); width:13ch; font-size:clamp(.64rem,.85vw,.85rem); color:var(--ink-faint); font-weight:600; text-align:center; line-height:1.2; } .col.me .lab { color:var(--blue); font-weight:700; }
+  .col .lab small { display:block; color:var(--ink-faint); font-weight:600; font-size:.82em; margin-top:.2rem; opacity:.85; }
 
   /* cohort cards */
   .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; }
@@ -183,8 +184,8 @@
   .fly .fc { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; font-weight:700; color:var(--ink); font-size:clamp(.92rem,1.3vw,1.18rem); max-width:8.5ch; line-height:1.2; }
 
   /* flywheel image */
-  .flywheelimg { width:fit-content; max-width:min(69vw,736px); margin:3.2rem auto 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.6rem; box-shadow:0 16px 44px -24px rgba(2,31,68,.3); }
-  .flywheelimg img { max-width:100%; max-height:46vh; width:auto; height:auto; display:block; border-radius:8px; }
+  .flywheelimg { width:fit-content; max-width:min(86vw,920px); margin:2.4rem auto 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.6rem; box-shadow:0 16px 44px -24px rgba(2,31,68,.3); }
+  .flywheelimg img { max-width:100%; max-height:60vh; width:auto; height:auto; display:block; border-radius:8px; }
 
   /* appendix placeholders */
   .ph-box { margin-top:2rem; border:2px dashed #c3cfdd; border-radius:14px; min-height:44vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.8rem; background:rgba(3,81,175,.025); padding:2rem 2.4rem; }
@@ -368,11 +369,13 @@
         <div class="ptag">▶ How five billion people talk</div>
         <audio controls preload="metadata" src="maya-assets/human.mp3"></audio>
         <div class="pfoot">Conversational. Real. Overlapping. Alive.</div>
+        <div style="margin-top:.55rem; font-size:.72rem; font-weight:600; letter-spacing:.02em; opacity:.65;">Source: YouTube</div>
       </div>
       <div class="panel aud model">
         <div class="ptag">▶ How today's models talk</div>
         <audio controls preload="metadata" src="maya-assets/model.mp3"></audio>
         <div class="pfoot">Flat. High latency. Robotic. No context.</div>
+        <div style="margin-top:.55rem; font-size:.72rem; font-weight:600; letter-spacing:.02em; opacity:.65;">Source: ElevenLabs</div>
       </div>
     </div>
     <p class="foot">Same words, but <b>leading models don't speak like real people yet.</b></p>
@@ -399,6 +402,7 @@
 
   <!-- 6 — MAYA GETS IT RIGHT (consumer app) -->
   <section class="slide">
+    <div style="position:absolute; top:9vh; right:5vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.7rem .9rem; max-width:220px; font-size:.78rem; font-weight:600; line-height:1.35; transform:rotate(2.5deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ TODO: re-shoot demo video to show more use cases — search, image &amp; video editing, companion.</div>
     <div class="eyebrow">The product · people love it</div>
     <div class="split" style="grid-template-columns:1.1fr 0.9fr; gap:5vw; margin-top:0.6rem; align-items:center;">
       <div>
@@ -436,9 +440,9 @@
         <div class="chart">
           <div class="chart-head"><div class="chart-title">Maya 1 · Speech Arena Elo</div><div class="chart-note">Higher is better →</div></div>
           <div class="cols">
-            <div class="col"><span class="val">1032</span><span class="bar" style="height:62%"></span><span class="lab">Gemini 2.5 Flash</span></div>
-            <div class="col"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">GPT-Realtime-2</span></div>
-            <div class="col me"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">Maya 1</span></div>
+            <div class="col"><span class="val">1032</span><span class="bar" style="height:62%"></span><span class="lab">Gemini 2.5 Flash<small>2025</small></span></div>
+            <div class="col"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">GPT-Realtime-2<small>2025</small></span></div>
+            <div class="col me"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">Maya 1<small>Nov 2025</small></span></div>
           </div>
         </div>
         <div class="cap3" style="margin-top:1.4rem; max-width:40ch;"><b>Maya 1</b> ranks <b>#7 in the global top 10</b> — matching OpenAI's GPT-Realtime-2 on <b>a fraction of the budget.</b> The only company from India to do it.</div>
@@ -455,9 +459,21 @@
             <div class="col me"><span class="val">82.8%</span><span class="bar" style="height:100%"></span><span class="lab">Maya Listen</span></div>
           </div>
         </div>
-        <div class="cap3" style="margin-top:1.4rem; max-width:38ch;">And <b>Maya Listen</b> understands these languages <b>better than Google.</b></div>
+        <div class="cap3" style="margin-top:1.4rem; max-width:42ch;"><b>Kathbath</b> = accuracy on real, accented Indian-language speech — the hardest test of whether a model truly understands how people talk. <b>Maya Listen beats Google here.</b></div>
       </div>
     </div>
+  </section>
+
+  <!-- HOW WE TRAIN CHEAPLY -->
+  <section class="slide">
+    <div class="eyebrow">How it's possible</div>
+    <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
+    <div class="apx-cards" style="margin-top:1.9rem;">
+      <div class="apx-card"><h4>1 · Proprietary real data</h4><ul><li>Real human conversations from our 3M-download app</li><li>Not YouTube or movie scripts — actual speech</li><li>Graduates hired via our network annotate &amp; record</li></ul></div>
+      <div class="apx-card"><h4>2 · Smart training</h4><ul><li>Synthetic data generated from our best real examples</li><li>100% focus on these languages, dialects &amp; emotion</li><li>Every conversation trains the next model</li></ul></div>
+      <div class="apx-card"><h4>3 · Compute efficiency</h4><ul><li>Lean 3B models that run on a single GPU</li><li>Frugal data curation &amp; training</li><li>Quantization → 3–4× lower inference cost</li></ul></div>
+    </div>
+    <p class="foot">Not distillation, not fine-tuning open source — <b>our own data and models, built ground-up for these markets.</b></p>
   </section>
 
   <!-- THE ENGINE (compounding dual flywheel) -->
