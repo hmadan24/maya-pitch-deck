@@ -213,6 +213,14 @@
   .apx-stats .s .n { font-size:clamp(1.7rem,2.7vw,2.4rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; }
   .apx-stats .s .l { font-size:.82rem; color:var(--ink-soft); font-weight:600; margin-top:.3rem; }
   .apx-note { margin-top:1.1rem; font-size:.8rem; color:var(--ink-faint); font-weight:500; font-style:italic; }
+  .layer { border:1px solid var(--line); border-radius:12px; padding:1rem 1.2rem 1.1rem; margin-top:1.1rem; background:#fff; }
+  .layer .lh { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); margin-bottom:.7rem; }
+  .layer.model { background:var(--accent-wash); border-color:#cfe0f7; }
+  .chips2 { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+  .chip2 { background:var(--cream); border:1px solid var(--line); border-radius:9999px; padding:.4rem .9rem; font-size:clamp(.8rem,1vw,.96rem); font-weight:600; color:var(--ink-soft); }
+  .chip2.maya { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .layer.model .diff { font-size:clamp(.84rem,1.05vw,1rem); color:var(--ink-soft); font-weight:500; line-height:1.4; max-width:72ch; }
+  .layer.model .diff b { color:var(--blue); font-weight:700; }
 
   /* dual compounding flywheel (legacy) */
   .dualfly { position:relative; width:min(82vw,920px); aspect-ratio:1200/600; margin:1.5rem auto 0; }
@@ -549,16 +557,28 @@
   <section class="slide">
     <div class="eyebrow">Appendix · 01</div>
     <h2>Understanding the competition</h2>
-    <p class="apx-lead">10+ domestic voice startups all compete at the <b>application layer.</b> Maya competes one layer down — at the <b>model layer</b> — where the advantage compounds.</p>
-    <div class="apx-tbl">
-      <div class="r hd"><div>Player</div><div>Raised</div><div>Focus</div><div>Why Maya wins</div></div>
-      <div class="r me"><div class="nm">Maya</div><div>~$1M</div><div>Best voice models for India, SEA &amp; MENA — 100% focus</div><div>Native emotion, dialect &amp; latency these markets need</div></div>
-      <div class="r"><div class="nm">ElevenLabs</div><div>$780M+ · $11B</div><div>Voice synthesis &amp; ASR; Western enterprise, English-first</div><div>Built for non-English speech from scratch, not bolted on</div></div>
-      <div class="r"><div class="nm">Sarvam</div><div>~$41M*</div><div>Govt-backed sovereign LLM; full stack (LLM + ASR + TTS)</div><div>We go deep on the voice model; they spread across the stack</div></div>
-      <div class="r"><div class="nm">OpenAI Realtime · Moshi</div><div>—</div><div>Frontier speech-to-speech; English / European (~200–320ms)</div><div>English-only is a ceiling for 5B non-English speakers</div></div>
-      <div class="r"><div class="nm">Sesame · Cartesia · Hydra</div><div>—</div><div>English voice presence / fast TTS / cascaded S2S</div><div>Not targeting our languages or markets</div></div>
+    <p class="apx-lead">India's voice space is crowded — but it's <b>application-layer agents</b> and <b>full-stack generalists.</b> Maya is the focused <b>model layer.</b></p>
+    <div class="layer">
+      <div class="lh">Domestic voice / speech players (10+) — apps, agents &amp; full-stack</div>
+      <div class="chips2">
+        <span class="chip2">Sarvam</span>
+        <span class="chip2">Smallest AI</span>
+        <span class="chip2">Krutrim (Ola)</span>
+        <span class="chip2">Gnani.ai</span>
+        <span class="chip2">Skit.ai</span>
+        <span class="chip2">Navana Tech</span>
+        <span class="chip2">CoRover</span>
+        <span class="chip2">Yellow.ai</span>
+        <span class="chip2">Slang Labs</span>
+        <span class="chip2">Ring</span>
+      </div>
     </div>
-    <p class="apx-note">*Sarvam reportedly raising ~$300M at ~$1.5B. Funding figures from public sources, Jun 2026.</p>
+    <div class="layer model">
+      <div class="lh">Maya's position · the model layer</div>
+      <div class="chips2" style="margin-bottom:.7rem;"><span class="chip2 maya">Maya</span></div>
+      <div class="diff">The only one <b>100% focused on voice models</b> (not apps or full-stack), built ground-up for <b>India, SEA &amp; MENA</b> — native emotion, dialect &amp; low latency, not English-first.</div>
+    </div>
+    <p class="apx-note">Global model-layer players — ElevenLabs ($11B), OpenAI Realtime, Moshi — are English-first. Landscape from public sources, Jun 2026.</p>
   </section>
 
   <!-- A2 — Enterprise motion -->
