@@ -265,6 +265,11 @@
   .rsec ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
   .rsec li { font-size:clamp(.78rem,1vw,.92rem); color:var(--ink-soft); line-height:1.3; padding-left:.9rem; position:relative; }
   .rsec li::before { content:"–"; position:absolute; left:0; color:var(--ink-faint); font-weight:700; }
+  .metricgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; margin-top:1.3rem; }
+  .metric { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.3rem 1.2rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); }
+  .metric .mn { font-size:clamp(2rem,3.6vw,3rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; }
+  .metric .ml { font-size:.8rem; color:var(--ink); font-weight:700; margin-top:.55rem; text-transform:uppercase; letter-spacing:.04em; }
+  .metric .ms { font-size:.78rem; color:var(--ink-faint); font-weight:500; margin-top:.25rem; line-height:1.3; }
   .apx-stats { display:flex; flex-wrap:wrap; gap:2.4rem; margin-top:1.5rem; }
   .apx-stats .s .n { font-size:clamp(1.7rem,2.7vw,2.4rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; }
   .apx-stats .s .l { font-size:.82rem; color:var(--ink-soft); font-weight:600; margin-top:.3rem; }
@@ -530,7 +535,6 @@
 
   <!-- HOW WE TRAIN CHEAPLY -->
   <section class="slide">
-    <div style="position:absolute; top:9vh; right:5vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.7rem .9rem; max-width:215px; font-size:.78rem; font-weight:700; line-height:1.35; transform:rotate(2.5deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Confirm figures vs. training doc before sharing — data hours, % savings, throughput.</div>
     <div class="eyebrow">How it's possible</div>
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
     <p class="apx-lead" style="margin-top:1rem;">We <b>own every stage</b> — data, labelling, models, the synthetic loop, RL — so our only cost is <b>compute</b>, and quality compounds.</p>
@@ -540,8 +544,7 @@
       <div class="apx-card"><h4>Throughput-first models</h4><p>Speech as next-token prediction over our <b>in-house neural codec</b> → an Indic-finetuned <b>hybrid dLLM</b> (AR + diffusion + self-speculation), quantization-aware trained.</p><div class="ev">~7× streams / GPU · runs on one small GPU</div></div>
       <div class="apx-card"><h4>Scaling laws, run backwards</h4><p>Large teacher models we never serve write synthetic speech (our own LLM + TTS); distillation + heavy <b>native-language RL</b> lift a small model to the quality of one <b>2–3× its size</b>.</p><div class="ev">Small served model ≈ 2–3× its size</div></div>
     </div>
-    <p class="foot" style="margin-top:1.1rem;"><b>Train where we spend; serve where we save</b> — every stage in-house, so the lead widens instead of narrows.</p>
-    <p class="source"><a href="maya-training-doc.html" target="_blank" rel="noopener" style="color:var(--blue); font-weight:700;">Full technical deep-dive ↗</a> — data · labelling · architecture · self-improving loops · RL.</p>
+    <p class="source" style="margin-top:1.5rem;"><a href="maya-training-doc.html" target="_blank" rel="noopener" style="color:var(--blue); font-weight:700;">Full technical deep-dive ↗</a> — the complete training stack.</p>
   </section>
 
   <!-- THE ENGINE (compounding dual flywheel) -->
@@ -672,7 +675,7 @@
   <!-- 16 — CLOSE -->
   <section class="slide close">
     <span class="mark" style="display:block; margin-bottom:1.8rem;"><svg viewBox="0 0 32 24" width="58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#0351AF"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#0351AF"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z" fill="#0351AF"/></svg></span>
-    <h1 class="closing">Maya is where the next five billion <em>will be.</em></h1>
+    <h1 class="closing">Maya will be the voice interface for the next <em>5 billion.</em></h1>
   </section>
 
   <!-- APPENDIX divider -->
@@ -698,29 +701,12 @@
   <section class="slide">
     <div class="eyebrow">Appendix · 02</div>
     <h2>Retention</h2>
-    <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.65rem .85rem; max-width:200px; font-size:.76rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Charts illustrative — drop in real retention data.</div>
-    <div class="charts2">
-      <div class="lchart">
-        <div class="lt">Day-N retention</div>
-        <div class="ls">% of installs still active — flattens into a loyal core</div>
-        <svg viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <line x1="6" y1="120" x2="296" y2="120" stroke="#e3e0da" stroke-width="1"/>
-          <path d="M8,10 L64,68 L120,86 L176,94 L232,98 L292,100 L292,120 L8,120 Z" fill="rgba(3,81,175,.08)"/>
-          <polyline points="8,10 64,68 120,86 176,94 232,98 292,100" fill="none" stroke="#0351AF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-          <g fill="#0351AF"><circle cx="8" cy="10" r="3"/><circle cx="64" cy="68" r="3"/><circle cx="120" cy="86" r="3"/><circle cx="176" cy="94" r="3"/><circle cx="232" cy="98" r="3"/><circle cx="292" cy="100" r="3"/></g>
-        </svg>
-        <div class="xlab"><span>D0</span><span>D1</span><span>D3</span><span>D7</span><span>D14</span><span>D30</span></div>
-      </div>
-      <div class="lchart">
-        <div class="lt">Retention trend over time</div>
-        <div class="ls">D7 retention by monthly cohort — are we moving it?</div>
-        <svg viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <line x1="6" y1="120" x2="296" y2="120" stroke="#e3e0da" stroke-width="1"/>
-          <polyline points="10,67 66,73 122,67 178,60 234,53 290,40" fill="none" stroke="#0351AF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-          <g fill="#0351AF"><circle cx="10" cy="67" r="3"/><circle cx="66" cy="73" r="3"/><circle cx="122" cy="67" r="3"/><circle cx="178" cy="60" r="3"/><circle cx="234" cy="53" r="3"/><circle cx="290" cy="40" r="3"/></g>
-        </svg>
-        <div class="xlab"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
-      </div>
+    <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.65rem .85rem; max-width:200px; font-size:.76rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Drop in real retention numbers.</div>
+    <div class="metricgrid">
+      <div class="metric"><div class="mn">XX%</div><div class="ml">Week-1 retention</div><div class="ms">% of installs active in week 1</div></div>
+      <div class="metric"><div class="mn">XX%</div><div class="ml">Month-1 retention</div><div class="ms">still active after 30 days</div></div>
+      <div class="metric"><div class="mn">XX%</div><div class="ml">Month-6 retention</div><div class="ms">the loyal core</div></div>
+      <div class="metric"><div class="mn">XX%</div><div class="ml">WAU / MAU</div><div class="ms">stickiness ratio</div></div>
     </div>
     <div class="rsections">
       <div class="rsec"><div class="rh good">What's working</div><ul><li>Image &amp; video creation — the hook, "ready in seconds"</li><li>Companion bond — "behaves like a friend"</li><li>Feels truly Indian — cultural &amp; language fit</li><li>A passionate core — 61% leave 5★</li></ul></div>
