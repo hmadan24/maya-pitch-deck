@@ -289,6 +289,9 @@
   .bmap .dot.maya { z-index:4; }
   .bmap .dot.maya .pt { width:24px; height:24px; background:radial-gradient(circle at 30% 30%,#3d8fe0,#0351AF); box-shadow:0 0 0 7px var(--accent-wash); border:none; }
   .bmap .dot.maya .nm { top:34px; color:var(--blue); font-size:1rem; }
+  .bmap .cluster { position:absolute; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--line); border-radius:10px; padding:.55rem .85rem; box-shadow:0 4px 14px -8px rgba(2,31,68,.3); text-align:center; z-index:3; }
+  .bmap .cluster .ct { font-size:.64rem; font-weight:700; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .bmap .cluster .cnames { font-size:.8rem; font-weight:700; color:var(--ink-soft); line-height:1.3; margin-top:.25rem; white-space:nowrap; }
   .bmaplegend { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; margin-top:.9rem; font-size:.76rem; font-weight:600; color:var(--ink-soft); }
   .bmaplegend span { display:inline-flex; align-items:center; gap:.45rem; }
   .bmaplegend i { width:11px; height:11px; border-radius:50%; display:inline-block; flex:none; }
@@ -592,7 +595,7 @@
     <h2>A blue ocean — and we're already ahead in it.</h2>
     <div class="bmap">
       <div class="cap top">Voice-native specialist ↑</div>
-      <div class="cap bottom">↓ Voice is just one feature</div>
+      <div class="cap bottom">↓ Voice is one of many swim lanes</div>
       <div class="cap left">◀ Global · English-first</div>
       <div class="cap right">India · SEA · MENA<br>native &amp; sovereign ▶</div>
       <div class="plot">
@@ -600,12 +603,9 @@
         <div class="oceanlab">Blue ocean</div>
         <div class="vline"></div>
         <div class="hline"></div>
-        <div class="dot" style="left:16%; top:20%;"><span class="pt"></span><span class="nm">ElevenLabs</span></div>
-        <div class="dot" style="left:34%; top:20%;"><span class="pt"></span><span class="nm">Sesame</span></div>
-        <div class="dot" style="left:48%; top:20%;"><span class="pt"></span><span class="nm">Smallest AI</span></div>
-        <div class="dot" style="left:16%; top:31%;"><span class="pt"></span><span class="nm">Cartesia</span></div>
-        <div class="dot" style="left:34%; top:31%;"><span class="pt"></span><span class="nm">Moshi</span></div>
-        <div class="dot" style="left:17%; top:73%;"><span class="pt"></span><span class="nm">OpenAI</span></div>
+        <div class="cluster" style="left:25%; top:26%;"><div class="ct">Western frontier voice labs</div><div class="cnames">ElevenLabs · Sesame<br>Cartesia · Moshi</div></div>
+        <div class="dot" style="left:53%; top:22%;"><span class="pt"></span><span class="nm">Smallest AI</span></div>
+        <div class="dot" style="left:20%; top:73%;"><span class="pt"></span><span class="nm">OpenAI</span></div>
         <div class="dot" style="left:70%; top:74%;"><span class="pt"></span><span class="nm">Sarvam</span></div>
         <div class="dot maya" style="left:81%; top:20%;"><span class="pt"></span><span class="nm">Maya</span></div>
       </div>
