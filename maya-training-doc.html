@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Maya Trains Frontier Voice Models at a Fraction of the Cost</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F2EE;
+    --paper-2:#ECEAE3;
+    --ink:#16161A;
+    --ink-2:#3A3A42;
+    --muted:#6E6E78;
+    --line:#D6D3CA;
+    --line-2:#C4C0B4;
+    --signal:#D8722B;      /* saffron-amber, used sparingly */
+    --signal-soft:#F4E2CF;
+    --teal:#2C6E6A;        /* "data" semantic */
+    --teal-soft:#D7E5E2;
+    --indigo:#3B3B6B;
+    --card:#FBFAF7;
+    --maxw:880px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    font-size:16px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px 120px}
+
+  /* ---------- masthead ---------- */
+  .mast{padding:64px 0 30px;border-bottom:2px solid var(--ink)}
+  .mast .meta{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .mast .meta b{color:var(--signal);font-weight:600}
+  h1.doc{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;
+    font-size:clamp(28px,5.4vw,46px);line-height:1.04;letter-spacing:-.02em;
+    margin:0 0 16px;max-width:18ch;
+  }
+  .doc-sub{font-size:17px;color:var(--ink-2);max-width:60ch;margin:0}
+  .doc-sub .hl{color:var(--ink);font-weight:600}
+
+  /* ---------- section frame ---------- */
+  .section{padding:52px 0 8px;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;
+    color:var(--signal);letter-spacing:.1em;padding-top:6px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;font-weight:600;
+    font-size:clamp(23px,4vw,32px);letter-spacing:-.015em;line-height:1.08;margin:0;
+  }
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--teal);font-weight:600;margin:30px 0 6px;
+  }
+  h3{
+    font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:18.5px;
+    letter-spacing:-.01em;margin:0 0 6px;
+  }
+  p{margin:0 0 16px;color:var(--ink-2)}
+  p strong, li strong{color:var(--ink);font-weight:600}
+  .lead{font-size:18px;color:var(--ink);line-height:1.6}
+  a{color:var(--teal)}
+
+  /* mono inline data */
+  .m{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--ink);
+     background:var(--paper-2);padding:1px 6px;border-radius:4px;font-size:.88em;
+     border:1px solid var(--line)}
+  .ph{ /* placeholder token to confirm */
+    font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.86em;
+    color:var(--signal);background:var(--signal-soft);
+    padding:1px 6px;border-radius:4px;border:1px dashed var(--signal);
+  }
+
+  /* lists */
+  ul.clean{list-style:none;padding:0;margin:0 0 18px}
+  ul.clean>li{
+    position:relative;padding:0 0 0 22px;margin-bottom:12px;color:var(--ink-2);
+  }
+  ul.clean>li::before{
+    content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;
+    background:var(--signal);transform:rotate(45deg);
+  }
+
+  /* stream cards */
+  .streams{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 10px}
+  .streams.duo{grid-template-columns:repeat(2,1fr)}
+  .stream{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 16px 16px;position:relative;overflow:hidden;
+  }
+  .stream::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .stream.s1::before{background:var(--muted)}
+  .stream.s2::before{background:var(--signal)}
+  .stream.s3::before{background:var(--teal)}
+  .stream .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px;
+  }
+  .stream .big{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:26px;
+    line-height:1;letter-spacing:-.02em;color:var(--ink);margin-bottom:2px;
+  }
+  .stream .unit{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .stream h3{font-size:15px;margin-bottom:5px}
+  .stream p{font-size:13.5px;line-height:1.5;margin:0;color:var(--ink-2)}
+
+  /* figure */
+  figure{margin:30px 0;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:22px 22px 14px;overflow:hidden}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    color:var(--muted);letter-spacing:.04em;margin-top:14px;line-height:1.5;
+    border-top:1px solid var(--line);padding-top:12px}
+  figcaption b{color:var(--teal)}
+
+  /* callout */
+  .callout{
+    border:1px solid var(--line-2);border-left:4px solid var(--signal);
+    background:var(--paper-2);border-radius:10px;padding:18px 20px;margin:26px 0;
+  }
+  .callout .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--signal);font-weight:700;margin-bottom:8px}
+  .callout p{margin:0 0 8px;font-size:14.5px}
+  .callout p:last-child{margin:0}
+
+  /* confirm box */
+  .confirm{border:1px dashed var(--signal);background:var(--card);border-radius:10px;
+    padding:16px 18px;margin:26px 0 0}
+  .confirm .k{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--signal);font-weight:700;margin-bottom:10px}
+  .confirm ul{margin:0;padding-left:18px}
+  .confirm li{font-size:13.5px;color:var(--ink-2);margin-bottom:6px;
+    font-family:"JetBrains Mono",monospace}
+
+  /* table-ish row */
+  .kv{display:grid;grid-template-columns:200px 1fr;gap:2px 18px;margin:18px 0 4px;
+    border-top:1px solid var(--line)}
+  .kv>div{padding:11px 0;border-bottom:1px solid var(--line)}
+  .kv .key{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  .kv .val{font-size:14.5px;color:var(--ink-2)}
+
+  .cmp{margin:24px 0 8px;border-top:2px solid var(--ink)}
+  .cmp .row{display:grid;grid-template-columns:160px 1fr 1fr;gap:0 18px;border-bottom:1px solid var(--line)}
+  .cmp .row>div{padding:12px 0}
+  .cmp .rk{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+  .cmp .maya{font-size:13.5px;color:var(--ink)}
+  .cmp .maya b{color:var(--teal)}
+  .cmp .typ{font-size:13.5px;color:var(--muted)}
+  .cmp .chead>div{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);padding-bottom:6px}
+  .cmp .chead .typ{color:var(--muted)}
+  @media(max-width:680px){
+    .streams,.streams.duo{grid-template-columns:1fr}
+    .cmp .row{grid-template-columns:1fr;gap:0}
+    .cmp .rk{padding-bottom:0}
+    .kv{grid-template-columns:1fr;gap:0}
+    .kv .key{padding-bottom:2px;border-bottom:none}
+    .kv .val{padding-top:2px}
+    .mast{padding-top:44px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="mast">
+    <h1 class="doc">How Maya Trains Frontier Voice Models at a Fraction of the Cost</h1>
+    <p class="doc-sub">Most of our cost advantage is decided <span class="hl">before a single training step</span> — in how speech data is sourced and owned. This document walks the full stack section by section: <span class="hl">Data → Labelling &amp; Pipelines → Model Architecture → Self-Improving Loops → RL → How Maya Differs</span>.</p>
+  </header>
+
+  <!-- ============ SECTION 01 — DATA ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Data</h2>
+    </div>
+    <p class="lead">A voice model is only as good as the speech it learns from. We do not treat data as a commodity to be purchased by the hour — we <strong>own its origin</strong>. That single decision is the root of both our quality lead and our cost structure.</p>
+
+    <div class="eyebrow">Three data streams</div>
+    <p>Every hour of training audio enters through one of three streams. Each plays a distinct role — breadth, control, and the live flywheel — and each is captured or processed on infrastructure we own.</p>
+
+    <div class="streams">
+      <div class="stream s1">
+        <div class="tag">Stream 01 · Breadth</div>
+        <div class="big">3–4M</div>
+        <div class="unit">hours · internet audio</div>
+        <h3>Scraped &amp; pseudo-labelled</h3>
+        <p>Internet-scale audio across <span class="m">10–11</span> Indian languages. Covers the full acoustic range: studio-clean, fast and slow speech, market and traffic noise, and code-mixed Indian English. Transcribed entirely in-house.</p>
+      </div>
+      <div class="stream s2">
+        <div class="tag">Stream 02 · Control</div>
+        <div class="big">~150K</div>
+        <div class="unit">hours · human-collected</div>
+        <h3>Hired speakers, our scripts</h3>
+        <p>We recruit speakers directly across hundreds of regions and major cities, and hand them scripts and topics. One recording captures <strong>knowledge and accent at the same time</strong> — small in raw hours, the highest-quality slice we fully control.</p>
+      </div>
+      <div class="stream s3">
+        <div class="tag">Stream 03 · Flywheel</div>
+        <div class="big">~50K</div>
+        <div class="unit">DAU · live app speech</div>
+        <h3>Real users talking to Maya</h3>
+        <p>In-the-wild conversational speech from production, growing daily. No competitor can buy this. Every conversation compounds into the next model's training set.</p>
+      </div>
+    </div>
+
+    <div class="eyebrow">Why "at source" beats "by the hour"</div>
+    <p>Licensing pre-packaged corpora from data vendors is a standard, perfectly valid route — most large labs take it. Our difference is not that vendors are wrong; it is that buying finished data gives away the two things that matter most for non-English voice: <strong>control over content</strong> and <strong>control over acoustics</strong>. When we collect at source, we decide exactly what is said (knowledge density, domain coverage, conversational style) <em>and</em> how it sounds (dialect, accent, prosody, recording condition) in the same pass. We are not paying a premium to recover information a vendor already stripped out.</p>
+
+    <p>This is the heart of our India-first edge. A first-time internet user in Bihar, a shopkeeper in Kolkata, a grandmother in Kochi telling a story — these registers are not in any catalogue. We capture them because we send the recorder to where they are spoken.</p>
+
+    <!-- ===== FIGURE 1: three streams -> pretrain mixture ===== -->
+    <figure>
+      <svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three data streams flowing into the pretraining mixture">
+        <defs>
+          <style>
+            .lbl{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#3A3A42;font-weight:600}
+            .sub{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#6E6E78;letter-spacing:.04em}
+            .big{font-family:'Space Grotesk',sans-serif;font-size:17px;fill:#16161A;font-weight:700}
+            .mix{font-family:'Space Grotesk',sans-serif;font-size:15px;fill:#FBFAF7;font-weight:600}
+          </style>
+        </defs>
+        <!-- stream boxes -->
+        <g>
+          <rect x="20" y="36" width="230" height="58" rx="9" fill="#FBFAF7" stroke="#6E6E78"/>
+          <rect x="20" y="36" width="5" height="58" rx="2.5" fill="#6E6E78"/>
+          <text class="big" x="40" y="62">3–4M hrs</text>
+          <text class="sub" x="40" y="80">INTERNET · PSEUDO-LABELLED</text>
+        </g>
+        <g>
+          <rect x="20" y="121" width="230" height="58" rx="9" fill="#FBFAF7" stroke="#D8722B"/>
+          <rect x="20" y="121" width="5" height="58" rx="2.5" fill="#D8722B"/>
+          <text class="big" x="40" y="147">High-fidelity</text>
+          <text class="sub" x="40" y="165">HUMAN-COLLECTED · AT SOURCE</text>
+        </g>
+        <g>
+          <rect x="20" y="206" width="230" height="58" rx="9" fill="#FBFAF7" stroke="#2C6E6A"/>
+          <rect x="20" y="206" width="5" height="58" rx="2.5" fill="#2C6E6A"/>
+          <text class="big" x="40" y="232">~50K DAU</text>
+          <text class="sub" x="40" y="250">APP · LIVE CONVERSATIONS</text>
+        </g>
+        <!-- connectors -->
+        <path d="M250 65 C 360 65, 360 150, 470 150" fill="none" stroke="#6E6E78" stroke-width="2"/>
+        <path d="M250 150 L 470 150" fill="none" stroke="#D8722B" stroke-width="2.5"/>
+        <path d="M250 235 C 360 235, 360 150, 470 150" fill="none" stroke="#2C6E6A" stroke-width="2"/>
+        <!-- in-house pipeline gate -->
+        <rect x="470" y="118" width="120" height="64" rx="9" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="lbl" x="530" y="146" text-anchor="middle">IN-HOUSE</text>
+        <text class="sub" x="530" y="163" text-anchor="middle">PIPELINES →§2</text>
+        <path d="M590 150 L 632 150" fill="none" stroke="#16161A" stroke-width="2.5" marker-end="url(#arr)"/>
+        <defs>
+          <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 Z" fill="#16161A"/>
+          </marker>
+        </defs>
+        <!-- pretrain mixture -->
+        <rect x="635" y="60" width="165" height="180" rx="12" fill="#16161A"/>
+        <text class="mix" x="717" y="92" text-anchor="middle" fill="#FBFAF7">PRETRAINING</text>
+        <text class="mix" x="717" y="112" text-anchor="middle" fill="#FBFAF7">MIXTURE</text>
+        <!-- all three streams blended -->
+        <rect x="655" y="132" width="125" height="22" rx="4" fill="#5A5A66"/>
+        <text x="717" y="148" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;fill:#FBFAF7;font-weight:700">INTERNET</text>
+        <rect x="655" y="158" width="125" height="22" rx="4" fill="#D8722B"/>
+        <text x="717" y="174" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;fill:#16161A;font-weight:700">HUMAN</text>
+        <rect x="655" y="184" width="125" height="22" rx="4" fill="#2C6E6A"/>
+        <text x="717" y="200" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;fill:#FBFAF7;font-weight:700">APP (growing)</text>
+        <text class="sub" x="717" y="228" text-anchor="middle">ALL THREE STREAMS USED</text>
+      </svg>
+      <figcaption>All three streams converge through an <b>in-house processing stack</b> (Section 2) before entering pretraining. Internet brings breadth; the human corpus brings a controlled, high-quality core; the app feeds a live, growing stream.</figcaption>
+    </figure>
+
+    <div class="eyebrow">Cost structure: no third-party data costs</div>
+    <p>Because every stream is collected or processed on infrastructure we own, our <strong>only data cost is compute</strong>. There are no recurring per-minute transcription bills, no licensing fees that scale with corpus size, no vendor lock-in. This matters enormously at our scale: at 3–4M hours, per-minute costs do not add up — they explode.</p>
+
+    <div class="callout">
+      <div class="k">Illustrative cost model</div>
+      <p><strong>If we outsourced labelling:</strong> 3.5M hours = <span class="m">210M minutes</span>. At standard commercial ASR / data-vendor rates, even a <em>single</em> transcription pass runs into the <strong>millions of dollars</strong> — and our council uses multiple passes (Section 2), multiplying that further.</p>
+      <p><strong>What we actually pay:</strong> GPU compute only — the marginal cost of running our own offline ASR / VAD / aligner models. In-housing the stack cuts data-preparation spend by an estimated <strong>85–95%</strong> versus the vendor path, and removes a cost that would otherwise grow every time the corpus does.</p>
+    </div>
+
+    <div class="eyebrow">By the numbers</div>
+    <div class="kv">
+      <div class="key">Internet audio</div><div class="val">3–4M hours · 10–11 Indian languages · pseudo-labelled in-house</div>
+      <div class="key">Human-collected</div><div class="val">~150K hours · hired speakers, our scripts · highest-quality, fully controlled</div>
+      <div class="key">App (live)</div><div class="val">~50K DAU · in-the-wild conversational speech · grows daily</div>
+      <div class="key">Speakers / collectors</div><div class="val">Hundreds of speakers across hundreds of regions &amp; major cities</div>
+      <div class="key">Third-party data cost</div><div class="val"><strong>$0</strong> — compute only</div>
+    </div>
+
+  </section>
+
+  <!-- ============ SECTION 02 — LABELLING & PIPELINES ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Labelling &amp; In-House Pipelines</h2>
+    </div>
+    <p class="lead">Raw audio is not training data. Between collection and the first training step sits a pipeline that cleans, segments, transcribes, aligns, and tags <strong>every hour we touch</strong> — and we own all of it. This is where 3–4M hours of messy, real-world audio becomes a clean, labelled, timestamped corpus. None of it is outsourced.</p>
+
+    <div class="eyebrow">The pipeline, end to end</div>
+    <p>Every hour — internet, human, or app — runs the same owned chain. Each stage is <strong>offline and quality-first</strong>: unlike a production system, it has no latency budget to respect, so we can run heavier, slower, more accurate models than anyone would ever deploy in real time.</p>
+
+    <!-- ===== FIGURE 3: pipeline flow ===== -->
+    <figure>
+      <svg viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The in-house data pipeline from raw audio to training-ready data">
+        <defs>
+          <style>
+            .chl{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.02em}
+            .chs{font-family:'JetBrains Mono',monospace;font-size:8px;fill:#6E6E78;letter-spacing:.04em}
+          </style>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8 Z" fill="#9A968C"/>
+          </marker>
+        </defs>
+        <!-- baseline -->
+        <line x1="18" y1="86" x2="802" y2="86" stroke="#E0DDD4" stroke-width="2"/>
+        <!-- connectors -->
+        <g>
+          <line x1="102" y1="86" x2="116" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="202" y1="86" x2="216" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="302" y1="86" x2="316" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="402" y1="86" x2="416" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="502" y1="86" x2="516" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="602" y1="86" x2="616" y2="86" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="702" y1="86" x2="716" y2="86" stroke="#16161A" stroke-width="2"/>
+        </g>
+        <!-- chip 0 RAW -->
+        <g><rect x="18" y="64" width="84" height="44" rx="8" fill="#FBFAF7" stroke="#C4C0B4"/>
+          <text class="chl" x="60" y="82" text-anchor="middle" fill="#16161A">RAW</text>
+          <text class="chl" x="60" y="94" text-anchor="middle" fill="#16161A">AUDIO</text></g>
+        <!-- chip 1 VAD -->
+        <g><rect x="118" y="64" width="84" height="44" rx="8" fill="#FBFAF7" stroke="#C4C0B4"/>
+          <text class="chl" x="160" y="82" text-anchor="middle" fill="#16161A">VAD</text>
+          <text class="chs" x="160" y="96" text-anchor="middle">segment</text></g>
+        <!-- chip 2 CLEAN -->
+        <g><rect x="218" y="64" width="84" height="44" rx="8" fill="#FBFAF7" stroke="#C4C0B4"/>
+          <text class="chl" x="260" y="82" text-anchor="middle" fill="#16161A">CLEAN</text>
+          <text class="chs" x="260" y="96" text-anchor="middle">denoise</text></g>
+        <!-- chip 3 ASR COUNCIL (stacked) -->
+        <g>
+          <rect x="322" y="54" width="84" height="44" rx="8" fill="#F4E2CF" stroke="#D8722B"/>
+          <rect x="320" y="59" width="84" height="44" rx="8" fill="#F4E2CF" stroke="#D8722B"/>
+          <rect x="318" y="64" width="84" height="44" rx="8" fill="#FBEFE0" stroke="#D8722B"/>
+          <text class="chl" x="360" y="82" text-anchor="middle" fill="#D8722B">ASR</text>
+          <text class="chl" x="360" y="94" text-anchor="middle" fill="#D8722B">COUNCIL</text></g>
+        <!-- chip 4 ALIGN -->
+        <g><rect x="418" y="64" width="84" height="44" rx="8" fill="#FBFAF7" stroke="#C4C0B4"/>
+          <text class="chl" x="460" y="82" text-anchor="middle" fill="#16161A">FORCED</text>
+          <text class="chl" x="460" y="94" text-anchor="middle" fill="#16161A">ALIGN</text></g>
+        <!-- chip 5 GATE -->
+        <g><rect x="518" y="64" width="84" height="44" rx="8" fill="#FBFAF7" stroke="#C4C0B4"/>
+          <text class="chl" x="560" y="82" text-anchor="middle" fill="#16161A">QUALITY</text>
+          <text class="chl" x="560" y="94" text-anchor="middle" fill="#16161A">GATE</text></g>
+        <!-- chip 6 TAGS -->
+        <g><rect x="618" y="64" width="84" height="44" rx="8" fill="#D7E5E2" stroke="#2C6E6A"/>
+          <text class="chl" x="660" y="82" text-anchor="middle" fill="#2C6E6A">NATIVE</text>
+          <text class="chl" x="660" y="94" text-anchor="middle" fill="#2C6E6A">TAGS</text></g>
+        <!-- chip 7 TRAINING-READY (terminal) -->
+        <g><rect x="718" y="60" width="84" height="52" rx="8" fill="#16161A"/>
+          <text class="chl" x="760" y="82" text-anchor="middle" fill="#FBFAF7">TRAINING</text>
+          <text class="chl" x="760" y="94" text-anchor="middle" fill="#FBFAF7">READY</text></g>
+        <!-- council subnote -->
+        <text class="chs" x="360" y="128" text-anchor="middle" fill="#D8722B">× many architectures</text>
+        <text class="chs" x="60" y="44" text-anchor="middle">internet · human · app</text>
+      </svg>
+      <figcaption>One owned chain, run over every hour of audio. Because every model in it is ours, throughput is a function of <b>GPU fleet, not vendor invoices</b>.</figcaption>
+    </figure>
+
+    <ul class="clean">
+      <li><strong>VAD &amp; segmentation</strong> — detect speech vs silence and noise, then slice long-form audio (podcasts, streams) into clean utterances. Bad segmentation poisons everything downstream, so it runs first — and our in-house VAD is <strong>SOTA on our internal Indic test sets</strong>.</li>
+      <li><strong>Cleaning &amp; denoise</strong> — noise cancellation and source separation produce clean, krisp audio. We deliberately retain controlled-noise variants too — traffic, market, crowd — so the model stays robust to the conditions our users actually speak in.</li>
+      <li><strong>ASR council</strong> — several ASR architectures transcribe the same audio in parallel (detailed below).</li>
+      <li><strong>Forced alignment</strong> — align every transcript to its audio at word and phoneme level. Precise timestamps are non-negotiable for codec and TTS training, and let us discard anything that doesn't line up.</li>
+      <li><strong>Quality gate</strong> — confidence, alignment score, and signal-to-noise thresholds decide what enters training, what gets re-processed, and what's dropped.</li>
+      <li><strong>Native annotation</strong> — <span class="ph">⟨N⟩</span> native annotators tag dialect, emotion, and code-mixing — the judgments models can't make reliably — at source, by people who speak the language.</li>
+    </ul>
+
+    <div class="eyebrow">Why a council of ASRs</div>
+    <p>No single ASR is good at everything. The conditions that break one model are exactly where another is strong — clean studio vs code-mixed Hindi-English, fast conversational speech vs slow elderly speech, quiet rooms vs traffic and market noise, high-resource vs low-resource languages. <strong>The failure modes are different, and that is the entire point.</strong></p>
+    <p>So we run a <strong>council of diverse ASR architectures</strong> over the same audio in parallel. Each emits a transcript with a confidence trace, and a consensus layer votes token by token: where the architectures agree, we keep a high-confidence label; where they disagree, that span is routed to a heavier model, to a human, or down-weighted in training. Because the architectures fail in <strong>uncorrelated</strong> places, the council recovers labels no single model could reach. And because every model is in-house and offline, we can add as many voters as accuracy demands, paying only in compute — the council never has to be fast, it only has to be right.</p>
+
+    <!-- ===== FIGURE 4: council fan-out -> consensus ===== -->
+    <figure>
+      <svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A council of diverse ASR architectures fans out from one utterance and converges on a consensus label">
+        <defs>
+          <style>
+            .nd{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;fill:#16161A}
+            .cap{font-family:'JetBrains Mono',monospace;font-size:9.5px;fill:#6E6E78;letter-spacing:.03em}
+            .ttl{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;fill:#16161A}
+            .out{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700}
+          </style>
+          <marker id="arr4" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <path d="M0 0 L7 3.5 L0 7 Z" fill="#B9B5A9"/>
+          </marker>
+          <marker id="arr4d" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <path d="M0 0 L7 3.5 L0 7 Z" fill="#16161A"/>
+          </marker>
+        </defs>
+
+        <!-- audio clip -->
+        <rect x="18" y="122" width="120" height="68" rx="10" fill="#16161A"/>
+        <g fill="#FBFAF7">
+          <rect x="34" y="147" width="6" height="18" rx="2"/>
+          <rect x="46" y="139" width="6" height="34" rx="2"/>
+          <rect x="58" y="143" width="6" height="26" rx="2"/>
+          <rect x="70" y="134" width="6" height="44" rx="2"/>
+          <rect x="82" y="141" width="6" height="30" rx="2"/>
+          <rect x="94" y="136" width="6" height="40" rx="2"/>
+          <rect x="106" y="145" width="6" height="22" rx="2"/>
+          <rect x="118" y="140" width="6" height="32" rx="2"/>
+        </g>
+        <text class="cap" x="78" y="208" text-anchor="middle">1 UTTERANCE</text>
+
+        <!-- fan-out arrows -->
+        <g stroke="#C4C0B4" stroke-width="1.5" fill="none">
+          <path d="M138 156 C 175 156, 175 48, 208 48" marker-end="url(#arr4)"/>
+          <path d="M138 156 C 175 156, 175 102, 208 102" marker-end="url(#arr4)"/>
+          <path d="M138 156 L 208 156" marker-end="url(#arr4)"/>
+          <path d="M138 156 C 175 156, 175 210, 208 210" marker-end="url(#arr4)"/>
+          <path d="M138 156 C 175 156, 175 264, 208 264" marker-end="url(#arr4)"/>
+        </g>
+
+        <!-- ASR nodes -->
+        <!-- n1 -->
+        <g><rect x="210" y="28" width="182" height="40" rx="9" fill="#FBFAF7" stroke="#6E6E78"/>
+          <rect x="210" y="28" width="4" height="40" rx="2" fill="#6E6E78"/>
+          <text class="nd" x="226" y="46">ASR</text><text class="cap" x="226" y="59">clean / studio</text></g>
+        <!-- n2 -->
+        <g><rect x="210" y="82" width="182" height="40" rx="9" fill="#FBFAF7" stroke="#D8722B"/>
+          <rect x="210" y="82" width="4" height="40" rx="2" fill="#D8722B"/>
+          <text class="nd" x="226" y="100">ASR</text><text class="cap" x="226" y="113">code-mixed</text></g>
+        <!-- n3 -->
+        <g><rect x="210" y="136" width="182" height="40" rx="9" fill="#FBFAF7" stroke="#2C6E6A"/>
+          <rect x="210" y="136" width="4" height="40" rx="2" fill="#2C6E6A"/>
+          <text class="nd" x="226" y="154">ASR</text><text class="cap" x="226" y="167">noisy / traffic</text></g>
+        <!-- n4 -->
+        <g><rect x="210" y="190" width="182" height="40" rx="9" fill="#FBFAF7" stroke="#3B3B6B"/>
+          <rect x="210" y="190" width="4" height="40" rx="2" fill="#3B3B6B"/>
+          <text class="nd" x="226" y="208">ASR</text><text class="cap" x="226" y="221">fast speech</text></g>
+        <!-- n5 -->
+        <g><rect x="210" y="244" width="182" height="40" rx="9" fill="#FBFAF7" stroke="#6E6E78"/>
+          <rect x="210" y="244" width="4" height="40" rx="2" fill="#6E6E78"/>
+          <text class="nd" x="226" y="262">ASR</text><text class="cap" x="226" y="275">accented / low-res</text></g>
+
+        <!-- fan-in arrows -->
+        <g stroke="#C4C0B4" stroke-width="1.5" fill="none">
+          <path d="M392 48 C 430 48, 430 156, 466 156" marker-end="url(#arr4)"/>
+          <path d="M392 102 C 430 102, 430 156, 466 156" marker-end="url(#arr4)"/>
+          <path d="M392 156 L 466 156" marker-end="url(#arr4)"/>
+          <path d="M392 210 C 430 210, 430 156, 466 156" marker-end="url(#arr4)"/>
+          <path d="M392 264 C 430 264, 430 156, 466 156" marker-end="url(#arr4)"/>
+        </g>
+
+        <!-- consensus node -->
+        <rect x="468" y="116" width="150" height="80" rx="12" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="ttl" x="543" y="146" text-anchor="middle">CONSENSUS</text>
+        <text class="cap" x="543" y="164" text-anchor="middle">vote · confidence</text>
+        <text class="cap" x="543" y="179" text-anchor="middle">token-level</text>
+
+        <!-- outputs -->
+        <path d="M618 144 C 640 140, 644 118, 658 118" fill="none" stroke="#16161A" stroke-width="1.8" marker-end="url(#arr4d)"/>
+        <path d="M618 168 C 640 172, 644 196, 658 196" fill="none" stroke="#D8722B" stroke-width="1.8" marker-end="url(#arr4)"/>
+        <g><rect x="660" y="98" width="152" height="40" rx="8" fill="#16161A"/>
+          <text class="out" x="736" y="115" text-anchor="middle" fill="#FBFAF7">✓ HIGH-CONFIDENCE</text>
+          <text class="out" x="736" y="128" text-anchor="middle" fill="#FBFAF7">LABEL</text></g>
+        <g><rect x="660" y="176" width="152" height="40" rx="8" fill="#FBEFE0" stroke="#D8722B"/>
+          <text class="out" x="736" y="193" text-anchor="middle" fill="#D8722B">⚑ DISAGREEMENT</text>
+          <text class="out" x="736" y="206" text-anchor="middle" fill="#D8722B">→ heavier model / human</text></g>
+      </svg>
+      <figcaption>One utterance fans out to a council of <b>diverse architectures, each strong where the others are weak</b>; a token-level consensus layer turns them into a single label. Agreement ships; disagreement is flagged. Add more voters and accuracy climbs — at compute cost only.</figcaption>
+    </figure>
+
+    <div class="eyebrow">Quality-first, because it's offline</div>
+    <p>The labelling stack and the serving stack are built to be opposites. We pour accuracy into labelling <strong>once, offline</strong>, so the model we actually serve can stay small and cheap <strong>forever</strong>.</p>
+
+    <div class="streams duo">
+      <div class="stream s3">
+        <div class="tag">Labelling · offline</div>
+        <div class="big">Offline</div>
+        <div class="unit">big · slow · accurate</div>
+        <h3>Quality-first</h3>
+        <p>No latency budget. Runs the heaviest models we own — the council, aligners, denoisers. Optimized for correctness, paid for in compute once.</p>
+      </div>
+      <div class="stream s2">
+        <div class="tag">Serving · production →§3</div>
+        <div class="big">Production</div>
+        <div class="unit">small · fast · quantized</div>
+        <h3>Latency-first</h3>
+        <p>Strict real-time budget, quantized and edge-ready. Inherits clean labels from the offline stack, so it never has to be big to be good.</p>
+      </div>
+    </div>
+
+    <div class="eyebrow">Scaling across all audio hours</div>
+    <p>The pipeline is built to run over the <strong>entire corpus</strong> — every one of the 3–4M+ hours, plus every new hour the app produces daily. Because every model in the chain is ours, throughput is bounded by GPU fleet, not vendor pricing. Doubling the corpus doubles compute; it does not multiply a per-minute bill. That is the structural reason our data-prep cost stays tied to compute while quality keeps climbing.</p>
+
+    <div class="callout">
+      <div class="k">The moat is the chain, not one model</div>
+      <p>VAD, denoise, the ASR council, and forced aligners are each tuned for the audio off-the-shelf tools fail on: <strong>code-mixed, accented, fast, noisy, low-resource Indian speech</strong>. This is accumulated infrastructure, not a license anyone can buy.</p>
+      <p>Every hour that flows through it makes the next hour cheaper and cleaner — and it all compounds at <strong>compute cost only</strong>.</p>
+    </div>
+
+    <div class="eyebrow">Pipeline at a glance</div>
+    <div class="kv">
+      <div class="key">Stages</div><div class="val">VAD → clean/denoise → ASR council → forced align → quality gate → native tags</div>
+      <div class="key">ASR strategy</div><div class="val">Multiple architectures, consensus pseudo-labelling · uncorrelated errors</div>
+      <div class="key">Mode</div><div class="val">Offline, quality-first — no latency budget, heaviest models we own</div>
+      <div class="key">Native annotators</div><div class="val"><span class="ph">⟨N⟩</span> — tag dialect / emotion / code-mixing at source <em>(confirm count)</em></div>
+      <div class="key">Coverage</div><div class="val">All 3–4M+ hours + daily app inflow</div>
+      <div class="key">Third-party cost</div><div class="val"><strong>$0</strong> — GPU compute only</div>
+    </div>
+
+  </section>
+
+  <!-- ============ SECTION 03 — MODEL ARCHITECTURE ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Model Architecture</h2>
+    </div>
+    <p class="lead">We treat speech as <strong>next-token prediction</strong>. Audio becomes a short sequence of discrete neural-codec tokens, and a decoder-only transformer predicts them exactly as a language model predicts words. That single decision lets us inherit the <strong>entire LLM stack</strong> — and then push it somewhere a text model never has to go: throughput-first, inference-heavy, built to be served cheaply at scale.</p>
+
+    <div class="eyebrow">Speech as next-token prediction</div>
+    <p>A raw waveform is millions of samples a minute — hopeless to model token by token. So we don't. Our in-house neural codec compresses speech into a handful of codec tokens per frame; the model predicts those tokens, and the codec decodes them back to 24 kHz audio. Sequences stay short, generation streams in real time, and — the part that matters most — <strong>every tool built for text LLMs now applies unchanged</strong>. We didn't rebuild serving, caching, quantization, or speculative decoding for audio. We inherited them.</p>
+
+    <!-- ===== FIGURE 5: pipeline + inherited stack ===== -->
+    <figure>
+      <svg viewBox="0 0 820 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Speech pipeline: Indic LLM backbone predicts codec tokens, decoded to 24kHz audio, inheriting the LLM stack">
+        <defs>
+          <style>
+            .nl{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;fill:#16161A}
+            .ns{font-family:'JetBrains Mono',monospace;font-size:9px;fill:#6E6E78;letter-spacing:.02em}
+            .ar{font-family:'JetBrains Mono',monospace;font-size:9px;fill:#9A968C}
+            .ch{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;fill:#3A3A42}
+          </style>
+          <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#16161A"/></marker>
+        </defs>
+        <!-- backbone -->
+        <rect x="18" y="34" width="178" height="70" rx="11" fill="#3B3B6B"/>
+        <text class="nl" x="107" y="64" text-anchor="middle" fill="#FBFAF7">INDIC-FINETUNED</text>
+        <text class="nl" x="107" y="80" text-anchor="middle" fill="#FBFAF7">LLM BACKBONE</text>
+        <!-- arrow -->
+        <line x1="196" y1="69" x2="232" y2="69" stroke="#16161A" stroke-width="2" marker-end="url(#arr5)"/>
+        <text class="ar" x="214" y="60" text-anchor="middle">predicts</text>
+        <!-- codec tokens -->
+        <rect x="234" y="34" width="150" height="70" rx="11" fill="#FBFAF7" stroke="#D8722B"/>
+        <text class="nl" x="309" y="64" text-anchor="middle" fill="#D8722B">CODEC TOKENS</text>
+        <text class="ns" x="309" y="80" text-anchor="middle">~7 per frame</text>
+        <!-- arrow -->
+        <line x1="384" y1="69" x2="420" y2="69" stroke="#16161A" stroke-width="2" marker-end="url(#arr5)"/>
+        <!-- codec decoder -->
+        <rect x="422" y="34" width="172" height="70" rx="11" fill="#FBFAF7" stroke="#2C6E6A"/>
+        <text class="nl" x="508" y="64" text-anchor="middle" fill="#2C6E6A">IN-HOUSE NEURAL</text>
+        <text class="nl" x="508" y="80" text-anchor="middle" fill="#2C6E6A">CODEC DECODER</text>
+        <!-- arrow -->
+        <line x1="594" y1="69" x2="630" y2="69" stroke="#16161A" stroke-width="2" marker-end="url(#arr5)"/>
+        <!-- audio -->
+        <rect x="632" y="34" width="150" height="70" rx="11" fill="#16161A"/>
+        <text class="nl" x="707" y="64" text-anchor="middle" fill="#FBFAF7">24 kHz</text>
+        <text class="nl" x="707" y="80" text-anchor="middle" fill="#FBFAF7">AUDIO</text>
+        <!-- inherited stack chips -->
+        <text class="ns" x="18" y="146">INHERITED, NOT REBUILT →</text>
+        <g>
+          <rect x="196" y="134" width="70" height="22" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/><text class="ch" x="231" y="149" text-anchor="middle">vLLM</text>
+          <rect x="274" y="134" width="120" height="22" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/><text class="ch" x="334" y="149" text-anchor="middle">KV + prefix cache</text>
+          <rect x="402" y="134" width="118" height="22" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/><text class="ch" x="461" y="149" text-anchor="middle">speculative decode</text>
+          <rect x="528" y="134" width="60" height="22" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/><text class="ch" x="558" y="149" text-anchor="middle">LoRA</text>
+          <rect x="596" y="134" width="100" height="22" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/><text class="ch" x="646" y="149" text-anchor="middle">quantization</text>
+        </g>
+      </svg>
+      <figcaption>One decision — speech as token prediction — hands us the whole mature LLM toolchain. The backbone and the codec are <b>both ours</b>; there is no third-party model in the path.</figcaption>
+    </figure>
+
+    <div class="eyebrow">The backbone speaks Indian first</div>
+    <p>We don't start from a blank model. We begin from a strong decoder-only LLM and finetune it hard on <strong>modernized Indic text</strong> — blogs, web text, and conversation across 10–11 languages and their code-mixing. By the time it ever emits a codec token, the backbone already <em>thinks</em> in these languages: it carries knowledge, idiom, and natural phrasing, not just acoustic mimicry. That text grounding is the difference between a voice that sounds like a local and one that sounds like it's reading a script. The same large Indic LLM later writes our conversational training data — see §4.</p>
+
+    <div class="eyebrow">From autoregressive to a hybrid Diffusion-LLM</div>
+    <p>Our first model was a clean autoregressive (AR) decoder: one codec token per forward pass. Excellent quality — but cost scales with length, because every token is another step, and long conversational turns make latency compound. Our latest architecture keeps AR's quality where it earns its place and breaks its sequential bottleneck everywhere else. It is a <strong>hybrid Diffusion-LLM</strong>, with three decoding modes living in <strong>one checkpoint</strong>:</p>
+    <ul class="clean">
+      <li><strong>Autoregressive</strong> anchors onset and prosody, where left-to-right causality genuinely carries information.</li>
+      <li><strong>Diffusion (parallel) decoding</strong> emits a whole <em>block</em> of codec tokens in parallel — tens at a time — and refines them over a few denoising steps. The number of steps is set by the refinement passes, <strong>not</strong> by how many tokens the block holds.</li>
+      <li><strong>Self-speculative decoding</strong> lets the same weights draft several tokens ahead and verify them in a single pass — no separate draft model to train or host.</li>
+    </ul>
+    <!-- ===== FIGURE 6: dLLM parallel generation (signature) ===== -->
+    <figure>
+      <svg viewBox="0 0 820 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Autoregressive emits one token per step; the hybrid diffusion-LLM emits a whole block of tokens in parallel and refines it in a few steps">
+        <defs>
+          <style>
+            .lt{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;fill:#16161A}
+            .ls{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#6E6E78;letter-spacing:.02em}
+            .an{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;fill:#3A3A42}
+          </style>
+          <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#9A968C"/></marker>
+          <marker id="arr6o" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#D8722B"/></marker>
+        </defs>
+
+        <!-- TOP LANE: AR -->
+        <text class="lt" x="24" y="46">AUTOREGRESSIVE</text>
+        <text class="ls" x="24" y="64">1 token per forward pass</text>
+        <g>
+          <rect x="200" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="1.0"/>
+          <rect x="222" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.95"/>
+          <rect x="244" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.9"/>
+          <rect x="266" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.86"/>
+          <rect x="288" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.81"/>
+          <rect x="310" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.76"/>
+          <rect x="332" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.71"/>
+          <rect x="354" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.66"/>
+          <rect x="376" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.62"/>
+          <rect x="398" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.57"/>
+          <rect x="420" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.52"/>
+          <rect x="442" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.47"/>
+          <rect x="464" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.42"/>
+          <rect x="486" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.38"/>
+          <rect x="508" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.33"/>
+          <rect x="530" y="64" width="16" height="30" rx="4" fill="#5A5A66" opacity="0.28"/>
+        </g>
+        <line x1="200" y1="112" x2="548" y2="112" stroke="#9A968C" stroke-width="1.5" marker-end="url(#arr6)"/>
+        <text class="an" x="374" y="130" text-anchor="middle">16 tokens → 16 sequential steps</text>
+
+        <!-- divider -->
+        <line x1="24" y1="154" x2="796" y2="154" stroke="#E0DDD4" stroke-width="1"/>
+        <text class="ls" x="796" y="148" text-anchor="end">same tokens — many steps vs a few ↓</text>
+
+        <!-- BOTTOM LANE: hybrid dLLM -->
+        <text class="lt" x="24" y="196">HYBRID dLLM</text>
+        <text class="ls" x="24" y="214">a full block in parallel · block size N (16–32)</text>
+        <!-- brace over block -->
+        <path d="M200 210 L200 204 L546 204 L546 210" fill="none" stroke="#D8722B" stroke-width="1.4"/>
+        <text class="an" x="373" y="200" text-anchor="middle" fill="#D8722B">N tokens emitted together, then refined ×K</text>
+        <g>
+          <rect x="200" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="222" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="244" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="266" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="288" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="310" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="332" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="354" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="376" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="398" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="420" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="442" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="464" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="486" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="508" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+          <rect x="530" y="220" width="16" height="30" rx="4" fill="#16161A"/>
+        </g>
+        <line x1="200" y1="268" x2="300" y2="268" stroke="#D8722B" stroke-width="1.5" marker-end="url(#arr6o)"/>
+        <text class="an" x="250" y="286" text-anchor="middle" fill="#D8722B">≈K steps  (K ≪ N)</text>
+
+        <!-- self-speculative side box -->
+        <g transform="translate(600,206)">
+          <rect x="0" y="0" width="204" height="74" rx="11" fill="#ECEAE3" stroke="#C4C0B4"/>
+          <text x="102" y="26" text-anchor="middle" style="font-family:'Space Grotesk';font-size:12px;font-weight:700;fill:#16161A">SELF-SPECULATIVE</text>
+          <text x="102" y="46" text-anchor="middle" class="an">draft k ahead →</text>
+          <text x="102" y="62" text-anchor="middle" class="an">verify in 1 pass → accept run</text>
+        </g>
+      </svg>
+      <figcaption>The same checkpoint, two ways to spend it. AR pays one forward pass per token; the hybrid dLLM emits a <b>full block of tokens in parallel</b> — the block can be tens wide — and only the handful of refinement passes count as steps. Self-speculation drafts and verifies several tokens at once on top. Same tokens, a fraction of the steps.</figcaption>
+    </figure>
+
+    <p>For <strong>long-form</strong> generation we go further, with a novel <strong>length-triggered hybrid routing</strong>. Below a context-length threshold, dense attention handles local acoustic detail. The moment a conversation runs long and context crosses that threshold, a router activates <strong>sparse SSM-based MoE experts</strong> — state-space experts that carry the long horizon at linear cost while holding <strong>prosody steady across the whole turn</strong>. Attention for the near field; SSM experts switched in only when length demands them.</p>
+    <p>The payoff: quality doesn't drift as conversations stretch out, and cost doesn't explode. Attention scales quadratically with length; the SSM path scales linearly. This is the Nemotron-class direction — AR, diffusion, and self-speculation from a single checkpoint — extended with <strong>length-aware routing</strong> and pointed squarely at inference-heavy systems.</p>
+
+    <!-- ===== FIGURE 6b: length-triggered SSM-MoE routing ===== -->
+    <figure>
+      <svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A router activates sparse SSM-MoE experts once context length crosses a threshold, holding prosody at linear cost">
+        <defs><style>
+          .rt{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;fill:#16161A}
+          .rs{font-family:'JetBrains Mono',monospace;font-size:9.5px;fill:#6E6E78}
+          .rb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700}
+        </style>
+        <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#D8722B"/></marker>
+        </defs>
+
+        <!-- context bar -->
+        <text class="rs" x="40" y="44" text-anchor="start">CONTEXT LENGTH →</text>
+        <rect x="40" y="56" width="260" height="30" rx="6" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <rect x="300" y="56" width="260" height="30" rx="6" fill="#FBEFE0" stroke="#D8722B"/>
+        <text class="rb" x="170" y="76" text-anchor="middle" fill="#3A3A42">SHORT CONTEXT</text>
+        <text class="rb" x="430" y="76" text-anchor="middle" fill="#D8722B">LONG CONTEXT</text>
+        <!-- threshold -->
+        <line x1="300" y1="44" x2="300" y2="232" stroke="#16161A" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text class="rb" x="300" y="36" text-anchor="middle" fill="#16161A">L*  threshold</text>
+
+        <!-- regime labels -->
+        <text class="rt" x="170" y="124" text-anchor="middle">ATTENTION</text>
+        <text class="rs" x="170" y="142" text-anchor="middle">dense · local acoustic detail</text>
+        <text class="rt" x="430" y="124" text-anchor="middle" fill="#D8722B">ROUTER FIRES</text>
+        <text class="rs" x="430" y="142" text-anchor="middle">→ SSM-MoE experts switched on</text>
+
+        <!-- router -> experts -->
+        <path d="M300 100 C 340 120, 360 150, 360 168" fill="none" stroke="#D8722B" stroke-width="1.6" marker-end="url(#arrR)"/>
+        <!-- expert chips (sparse: 2 active, 2 idle) -->
+        <rect x="330" y="172" width="52" height="34" rx="7" fill="#D8722B"/><text class="rb" x="356" y="193" text-anchor="middle" fill="#16161A">E1</text>
+        <rect x="392" y="172" width="52" height="34" rx="7" fill="#FBFAF7" stroke="#C4C0B4"/><text class="rb" x="418" y="193" text-anchor="middle" fill="#9A968C">E2</text>
+        <rect x="454" y="172" width="52" height="34" rx="7" fill="#D8722B"/><text class="rb" x="480" y="193" text-anchor="middle" fill="#16161A">E3</text>
+        <rect x="516" y="172" width="52" height="34" rx="7" fill="#FBFAF7" stroke="#C4C0B4"/><text class="rb" x="542" y="193" text-anchor="middle" fill="#9A968C">E4</text>
+        <text class="rs" x="449" y="226" text-anchor="middle">SSM-MoE · sparse experts · linear cost · prosody held</text>
+
+        <!-- cost inset -->
+        <rect x="596" y="52" width="208" height="172" rx="12" fill="#FBFAF7" stroke="#C4C0B4"/>
+        <text class="rs" x="700" y="72" text-anchor="middle">COST vs LENGTH</text>
+        <line x1="618" y1="200" x2="790" y2="200" stroke="#C4C0B4"/>
+        <line x1="618" y1="200" x2="618" y2="84" stroke="#C4C0B4"/>
+        <path d="M618 196 C 686 190, 706 150, 766 92" fill="none" stroke="#16161A" stroke-width="2"/>
+        <path d="M618 196 L 790 156" fill="none" stroke="#D8722B" stroke-width="2"/>
+        <line x1="700" y1="88" x2="700" y2="200" stroke="#16161A" stroke-width="1" stroke-dasharray="3 3"/>
+        <text class="rs" x="700" y="214" text-anchor="middle">L*</text>
+        <circle cx="636" cy="98" r="4" fill="#16161A"/><text class="rs" x="646" y="102" text-anchor="start">attention  O(n²)</text>
+        <circle cx="636" cy="118" r="4" fill="#D8722B"/><text class="rs" x="646" y="122" text-anchor="start">hybrid  O(n)</text>
+      </svg>
+      <figcaption>Length-aware routing in one view: short turns stay on dense attention; once context crosses <b>L*</b>, a router switches on <b>sparse SSM-MoE experts</b> that carry the long horizon in linear time and keep prosody from drifting. Attention cost curves up quadratically; the hybrid stays linear.</figcaption>
+    </figure>
+
+    <div class="eyebrow">Built to be served, not just trained</div>
+    <p>Most labs train for quality and discover serving cost later. We invert it. Our models are <strong>quantization-aware trained (QAT)</strong> from the start — the network learns to be accurate in INT8/INT4, so the <em>served</em> model is small and fast with almost no quality loss, instead of being squeezed down as a lossy afterthought. Serving then runs throughput-first: vLLM, continuous batching, KV and prefix caching, parallel decode — all tuned to maximize concurrent real-time streams per GPU rather than single-request vanity latency.</p>
+    <p>This is the through-line of the entire document: <strong>training is where we spend; inference is where we save.</strong> We train small models hard on millions of hours, then quantize, parallelize, and speculate so a single GPU carries many live conversations at once.</p>
+
+    <!-- ===== FIGURE 7: throughput (7x vs AR) ===== -->
+    <figure>
+      <svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hybrid serving delivers about seven times the tokens per second and concurrent streams per GPU versus the AR baseline">
+        <defs><style>
+          .t7{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;fill:#16161A}
+          .l7{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700}
+          .x7{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;fill:#D8722B}
+        </style></defs>
+        <!-- group 1 -->
+        <text class="t7" x="20" y="34">Tokens / sec  (vs AR)</text>
+        <rect x="20" y="46" width="70" height="26" rx="5" fill="#9A968C"/><text class="l7" x="32" y="64" fill="#FBFAF7">AR · 1×</text>
+        <rect x="20" y="78" width="490" height="26" rx="5" fill="#D8722B"/><text class="l7" x="32" y="96" fill="#16161A">hybrid + spec + QAT</text>
+        <text class="x7" x="524" y="100">7×</text>
+        <!-- group 2 -->
+        <text class="t7" x="20" y="146">Concurrent streams / GPU  (vs AR)</text>
+        <rect x="20" y="158" width="70" height="26" rx="5" fill="#9A968C"/><text class="l7" x="32" y="176" fill="#FBFAF7">AR · 1×</text>
+        <rect x="20" y="190" width="490" height="26" rx="5" fill="#2C6E6A"/><text class="l7" x="32" y="208" fill="#FBFAF7">hybrid + QAT</text>
+        <text class="x7" x="524" y="212">7×</text>
+      </svg>
+      <figcaption>Throughput-first by construction: parallel block decoding, self-speculation, and QAT compound to roughly <b>7× the tokens/sec and concurrent streams per GPU</b> of the AR baseline — at the same real-time latency.</figcaption>
+    </figure>
+
+    <div class="eyebrow">Why this architecture wins</div>
+    <ul class="clean">
+      <li><strong>Throughput-first</strong> — block-parallel decoding plus self-speculation deliver far more tokens/sec at fixed latency, so each GPU serves more streams and every conversation costs less.</li>
+      <li><strong>Quality kept</strong> — AR anchoring with diffusion refinement preserves prosody and naturalness; we don't trade voice quality for speed.</li>
+      <li><strong>Cheap long-form</strong> — the SSM–attention hybrid keeps long conversations linear in cost, not quadratic.</li>
+      <li><strong>One checkpoint</strong> — AR, diffusion, and self-speculation from a single set of weights: no separate draft model, lower memory, simpler ops.</li>
+      <li><strong>Small &amp; quantized</strong> — QAT models run on a single small or edge GPU, which is what makes India-scale serving affordable.</li>
+    </ul>
+
+    <div class="eyebrow">Architecture at a glance</div>
+    <div class="kv">
+      <div class="key">Paradigm</div><div class="val">Speech as next-token prediction over neural-codec tokens</div>
+      <div class="key">Backbone</div><div class="val">Decoder-only LLM, finetuned on modernized Indic text · 10–11 languages</div>
+      <div class="key">Codec</div><div class="val">In-house neural codec · ~7 tokens/frame · 24 kHz out</div>
+      <div class="key">Decoding</div><div class="val">Hybrid — AR + diffusion (parallel block) + self-speculative · one checkpoint</div>
+      <div class="key">Long-form</div><div class="val">SSM–attention hybrid · linear-scaling context</div>
+      <div class="key">Serving</div><div class="val">Quantization-aware trained · vLLM · throughput-first · single small GPU</div>
+      <div class="key">3rd-party model cost</div><div class="val"><strong>$0</strong> — own backbone, own codec</div>
+    </div>
+
+  </section>
+
+  <!-- ============ SECTION 04 — SELF-IMPROVING LOOPS & SYNTHETIC DATA ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Self-Improving Loops &amp; Synthetic Advantage</h2>
+    </div>
+    <p class="lead">Everyone has the same scaling laws. We run them <strong>backwards</strong>. Most labs scale up to a big model and then serve it. We deliberately train large models we have <em>no intention of serving</em> — they are factories, not products — and use them to manufacture the data that makes a small, cheap model punch far above its size.</p>
+
+    <div class="eyebrow">Scaling laws, run backwards</div>
+    <p>The standard recipe pushes parameters and data toward a frontier model you then deploy. Ours inverts the last step. The large model's only job is to <strong>generate and teach</strong>: it writes conversations, synthesizes speech, and distills its competence into the small model we actually ship. Scale is something we spend <em>upstream</em>, once, so that inference stays small forever.</p>
+
+    <div class="eyebrow">The writer: an in-house finetuned Indic LLM</div>
+    <p>At the top sits an <strong>open-source LLM that we finetuned in-house</strong> on Indic text scraped from <strong>modern blogs and web writing</strong> — tuned to sound natural and contemporary, not stilted or textbook. Across 10–11 languages and their code-mixing, it follows instructions and writes <strong>knowledge-dense conversational text</strong>: friendly chats, daily check-ins, question-and-answer, domain talk. This is an intelligible, instruction-following writer that is entirely ours — no external script vendor sits in the loop.</p>
+
+    <div class="eyebrow">The factory: text becomes synthetic speech</div>
+    <p>The writer generates text; our large in-house <strong>expressive TTS</strong> — prosodic, conversational, with <strong>non-repetitive, seed-controllable voices</strong> — renders it into audio. Because voices are seed-controllable and never repeat, we manufacture effectively unlimited, diverse synthetic conversation at compute cost. We then <strong>combine that synthetic data with real data and train a smaller model on more total data</strong> than it could ever collect alone. The result: small models that get perfected to <strong>almost the same performance as models 2–3× their size</strong>.</p>
+
+    <!-- ===== FIGURE 8: synthetic advantage — two halves ===== -->
+    <figure>
+      <svg viewBox="0 0 820 348" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Left: an in-house finetuned LLM writes text, the TTS synthesizes speech, combined with real data. Right: the teacher is distilled into a small student that matches a model two to three times its size">
+        <defs>
+          <style>
+            .pt{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;fill:#16161A}
+            .bl{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700}
+            .bs{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:#6E6E78}
+            .ed{font-family:'JetBrains Mono',monospace;font-size:9px;fill:#9A968C}
+          </style>
+          <marker id="f8a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#16161A"/></marker>
+          <marker id="f8t" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#D8722B"/></marker>
+        </defs>
+
+        <!-- divider -->
+        <line x1="408" y1="40" x2="408" y2="332" stroke="#D6D3CA" stroke-width="1.2" stroke-dasharray="4 4"/>
+
+        <!-- ===== LEFT: generate + combine ===== -->
+        <text class="pt" x="28" y="30">① GENERATE SYNTHETIC → COMBINE</text>
+
+        <rect x="36" y="48" width="336" height="48" rx="11" fill="#3B3B6B"/>
+        <text class="bl" x="204" y="70" text-anchor="middle" fill="#FBFAF7">IN-HOUSE FINETUNED LLM</text>
+        <text class="bs" x="204" y="86" text-anchor="middle" fill="#CFCEE0">open-source base · modern Indic blogs &amp; text</text>
+
+        <line x1="204" y1="96" x2="204" y2="116" stroke="#16161A" stroke-width="2" marker-end="url(#f8a)"/>
+        <text class="ed" x="288" y="111" text-anchor="start">generate text</text>
+
+        <rect x="36" y="118" width="336" height="46" rx="11" fill="#FBFAF7" stroke="#D8722B"/>
+        <text class="bl" x="204" y="139" text-anchor="middle" fill="#D8722B">LARGE TTS MODEL</text>
+        <text class="bs" x="204" y="154" text-anchor="middle">expressive · seed-controllable</text>
+
+        <line x1="204" y1="164" x2="204" y2="184" stroke="#16161A" stroke-width="2" marker-end="url(#f8a)"/>
+        <text class="ed" x="288" y="179" text-anchor="start">synthesize audio</text>
+
+        <!-- synth + real -->
+        <rect x="36" y="186" width="150" height="44" rx="10" fill="#FBFAF7" stroke="#C4C0B4"/>
+        <text class="bl" x="111" y="205" text-anchor="middle" fill="#16161A">SYNTHETIC</text>
+        <text class="bs" x="111" y="219" text-anchor="middle">data</text>
+        <circle cx="204" cy="208" r="16" fill="#FBFAF7" stroke="#16161A" stroke-width="1.5"/>
+        <text x="204" y="214" text-anchor="middle" style="font-family:'Space Grotesk';font-size:16px;font-weight:700;fill:#16161A">+</text>
+        <rect x="222" y="186" width="150" height="44" rx="10" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="bl" x="297" y="205" text-anchor="middle" fill="#16161A">REAL</text>
+        <text class="bs" x="297" y="219" text-anchor="middle">internet · human · app</text>
+
+        <line x1="204" y1="224" x2="204" y2="244" stroke="#16161A" stroke-width="2" marker-end="url(#f8a)"/>
+        <rect x="86" y="246" width="236" height="44" rx="11" fill="#16161A"/>
+        <text class="bl" x="204" y="265" text-anchor="middle" fill="#FBFAF7">MORE TRAINING DATA</text>
+        <text class="bs" x="204" y="279" text-anchor="middle" fill="#B9B5A9">synthetic + real, at scale</text>
+
+        <!-- ===== RIGHT: distill -> match ===== -->
+        <text class="pt" x="430" y="30">② DISTILL → MATCH 2–3× SIZE</text>
+
+        <rect x="470" y="48" width="290" height="46" rx="11" fill="#6E6E78"/>
+        <text class="bl" x="615" y="69" text-anchor="middle" fill="#FBFAF7">LARGE TEACHER</text>
+        <text class="bs" x="615" y="84" text-anchor="middle" fill="#E6E4DD">policy provides the targets</text>
+
+        <line x1="615" y1="94" x2="615" y2="134" stroke="#D8722B" stroke-width="2" marker-end="url(#f8t)"/>
+        <text class="ed" x="625" y="118" text-anchor="start" fill="#D8722B">policy distillation</text>
+
+        <rect x="470" y="136" width="290" height="46" rx="11" fill="#16161A"/>
+        <text class="bl" x="615" y="157" text-anchor="middle" fill="#FBFAF7">SMALL STUDENT MODEL</text>
+        <text class="bs" x="615" y="172" text-anchor="middle" fill="#B9B5A9">trained on the combined data</text>
+
+        <!-- hand-off: more data -> student -->
+        <path d="M322 268 H 430 V 159 H 466" fill="none" stroke="#9A968C" stroke-width="1.6" marker-end="url(#f8a)"/>
+        <text class="ed" x="436" y="210" text-anchor="start">combined data</text>
+
+        <!-- performance -->
+        <text class="bs" x="470" y="214" text-anchor="start" style="font-weight:700;fill:#16161A">PERFORMANCE</text>
+        <rect x="470" y="222" width="244" height="22" rx="5" fill="#2C6E6A"/>
+        <text class="bl" x="482" y="238" text-anchor="start" fill="#FBFAF7" font-size="9.5">Small Maya · with loop</text>
+        <rect x="470" y="250" width="244" height="22" rx="5" fill="none" stroke="#16161A" stroke-width="1.4" stroke-dasharray="5 3"/>
+        <text class="bl" x="482" y="266" text-anchor="start" fill="#16161A" font-size="9.5">Model 2–3× the size · no loop</text>
+        <text x="724" y="245" text-anchor="start" style="font-family:'Space Grotesk';font-size:18px;font-weight:700;fill:#D8722B">≈</text>
+        <text class="bs" x="615" y="296" text-anchor="middle" style="font-weight:700;fill:#16161A">same quality at a third of the size</text>
+      </svg>
+      <figcaption>Two halves of one loop. <b>Left</b> — an in-house finetuned LLM (open-source base, retuned on modern Indic text) writes the words; our large TTS turns them into speech; that synthetic data is combined with real data into a much larger training set. <b>Right</b> — the teacher's policy is distilled into a small student trained on that data, landing at the quality of a model <b>2–3× its size</b>.</figcaption>
+    </figure>
+
+    <div class="eyebrow">Factory vs product</div>
+    <div class="streams duo">
+      <div class="stream s1">
+        <div class="tag">Upstream · the factory</div>
+        <div class="big">Large</div>
+        <div class="unit">teacher models · not served</div>
+        <h3>Spend scale once</h3>
+        <p>Big Indic-text LLMs and teachers exist only to write, synthesize, and teach. We pay for their scale a single time, in training.</p>
+      </div>
+      <div class="stream s2">
+        <div class="tag">Downstream · the product</div>
+        <div class="big">Small</div>
+        <div class="unit">served model · quantized</div>
+        <h3>Serve small forever</h3>
+        <p>The shipped model is distilled from the teachers on synthetic + real data — small, fast, and far more capable than its size would suggest.</p>
+      </div>
+    </div>
+
+    <div class="eyebrow">Distillation for inference, and for speculation</div>
+    <p>We distill big&nbsp;→&nbsp;small <strong>in-house</strong>: the small served model learns from the teachers' outputs (synthetic data) alongside real and pseudo-labelled data. This is purely an <strong>inference-efficiency</strong> move — and it pays a second dividend. A small model that closely tracks a larger teacher is exactly what <strong>self-speculative decoding</strong> (§3) needs: cheap, accurate drafts that get verified in a single pass. The loop that makes the model small is the same loop that makes it fast.</p>
+
+    <div class="callout">
+      <div class="k">Why other labs spend more here</div>
+      <p>Conventional pipelines buy data, license scripts, or pay per-call for a third-party model to generate or judge — costs that recur with every batch. Our writer, our TTS, and our distillation are all <strong>in-house</strong>, so synthetic data is bounded only by compute, not by invoices.</p>
+      <p>And it <strong>compounds</strong>: real data anchors truth, synthetic data scales coverage, one big model amortizes into many small ones, and the served model's real conversations feed the next round. Cost stays tied to compute; capability keeps climbing.</p>
+    </div>
+
+    <div class="eyebrow">The loop at a glance</div>
+    <div class="kv">
+      <div class="key">Writer</div><div class="val">In-house large Indic-text LLM · instruction-following · conversational scripts</div>
+      <div class="key">Synthesizer</div><div class="val">In-house expressive TTS · prosodic · non-repetitive, seed-controllable voices</div>
+      <div class="key">Training mix</div><div class="val">Synthetic + real (internet · human · app) + pseudo-labelled</div>
+      <div class="key">Distillation</div><div class="val">Big → small, in-house · for inference efficiency + speculative drafting</div>
+      <div class="key">Flywheel</div><div class="val">Served model → app conversations → next-gen data</div>
+      <div class="key">3rd-party cost</div><div class="val"><strong>$0</strong> — writer, TTS, and distillation all in-house · compute only</div>
+    </div>
+
+  </section>
+
+  <!-- ============ SECTION 05 — REINFORCEMENT LEARNING ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>Reinforcement Learning</h2>
+    </div>
+    <p class="lead">The data loop gets a small model most of the way. RL takes it the rest. We run RL <strong>heavy</strong> — across many controlled environments, with humans in the loop, over all 11 languages, for days at a time — to lift a small model to the capability of one <strong>2–3× its size</strong>.</p>
+
+    <div class="eyebrow">Teacher distillation, then reinforcement</div>
+    <p>RL continues the big&nbsp;→&nbsp;small story. <strong>In-house teacher and reward models</strong> score the student's conversations and provide the targets it learns from — there is no third-party judge or reward API anywhere in the loop. The teacher's policy is distilled into the small model, then sharpened by reinforcement against signals we own.</p>
+
+    <div class="eyebrow">Human-in-the-loop, all 11 languages, for days</div>
+    <p>Scoring and RLHF run with <strong>humans in the loop</strong> — native speakers judging naturalness, correctness, and feel — across <strong>multiple controlled environments</strong> and <strong>all 11 languages</strong>, for multiple days per cycle. This is not a token pass at the end of training; it is a heavy, scaled stage, and native judgment at every step is exactly the part an English-first lab can't cheaply staff.</p>
+
+    <!-- ===== FIGURE 9: RL loop + scale strip ===== -->
+    <figure>
+      <svg viewBox="0 0 820 296" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A clean reinforcement loop — policy, environments, judges, reward, updating back to the policy — run in parallel across 11 languages, many environments, and multiple days">
+        <defs>
+          <style>
+            .nl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
+            .ns{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:#6E6E78}
+            .el{font-family:'JetBrains Mono',monospace;font-size:9px;fill:#9A968C;font-weight:600}
+            .cap{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#6E6E78}
+            .chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;fill:#16161A}
+            .x{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;fill:#9A968C}
+          </style>
+          <marker id="r9" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#16161A"/></marker>
+        </defs>
+
+        <!-- cycle nodes -->
+        <rect x="18" y="44" width="168" height="64" rx="11" fill="#16161A"/>
+        <text class="nl" x="102" y="72" text-anchor="middle" fill="#FBFAF7">POLICY</text>
+        <text class="ns" x="102" y="90" text-anchor="middle" fill="#B9B5A9">small served model</text>
+
+        <!-- environments with depth (parallel) -->
+        <rect x="228" y="38" width="168" height="64" rx="11" fill="#EFEDE6" stroke="#C4C0B4"/>
+        <rect x="225" y="41" width="168" height="64" rx="11" fill="#F5F3EE" stroke="#C4C0B4"/>
+        <rect x="222" y="44" width="168" height="64" rx="11" fill="#FBFAF7" stroke="#C4C0B4"/>
+        <text class="nl" x="306" y="72" text-anchor="middle" fill="#16161A">ENVIRONMENTS</text>
+        <text class="ns" x="306" y="90" text-anchor="middle">controlled conversations</text>
+
+        <rect x="426" y="44" width="168" height="64" rx="11" fill="#FBFAF7" stroke="#D8722B"/>
+        <text class="nl" x="510" y="68" text-anchor="middle" fill="#D8722B">JUDGES</text>
+        <text class="ns" x="510" y="84" text-anchor="middle">humans + in-house</text>
+        <text class="ns" x="510" y="96" text-anchor="middle">reward model</text>
+
+        <rect x="630" y="44" width="168" height="64" rx="11" fill="#D7E5E2" stroke="#2C6E6A"/>
+        <text class="nl" x="714" y="72" text-anchor="middle" fill="#2C6E6A">REWARD</text>
+        <text class="ns" x="714" y="90" text-anchor="middle">policy update signal</text>
+
+        <!-- forward arrows -->
+        <line x1="186" y1="76" x2="220" y2="76" stroke="#16161A" stroke-width="2" marker-end="url(#r9)"/>
+        <text class="el" x="203" y="68" text-anchor="middle">rollouts</text>
+        <line x1="390" y1="76" x2="424" y2="76" stroke="#16161A" stroke-width="2" marker-end="url(#r9)"/>
+        <text class="el" x="408" y="68" text-anchor="middle">score</text>
+        <line x1="594" y1="76" x2="628" y2="76" stroke="#16161A" stroke-width="2" marker-end="url(#r9)"/>
+        <text class="el" x="612" y="68" text-anchor="middle">reward</text>
+
+        <!-- feedback arc reward -> policy -->
+        <path d="M714 108 L714 150 L102 150 L102 110" fill="none" stroke="#16161A" stroke-width="1.8" marker-end="url(#r9)"/>
+        <text class="el" x="408" y="144" text-anchor="middle">update policy  ↺</text>
+
+        <!-- scale strip -->
+        <text class="cap" x="410" y="204" text-anchor="middle">the loop above runs in parallel across</text>
+        <rect x="150" y="216" width="150" height="36" rx="9" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="chip" x="225" y="239" text-anchor="middle">11 LANGUAGES</text>
+        <text class="x" x="312" y="240" text-anchor="middle">×</text>
+        <rect x="326" y="216" width="176" height="36" rx="9" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="chip" x="414" y="239" text-anchor="middle">MANY ENVIRONMENTS</text>
+        <text class="x" x="514" y="240" text-anchor="middle">×</text>
+        <rect x="528" y="216" width="150" height="36" rx="9" fill="#ECEAE3" stroke="#C4C0B4"/>
+        <text class="chip" x="603" y="239" text-anchor="middle">MULTIPLE DAYS</text>
+      </svg>
+      <figcaption>One clean loop: the small policy generates rollouts in controlled environments, <b>humans and in-house reward models</b> score them, and the reward updates the policy. That loop then runs in parallel across <b>11 languages, many environments, and multiple days</b> — no external judge, no reward API.</figcaption>
+    </figure>
+
+    <div class="eyebrow">What RL sharpens — and what's next</div>
+    <p>Today, RL targets <strong>conversational quality</strong> and <strong>long-horizon stability</strong> — holding a real conversation across many turns without drifting — plus the naturalness layer that makes speech feel alive: <strong>backchanneling, natural pauses, and turn-taking</strong>. On the near roadmap: <strong>tool calling</strong> and <strong>personas</strong>. The architecture and the loop are already built to absorb both.</p>
+
+    <div class="eyebrow">The payoff: punching 2–3× above its weight</div>
+    <p>The combined effect — the synthetic data loop of §4 plus heavy, human-guided RL — lifts the small served model to the capability of a model <strong>2–3× its size trained without RL</strong>. We get frontier-class conversation at a fraction of the serving cost, which is the entire point of building this way.</p>
+
+    <!-- ===== FIGURE 10: capability ladder ===== -->
+    <figure>
+      <svg viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Capability climbs from a small base model, to plus synthetic loop, to plus heavy RL, reaching a model two to three times the size">
+        <defs><style>
+          .cl{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700}
+          .ct{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;fill:#16161A}
+          .cs{font-family:'JetBrains Mono',monospace;font-size:9.5px;fill:#6E6E78}
+        </style></defs>
+        <text class="ct" x="20" y="32">CAPABILITY  (small served model)</text>
+        <!-- bars -->
+        <rect x="20" y="48" width="180" height="26" rx="5" fill="#9A968C"/><text class="cl" x="32" y="66" fill="#FBFAF7">small base model</text>
+        <rect x="20" y="82" width="360" height="26" rx="5" fill="#D8722B"/><text class="cl" x="32" y="100" fill="#16161A">+ synthetic data loop (§4)</text>
+        <rect x="20" y="116" width="540" height="26" rx="5" fill="#2C6E6A"/><text class="cl" x="32" y="134" fill="#FBFAF7">+ heavy RL (§5)</text>
+        <!-- reference line -->
+        <line x1="560" y1="40" x2="560" y2="158" stroke="#16161A" stroke-width="1.4" stroke-dasharray="5 3"/>
+        <text class="cs" x="566" y="92" text-anchor="start">model 2–3×</text>
+        <text class="cs" x="566" y="106" text-anchor="start">the size · no RL</text>
+        <text style="font-family:'Space Grotesk';font-size:13px;font-weight:700;fill:#2C6E6A" x="566" y="134">▲ matched</text>
+        <text class="cs" x="20" y="178">a third of the parameters, frontier-class conversation →</text>
+      </svg>
+      <figcaption>Capability stacks: a small base model, lifted by the synthetic loop, then by heavy RL, reaches the <b>dashed line of a model 2–3× its size</b> — at a fraction of the serving cost.</figcaption>
+    </figure>
+
+    <div class="eyebrow">RL at a glance</div>
+    <div class="kv">
+      <div class="key">Method</div><div class="val">Teacher / reward distillation + RLHF</div>
+      <div class="key">Judges</div><div class="val">In-house reward models + human-in-the-loop (native speakers)</div>
+      <div class="key">Scale</div><div class="val">Multiple controlled environments · all 11 languages · multiple days</div>
+      <div class="key">Targets now</div><div class="val">Conversational quality · long-horizon stability · backchanneling &amp; pauses</div>
+      <div class="key">Roadmap</div><div class="val">Tool calling · personas</div>
+      <div class="key">Net</div><div class="val">Small model ≈ capability of 2–3× its size · 3rd-party cost <strong>$0</strong></div>
+    </div>
+
+  </section>
+
+  <!-- ============ SECTION 06 — HOW MAYA DIFFERS ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>How Maya Differs</h2>
+    </div>
+    <p class="lead">One idea runs through every section: <strong>we own every stage</strong>, so our cost is compute and our quality compounds. A conventional voice lab rents most of its pipeline — and pays for it again with every batch. Here is the same story told from the cost side.</p>
+
+    <div class="eyebrow">Maya vs a conventional voice lab</div>
+    <div class="cmp">
+      <div class="row chead">
+        <div class="rk">Stage</div>
+        <div class="maya">Maya</div>
+        <div class="typ">Conventional lab</div>
+      </div>
+      <div class="row">
+        <div class="rk">Data</div>
+        <div class="maya">Collected <b>at source</b> — hired speakers, our scripts — plus scraped internet, all owned</div>
+        <div class="typ">Licensed corpora from data vendors, priced per hour</div>
+      </div>
+      <div class="row">
+        <div class="rk">Labelling</div>
+        <div class="maya">In-house <b>ASR council</b>, VAD, forced aligners — offline, compute-only</div>
+        <div class="typ">Vendor ASR / per-minute transcription that recurs with volume</div>
+      </div>
+      <div class="row">
+        <div class="rk">Architecture</div>
+        <div class="maya">Throughput-first <b>hybrid dLLM</b> (AR + diffusion + self-spec), QAT, small &amp; quantized</div>
+        <div class="typ">Serve a large AR model; quantize as an afterthought</div>
+      </div>
+      <div class="row">
+        <div class="rk">Loops</div>
+        <div class="maya"><b>Big → small</b> synthetic: in-house writer + TTS + distillation</div>
+        <div class="typ">Buy data, license scripts, or pay-per-call for generation</div>
+      </div>
+      <div class="row">
+        <div class="rk">RL</div>
+        <div class="maya">In-house reward + <b>human-in-the-loop</b>, all 11 languages</div>
+        <div class="typ">Vendor judges / external RLHF services</div>
+      </div>
+      <div class="row">
+        <div class="rk">Cost driver</div>
+        <div class="maya"><b>Compute</b> + our own collection</div>
+        <div class="typ">Recurring licenses + vendor calls + oversized serving</div>
+      </div>
+    </div>
+
+    <div class="eyebrow">Where the money doesn't go</div>
+    <p>Stack the two cost structures side by side and the difference is structural, not incremental. A conventional lab pays for data licensing, vendor transcription, generation and judging APIs, <em>and</em> compute, <em>and</em> the serving bill for an oversized model — most of it recurring. Our spend is compute plus the speakers we hire; everything else is something we built once and now run at marginal cost.</p>
+
+    <!-- ===== FIGURE 11: cost stack ===== -->
+    <figure>
+      <svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Maya's cost is in-house collection plus compute; a conventional lab adds data licensing, vendor ASR, generation API, judge API, and oversized serving">
+        <defs><style>
+          .csl{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:700;fill:#FBFAF7}
+          .csd{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:700;fill:#16161A}
+          .row7{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;fill:#16161A}
+          .n7{font-family:'JetBrains Mono',monospace;font-size:9px;fill:#6E6E78}
+        </style></defs>
+        <!-- MAYA -->
+        <text class="row7" x="20" y="56">MAYA</text>
+        <rect x="20" y="66" width="96" height="40" rx="5" fill="#6E6E78"/><text class="csl" x="68" y="90" text-anchor="middle">own collection</text>
+        <rect x="118" y="66" width="150" height="40" rx="5" fill="#2C6E6A"/><text class="csl" x="193" y="90" text-anchor="middle">compute</text>
+        <text class="n7" x="278" y="91" text-anchor="start">total spend</text>
+
+        <!-- CONVENTIONAL -->
+        <text class="row7" x="20" y="150">CONVENTIONAL LAB</text>
+        <rect x="20" y="160" width="120" height="40" rx="5" fill="#3B3B6B"/><text class="csl" x="80" y="184" text-anchor="middle">data licensing</text>
+        <rect x="142" y="160" width="110" height="40" rx="5" fill="#5A5A66"/><text class="csl" x="197" y="184" text-anchor="middle">vendor ASR</text>
+        <rect x="254" y="160" width="110" height="40" rx="5" fill="#827E74"/><text class="csl" x="309" y="184" text-anchor="middle">gen API</text>
+        <rect x="366" y="160" width="100" height="40" rx="5" fill="#9A968C"/><text class="csd" x="416" y="184" text-anchor="middle">judge API</text>
+        <rect x="468" y="160" width="120" height="40" rx="5" fill="#2C6E6A"/><text class="csl" x="528" y="184" text-anchor="middle">compute</text>
+        <rect x="590" y="160" width="150" height="40" rx="5" fill="#B26A39"/><text class="csl" x="665" y="184" text-anchor="middle">oversized serving</text>
+        <text class="n7" x="20" y="224" text-anchor="start">the teal block is the only cost both pay — everything else recurs, every batch</text>
+      </svg>
+      <figcaption>Same compute block, very different totals. Maya pays for compute and its own collection; a conventional lab stacks licensing, vendor ASR, generation and judge APIs, and the serving cost of an oversized model on top — most of it recurring.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <div class="k">The through-line</div>
+      <p><strong>Train where we spend; serve where we save.</strong> Every stage — collection, labelling, architecture, the synthetic loop, RL — is in-house, so cost stays tied to compute while quality compounds: better models drive more usage, more usage yields more real conversations, and that data trains the next, better generation.</p>
+      <p>That is how Maya trains frontier-class voice for India, SEA, and MENA at a fraction of the cost — and why the lead widens rather than narrows.</p>
+    </div>
+
+  </section>
+
+</div>
+</body>
+</html>
