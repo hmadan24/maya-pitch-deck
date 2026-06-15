@@ -259,17 +259,17 @@
   .lchart .ls { font-size:.72rem; color:var(--ink-faint); font-weight:600; margin-bottom:.45rem; }
   .lchart svg { width:100%; height:auto; display:block; }
   .lchart .xlab { display:flex; justify-content:space-between; margin-top:.3rem; font-size:.62rem; color:var(--ink-faint); font-weight:600; }
-  .rsections { display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; margin-top:1.4rem; }
+  .rsections { display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; margin-top:2.4rem; }
   .rsec .rh { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.55rem; }
   .rsec .rh.good { color:#4E7818; } .rsec .rh.bad { color:#A84830; } .rsec .rh.lever { color:var(--blue); }
   .rsec ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
   .rsec li { font-size:clamp(.78rem,1vw,.92rem); color:var(--ink-soft); line-height:1.3; padding-left:.9rem; position:relative; }
   .rsec li::before { content:"–"; position:absolute; left:0; color:var(--ink-faint); font-weight:700; }
-  .metricgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; margin-top:1.3rem; }
-  .metric { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.3rem 1.2rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); }
-  .metric .mn { font-size:clamp(2rem,3.6vw,3rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; }
-  .metric .ml { font-size:.8rem; color:var(--ink); font-weight:700; margin-top:.55rem; text-transform:uppercase; letter-spacing:.04em; }
-  .metric .ms { font-size:.78rem; color:var(--ink-faint); font-weight:500; margin-top:.25rem; line-height:1.3; }
+  .metricgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.6vw; margin-top:1.4rem; }
+  .metric { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.5rem 1.4rem 1.6rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); }
+  .metric .mn { font-size:clamp(2.2rem,4vw,3.2rem); font-weight:400; color:var(--blue); letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; }
+  .metric .ml { font-size:.92rem; color:var(--ink); font-weight:700; margin-top:.9rem; letter-spacing:-0.005em; }
+  .metric .ms { font-size:.78rem; color:var(--ink-faint); font-weight:500; margin-top:.35rem; line-height:1.35; }
   /* competition — blue-ocean positioning matrix */
   .bmap { position:relative; margin:1.1rem auto 0; width:100%; max-width:1060px; height:clamp(280px,38vh,410px); }
   .bmap .plot { position:absolute; top:28px; bottom:34px; left:152px; right:152px; border:1px solid var(--line); border-radius:10px; background:#fff; }
@@ -282,13 +282,13 @@
   .bmap .cap.bottom { bottom:7px; left:152px; right:152px; }
   .bmap .cap.left { left:6px; width:132px; top:50%; transform:translateY(-50%); }
   .bmap .cap.right { right:6px; width:132px; top:50%; transform:translateY(-50%); color:var(--blue); }
-  .bmap .dot { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:4px; z-index:3; }
-  .bmap .dot .pt { width:12px; height:12px; border-radius:50%; background:var(--blue); border:2px solid #fff; box-shadow:0 2px 7px rgba(2,31,68,.3); }
+  .bmap .dot { position:absolute; transform:translate(-50%,-50%); z-index:3; }
+  .bmap .dot .pt { display:block; width:13px; height:13px; border-radius:50%; background:var(--blue); border:2px solid #fff; box-shadow:0 2px 7px rgba(2,31,68,.3); }
   .bmap .dot .pt.app { background:#fff; border:2px solid #9aa6ba; }
-  .bmap .dot .nm { font-size:.74rem; font-weight:700; color:var(--ink-soft); white-space:nowrap; }
+  .bmap .dot .nm { position:absolute; top:calc(100% + 5px); left:50%; transform:translateX(-50%); font-size:.74rem; font-weight:700; color:var(--ink-soft); white-space:nowrap; }
   .bmap .dot.maya { z-index:4; }
   .bmap .dot.maya .pt { width:24px; height:24px; background:radial-gradient(circle at 30% 30%,#3d8fe0,#0351AF); box-shadow:0 0 0 7px var(--accent-wash); border:none; }
-  .bmap .dot.maya .nm { color:var(--blue); font-size:1rem; }
+  .bmap .dot.maya .nm { top:calc(100% + 11px); color:var(--blue); font-size:1rem; }
   .bmaplegend { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; margin-top:.9rem; font-size:.76rem; font-weight:600; color:var(--ink-soft); }
   .bmaplegend span { display:inline-flex; align-items:center; gap:.45rem; }
   .bmaplegend i { width:11px; height:11px; border-radius:50%; display:inline-block; flex:none; }
@@ -523,6 +523,7 @@
         <div class="pnote">Maya app — press play to hear it</div>
       </div>
     </div>
+    <p class="foot" style="margin-top:1.4rem;"><b>And we built all this on ~$1M</b> — a fraction of the big labs' budgets, and already outpacing them on quality.</p>
   </section>
 
   <!-- 7 — SECRET SAUCE / WE TRAIN GOOD MODELS -->
@@ -539,7 +540,7 @@
             <div class="col me"><span class="val">1051</span><span class="bar" style="height:100%"></span><span class="lab">Maya 1<small>Nov 2025</small></span></div>
           </div>
         </div>
-        <div class="cap3" style="margin-top:1.4rem; max-width:42ch;"><b>Elo</b> ranks voice models head-to-head on how human they sound. <b>Maya 1</b> reached the frontier first — <b>GPT-Realtime took ~a year to catch up</b> — and we got there on <b>~$1M total</b>, a fraction of what big labs spend.</div>
+        <div class="cap3" style="margin-top:1.4rem; max-width:42ch;"><b>Elo</b> ranks voice models head-to-head on how human they sound. <b>Maya 1</b> reached the frontier first — <b>GPT-Realtime took ~a year to catch up</b>, at a fraction of the cost.</div>
       </div>
       <div>
         <div class="chart">
@@ -598,7 +599,7 @@
   </section>
 
   <!-- COMPETITION MAP (blue ocean) -->
-  <section class="slide">
+  <section class="slide" style="align-items:center; text-align:center;">
     <div class="eyebrow">The landscape · positioning</div>
     <h2>A blue ocean — and we're already ahead in it.</h2>
     <div class="bmap">
@@ -611,12 +612,14 @@
         <div class="oceanlab">Blue ocean</div>
         <div class="vline"></div>
         <div class="hline"></div>
-        <div class="dot" style="left:24%; top:18%;"><span class="pt"></span><span class="nm">ElevenLabs</span></div>
-        <div class="dot" style="left:18%; top:35%;"><span class="pt"></span><span class="nm">OpenAI · Sesame</span></div>
-        <div class="dot" style="left:40%; top:46%;"><span class="pt"></span><span class="nm">Smallest AI</span></div>
-        <div class="dot" style="left:62%; top:73%;"><span class="pt"></span><span class="nm">Krutrim</span></div>
-        <div class="dot" style="left:82%; top:82%;"><span class="pt app"></span><span class="nm">Ringg</span></div>
+        <div class="dot" style="left:17%; top:15%;"><span class="pt"></span><span class="nm">ElevenLabs</span></div>
+        <div class="dot" style="left:35%; top:16%;"><span class="pt"></span><span class="nm">OpenAI</span></div>
+        <div class="dot" style="left:15%; top:33%;"><span class="pt"></span><span class="nm">Sesame</span></div>
+        <div class="dot" style="left:37%; top:34%;"><span class="pt"></span><span class="nm">Cartesia</span></div>
+        <div class="dot" style="left:25%; top:49%;"><span class="pt"></span><span class="nm">Moshi</span></div>
+        <div class="dot" style="left:46%; top:47%;"><span class="pt"></span><span class="nm">Smallest AI</span></div>
         <div class="dot" style="left:63%; top:42%;"><span class="pt"></span><span class="nm">Sarvam</span></div>
+        <div class="dot" style="left:82%; top:82%;"><span class="pt app"></span><span class="nm">Ringg</span></div>
         <div class="dot maya" style="left:81%; top:20%;"><span class="pt"></span><span class="nm">Maya</span></div>
       </div>
     </div>
@@ -626,7 +629,7 @@
       <span><i class="app"></i> App / wrapper on others' models</span>
     </div>
     <p class="foot" style="margin-top:1rem;"><b>And where the ocean isn't empty, we're already ahead technically:</b></p>
-    <div class="pchips">
+    <div class="pchips" style="justify-content:center;">
       <span class="pchip">Speech Arena Elo — matched GPT-Realtime, ~a year sooner</span>
       <span class="pchip">Kathbath — beats Google &amp; Sarvam</span>
       <span class="pchip">Only company from India in the top 10</span>
