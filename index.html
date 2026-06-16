@@ -157,6 +157,13 @@
   .cap3 { font-size:clamp(1.05rem,1.4vw,1.32rem); color:var(--ink-soft); font-weight:500; line-height:1.45; }
   .cap3 b { color:var(--blue); font-weight:700; }
   .chartcap { font-size:.9rem; color:var(--ink-faint); font-weight:600; margin-top:.65rem; line-height:1.35; }
+  /* appendix — audio quality compare */
+  .aud3 { display:grid; grid-template-columns:repeat(3,1fr); gap:2vw; margin-top:2.4rem; }
+  .aud3 .ac { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.6rem 1.4rem 1.7rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); text-align:center; }
+  .aud3 .ac.me { background:var(--accent-wash); border-color:#cfe0f7; box-shadow:0 16px 40px -22px rgba(3,80,175,.5); }
+  .aud3 .ac .nm { font-weight:700; font-size:clamp(1.05rem,1.5vw,1.35rem); color:var(--ink); margin-bottom:1.1rem; letter-spacing:-0.01em; }
+  .aud3 .ac.me .nm { color:var(--blue); }
+  .aud3 .ac audio { width:100%; }
 
   /* vertical bar chart */
   .chart { background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 40px -20px rgba(2,31,68,.25); padding:1.5rem 1.8rem 2.9rem; }
@@ -572,12 +579,12 @@
   <section class="slide">
     <div class="eyebrow">How it's possible</div>
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
-    <p class="apx-lead" style="margin-top:1rem;">We <b>own every stage</b> — the data, the labelling, the models, and the training loop — so our only cost is <b>compute</b>, and quality compounds.</p>
+    <p class="apx-lead" style="margin-top:1rem;">A <b>novel architecture</b>, a <b>100% in-house data pipeline</b>, and our own <b>synthetic data</b> — so our only cost is <b>compute</b>, and quality compounds.</p>
     <div class="apx-cards" style="grid-template-columns:1fr 1fr; margin-top:1.2rem;">
-      <div class="apx-card"><h4>We own — and label — the data</h4><p>Three sources, all ours: internet audio, speakers we hire and script, and real app conversations. We clean, transcribe and tag every hour in-house — no vendors.</p><div class="ev">$0 on third-party data — ~85–95% cheaper than buying it</div></div>
-      <div class="apx-card"><h4>A hybrid model architecture</h4><p>We combine <b>autoregressive and diffusion models</b> in one — autoregressive keeps the voice natural, diffusion makes it fast. A novel hybrid for real-time speech (more in the deep-dive below).</p><div class="ev">Autoregressive quality + diffusion speed</div></div>
+      <div class="apx-card"><h4>Novel Architecture</h4><p>We combine <b>autoregressive and diffusion models</b> in one — autoregressive keeps the voice natural, diffusion makes it fast. A novel hybrid for real-time speech (more in the deep-dive below).</p><div class="ev">Autoregressive quality + diffusion speed</div></div>
+      <div class="apx-card"><h4>100% in-house Data Pipeline</h4><p>Three sources, all ours: internet audio, speakers we hire and script, and real app conversations. We clean, transcribe and tag every hour in-house — no vendors.</p><div class="ev">$0 on third-party data — ~85–95% cheaper than buying it</div></div>
       <div class="apx-card"><h4>Small, quantized, cheap to serve</h4><p>We treat speech like language and reuse the whole proven AI toolchain. The models we ship are small and quantized.</p><div class="ev">~7× more conversations per GPU · runs on one small GPU</div></div>
-      <div class="apx-card"><h4>Train big, ship small</h4><p>We train large models we never ship — they generate training data and coach a small one. The model we actually serve performs like one <b>2–3× its size</b>.</p><div class="ev">Small model ≈ the quality of one 2–3× bigger</div></div>
+      <div class="apx-card"><h4>In-house synthetic data capabilities</h4><p>We train large models we never ship — they generate <b>synthetic training data</b> and coach a small one. The model we serve performs like one <b>2–3× its size</b>.</p><div class="ev">Small model ≈ the quality of one 2–3× bigger</div></div>
     </div>
     <p class="source" style="margin-top:1.5rem;"><a href="maya-training-doc.html" target="_blank" rel="noopener" style="color:var(--blue); font-weight:700;">Full technical deep-dive ↗</a> — the complete training stack.</p>
   </section>
@@ -635,8 +642,8 @@
         <div class="pt2">Advertising &amp; commerce</div>
         <ul>
           <li>Voice-native ads to a huge free base.</li>
-          <li>Revenue share on shopping through Maya.</li>
           <li>Unlocks once DAU scales — 4B+ attention-minutes.</li>
+          <li>Affiliate commissions on shopping.</li>
         </ul>
       </div>
     </div>
@@ -695,7 +702,7 @@
           <li>Improve app retention &amp; grow from 50K → 5M DAU</li>
           <li>Kickstart enterprise motion &amp; monetization efforts</li>
         </ul>
-        <div class="wnote">To achieve the above, we'll invest heavily in a strong tech, product &amp; sales team. <a href="#" onclick="show(Array.from(document.querySelectorAll('.slide')).indexOf(document.getElementById('hiring')));return false;" style="color:#9fc6f3; text-decoration:underline; font-weight:700;">Details here</a></div>
+        <div class="wnote">To achieve the above, we'll invest heavily in a strong tech, product &amp; sales team. <a href="#" onclick="show(Array.from(document.querySelectorAll('.slide')).indexOf(document.getElementById('hiring')));return false;" style="color:#9fc6f3; text-decoration:underline; font-weight:700;">Details here</a>.</div>
       </div>
     </div>
   </section>
@@ -725,6 +732,18 @@
     <p class="apx-note">A frontier model line, a consumer app and an enterprise motion — run by ~15 people. Staying lean is the strategy, not a constraint.</p>
   </section>
 
+  <!-- APPENDIX · AUDIO QUALITY -->
+  <section class="slide" id="audio-quality">
+    <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.65rem .85rem; max-width:215px; font-size:.76rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Drop in matched samples (same sentence) for each.</div>
+    <div class="eyebrow">Appendix · 02</div>
+    <h2>Hear the difference</h2>
+    <p class="apx-lead" style="margin-top:1rem;">Same sentence, three models. <b>Maya sounds the most human.</b></p>
+    <div class="aud3">
+      <div class="ac me"><div class="nm">Maya</div><audio controls preload="none" src="maya-assets/sample-maya.mp3"></audio></div>
+      <div class="ac"><div class="nm">Smallest AI</div><audio controls preload="none" src="maya-assets/sample-smallest.mp3"></audio></div>
+      <div class="ac"><div class="nm">Sarvam</div><audio controls preload="none" src="maya-assets/sample-sarvam.mp3"></audio></div>
+    </div>
+  </section>
 
 </div>
 
