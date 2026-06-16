@@ -427,7 +427,7 @@
       <span class="mark"><svg viewBox="0 0 32 24" width="120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 17.0566C2.22316 16.4827 5.045 16.0049 8.15614 16.3154C10.9213 16.5914 13.5529 17.385 15.9549 18.0599C18.4245 18.7537 20.7397 19.3524 23.2199 19.4726C26.5387 19.6334 29.8804 18.9355 32.0091 18.3372V22.9936C29.5868 23.587 26.3254 24.1324 23.002 23.9714C19.9637 23.8242 17.2143 23.0921 14.7367 22.396C12.1915 21.6809 9.9931 21.0253 7.70876 20.7973C4.6692 20.4939 2.14037 21.099 0 21.7443V17.0566Z" fill="#fff"/><path d="M0 9.05174C2.27912 8.43392 5.25155 7.87754 8.54898 8.2067C11.3141 8.48272 13.9458 9.27619 16.3478 9.95105C18.8175 10.6449 21.1326 11.2436 23.6128 11.3638C26.734 11.515 29.8755 10.9068 32.0091 10.3362V14.9788C29.6331 15.5342 26.5418 16.0151 23.3949 15.8626C20.3566 15.7154 17.6071 14.9834 15.1295 14.2873C12.5843 13.5722 10.3859 12.9165 8.10161 12.6885C4.874 12.3663 2.22224 13.0683 0 13.7553V9.05174Z" fill="#fff"/><path d="M0 1.05181C2.32525 0.39322 5.45148 -0.250518 8.94335 0.0980124C11.7085 0.374029 14.3402 1.1675 16.7421 1.84236C19.2118 2.53619 21.527 3.13486 24.0072 3.25503C26.9554 3.39788 29.9237 2.86054 32.0091 2.32007V6.96702C29.5985 7.53453 26.4374 8.0332 23.2199 7.87727C20.1816 7.73004 17.4321 6.99799 14.9545 6.30189C12.4093 5.58678 10.2109 4.93115 7.92653 4.70312C4.79422 4.39046 2.18139 5.03512 0 5.70075V1.05181Z" fill="#fff"/></svg></span>
       <span class="name" style="color:#fff;">maya</span>
     </div>
-    <div class="tag" style="color:rgba(255,255,255,0.92);">The voice interface for the rest of the world</div>
+    <div class="tag" style="color:rgba(255,255,255,0.92);">The voice interface for the rest of the world.</div>
   </section>
 
   <!-- 2 — WHO WE ARE -->
@@ -563,7 +563,7 @@
           </div>
         </div>
         <div class="chartcap">Kathbath measures accuracy on real, accented Indian speech.</div>
-        <div class="cap3" style="margin-top:.9rem; max-width:46ch;"><b>Maya Listen beats Google here.</b> India is the hardest voice market on earth — 22 languages and constant code-mixing. Win it, and the same approach unlocks <b>SEA &amp; MENA.</b></div>
+        <div class="cap3" style="margin-top:.9rem; max-width:46ch;"><b>Maya Listen beats Google here.</b> India is the hardest voice market on earth — 22 languages and constant code-mixing. Win it, and the same approach unlocks <b>the rest of the world.</b></div>
       </div>
     </div>
   </section>
@@ -574,9 +574,9 @@
     <h2 style="max-width:28ch;">How we train frontier models at <em>a fraction of the cost.</em></h2>
     <p class="apx-lead" style="margin-top:1rem;">We <b>own every stage</b> — the data, the labelling, the models, and the training loop — so our only cost is <b>compute</b>, and quality compounds.</p>
     <div class="apx-cards" style="grid-template-columns:1fr 1fr; margin-top:1.2rem;">
-      <div class="apx-card"><h4>Own the data at source</h4><p>Our speech data comes from three sources, all ours: internet audio, speakers we hire and script, and real conversations in the app — all processed on our own machines.</p><div class="ev">$0 on third-party data — ~85–95% cheaper than buying it</div></div>
-      <div class="apx-card"><h4>We label it ourselves</h4><p>We clean and transcribe every hour in-house — several speech-to-text models cross-check each other, and native speakers tag dialect &amp; emotion.</p><div class="ev">We pay for our own GPUs, not per-minute transcription bills</div></div>
-      <div class="apx-card"><h4>Small models, built to run cheap</h4><p>We treat speech like language, so we reuse the whole proven AI toolchain. The models we ship are small and fast to serve.</p><div class="ev">~7× more conversations per GPU · runs on one small GPU</div></div>
+      <div class="apx-card"><h4>We own — and label — the data</h4><p>Three sources, all ours: internet audio, speakers we hire and script, and real app conversations. We clean, transcribe and tag every hour in-house — no vendors.</p><div class="ev">$0 on third-party data — ~85–95% cheaper than buying it</div></div>
+      <div class="apx-card"><h4>A hybrid model architecture</h4><p>We combine <b>autoregressive and diffusion models</b> in one — autoregressive keeps the voice natural, diffusion makes it fast. A novel hybrid for real-time speech (more in the deep-dive below).</p><div class="ev">Autoregressive quality + diffusion speed</div></div>
+      <div class="apx-card"><h4>Small, quantized, cheap to serve</h4><p>We treat speech like language and reuse the whole proven AI toolchain. The models we ship are small and quantized.</p><div class="ev">~7× more conversations per GPU · runs on one small GPU</div></div>
       <div class="apx-card"><h4>Train big, ship small</h4><p>We train large models we never ship — they generate training data and coach a small one. The model we actually serve performs like one <b>2–3× its size</b>.</p><div class="ev">Small model ≈ the quality of one 2–3× bigger</div></div>
     </div>
     <p class="source" style="margin-top:1.5rem;"><a href="maya-training-doc.html" target="_blank" rel="noopener" style="color:var(--blue); font-weight:700;">Full technical deep-dive ↗</a> — the complete training stack.</p>
