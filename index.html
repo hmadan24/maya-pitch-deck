@@ -214,13 +214,13 @@
   .apx-tbl .r.me .nm { color:var(--blue); }
   .apx-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2vw; margin-top:1.5rem; }
   .apx-card { border:1px solid var(--line); border-radius:12px; padding:1.05rem 1.15rem 1.15rem; background:#fff; box-shadow:0 4px 14px -10px rgba(2,31,68,.2); }
-  .apx-card h4 { font-size:clamp(.92rem,1.2vw,1.1rem); font-weight:700; color:var(--blue); margin-bottom:.5rem; line-height:1.2; }
-  .apx-card ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
-  .apx-card li { font-size:clamp(.8rem,1vw,.94rem); color:var(--ink-soft); line-height:1.35; padding-left:.95rem; position:relative; font-weight:500; }
+  .apx-card h4 { font-size:clamp(.92rem,1.2vw,1.1rem); font-weight:700; color:var(--blue); margin-bottom:.8rem; line-height:1.3; }
+  .apx-card ul { list-style:none; display:flex; flex-direction:column; gap:.65rem; }
+  .apx-card li { font-size:clamp(.8rem,1vw,.94rem); color:var(--ink-soft); line-height:1.5; padding-left:.95rem; position:relative; font-weight:500; }
   .apx-card li::before { content:"–"; position:absolute; left:0; color:var(--blue); font-weight:700; }
   .apx-card p { font-size:clamp(.84rem,1.05vw,.98rem); color:var(--ink-soft); line-height:1.42; margin-bottom:.65rem; font-weight:500; }
   .apx-card p b { color:var(--blue); font-weight:700; }
-  .apx-card .ev { font-size:clamp(.82rem,1vw,.95rem); color:var(--blue); font-weight:600; line-height:1.4; }
+  .apx-card .ev { font-size:clamp(.82rem,1vw,.95rem); color:var(--blue); font-weight:600; line-height:1.4; margin-top:.8rem; }
   .apx-card .ev b { font-weight:700; }
   /* monetization — two verticals */
   .mon2 { display:grid; grid-template-columns:1fr 1fr; gap:2vw; margin-top:1.8rem; }
@@ -654,8 +654,8 @@
     <div class="eyebrow" style="margin-bottom:1rem;">How it's possible</div>
     <h2 style="max-width:30ch; font-size:clamp(1.8rem,3.5vw,2.8rem);">How we train frontier models at <em>a fraction of the cost.</em></h2>
     <p class="apx-lead" style="margin-top:.7rem;">We own every stage — <b>architecture, data, training</b> — so our only cost is <b>compute</b>, and quality compounds.</p>
-    <div class="apx-cards" style="grid-template-columns:repeat(3,1fr); gap:1vw; margin-top:1.2rem;">
-      <div class="apx-card" style="padding:.95rem 1.05rem;">
+    <div class="apx-cards" style="grid-template-columns:repeat(3,1fr); gap:2.2vw; margin-top:1.4rem;">
+      <div class="apx-card" style="padding:1.2rem 1.35rem;">
         <h4>ARCHITECTURE · HARP — one model, every decoding mode</h4>
         <ul>
           <li>One checkpoint: <b>AR anchoring + block-diffusion + self-speculation</b></li>
@@ -664,7 +664,7 @@
         </ul>
         <div class="ev">~7× streams per GPU vs AR baseline</div>
       </div>
-      <div class="apx-card" style="padding:.95rem 1.05rem;">
+      <div class="apx-card" style="padding:1.2rem 1.35rem;">
         <h4>DATA · Own the data at source</h4>
         <ul>
           <li><b>3 owned streams:</b> ~3–4M hrs internet · ~150K hrs human-collected · live app speech, growing daily</li>
@@ -672,7 +672,7 @@
           <li>No vendor corpora, no per-minute transcription</li>
         </ul>
       </div>
-      <div class="apx-card" style="padding:.95rem 1.05rem;">
+      <div class="apx-card" style="padding:1.2rem 1.35rem;">
         <h4>TRAINING · Train big, ship small</h4>
         <ul>
           <li>Teachers we never serve (Indic LLM + expressive TTS) generate <b>unlimited data</b></li>
@@ -681,7 +681,7 @@
         <div class="ev">Small model ≈ capability of one 2–3× its size</div>
       </div>
     </div>
-    <p class="foot" style="margin-top:1.5rem; font-weight:700; color:var(--ink);">Everything in-house — data, ASR, generation &amp; RL — so data prep is <b>~85% cheaper</b> and compute is our only real bill. Train where we spend; serve where we save.</p>
+    <p class="foot" style="margin-top:1.5rem; font-weight:700; color:var(--ink);">Everything in-house — data, ASR, generation &amp; RL — so data prep is <b>~85% cheaper</b> and compute is our only real bill.</p>
   </section>
 
   <!-- COMPETITION MAP (blue ocean) -->
