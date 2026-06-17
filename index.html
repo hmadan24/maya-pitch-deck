@@ -653,17 +653,9 @@
   <section class="slide">
     <div class="eyebrow" style="margin-bottom:1rem;">How it's possible</div>
     <h2 style="max-width:30ch; font-size:clamp(1.8rem,3.5vw,2.8rem);">How we train frontier models at <em>a fraction of the cost.</em></h2>
-    <p class="apx-lead" style="margin-top:.7rem;">We own every stage — <b>data, architecture, training</b> — so our only cost is <b>compute</b>, and quality compounds.</p>
-    <div class="apx-cards" style="grid-template-columns:1fr 1fr; gap:.8rem; margin-top:.9rem;">
-      <div class="apx-card" style="padding:.85rem .95rem;">
-        <h4>DATA · Own the data at source</h4>
-        <ul>
-          <li><b>3 owned streams:</b> ~3–4M hrs internet · ~150K hrs human-collected · live app speech, growing daily</li>
-          <li>Labelled in-house by an <b>ASR council</b> — token-level consensus</li>
-          <li>No vendor corpora, no per-minute transcription</li>
-        </ul>
-      </div>
-      <div class="apx-card" style="padding:.85rem .95rem; border:1.5px solid var(--blue); background:var(--accent-wash);">
+    <p class="apx-lead" style="margin-top:.7rem;">We own every stage — <b>architecture, data, training</b> — so our only cost is <b>compute</b>, and quality compounds.</p>
+    <div class="apx-cards" style="grid-template-columns:repeat(3,1fr); gap:1vw; margin-top:1.2rem;">
+      <div class="apx-card" style="padding:.95rem 1.05rem;">
         <h4>ARCHITECTURE · HARP — one model, every decoding mode</h4>
         <ul>
           <li>One checkpoint: <b>AR anchoring + block-diffusion + self-speculation</b></li>
@@ -672,7 +664,15 @@
         </ul>
         <div class="ev">~7× streams per GPU vs AR baseline</div>
       </div>
-      <div class="apx-card" style="padding:.85rem .95rem;">
+      <div class="apx-card" style="padding:.95rem 1.05rem;">
+        <h4>DATA · Own the data at source</h4>
+        <ul>
+          <li><b>3 owned streams:</b> ~3–4M hrs internet · ~150K hrs human-collected · live app speech, growing daily</li>
+          <li>Labelled in-house by an <b>ASR council</b> — token-level consensus</li>
+          <li>No vendor corpora, no per-minute transcription</li>
+        </ul>
+      </div>
+      <div class="apx-card" style="padding:.95rem 1.05rem;">
         <h4>TRAINING · Train big, ship small</h4>
         <ul>
           <li>Teachers we never serve (Indic LLM + expressive TTS) generate <b>unlimited data</b></li>
@@ -680,19 +680,8 @@
         </ul>
         <div class="ev">Small model ≈ capability of one 2–3× its size</div>
       </div>
-      <div class="apx-card" style="padding:.85rem .95rem;">
-        <h4>COST · Compute is the only bill</h4>
-        <ul>
-          <li>Data, ASR, generation, RL judging — all in-house</li>
-          <li>Data prep <b>~85% cheaper</b> than vendors</li>
-          <li>Compute is the only cost we share with a conventional lab</li>
-        </ul>
-      </div>
     </div>
-    <div class="statchips" style="display:flex; gap:.55rem; flex-wrap:wrap; margin-top:.9rem;">
-      <span>3–4M hrs owned audio</span><span>minimal third-party data</span><span>~7× streams/GPU</span><span>small ≈ 2–3× size</span><span>31 languages</span>
-    </div>
-    <p class="foot" style="margin-top:.9rem; font-weight:700; color:var(--ink);">Train where we spend; serve where we save.</p>
+    <p class="foot" style="margin-top:1.5rem; font-weight:700; color:var(--ink);">Everything in-house — data, ASR, generation &amp; RL — so data prep is <b>~85% cheaper</b> and compute is our only real bill. Train where we spend; serve where we save.</p>
   </section>
 
   <!-- COMPETITION MAP (blue ocean) -->
