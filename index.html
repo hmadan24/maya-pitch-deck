@@ -234,7 +234,7 @@
   .mitem .ev { font-size:clamp(.8rem,1vw,.92rem); color:var(--blue); font-weight:700; margin-top:.3rem; }
   .funnelc { font-size:.7rem; font-weight:700; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; margin:.35rem 0 .85rem; }
   /* product roadmap — swimlane (models / consumer / enterprise × now / next / later) */
-  .rmap { display:grid; grid-template-columns:max-content repeat(3,1fr); gap:.7rem .9rem; margin-top:1.7rem; align-items:stretch; }
+  .rmap { display:grid; grid-template-columns:max-content repeat(2,1fr); gap:.7rem .9rem; margin-top:1.7rem; align-items:stretch; }
   .rmap .colh { display:flex; align-items:baseline; gap:.55rem; padding:0 .2rem .2rem; }
   .rmap .colh .ct { font-size:clamp(.86rem,1.15vw,1.05rem); font-weight:700; color:var(--ink); letter-spacing:-0.01em; }
   .rmap .colh .cs { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); }
@@ -646,24 +646,20 @@
     <h2>Product roadmap</h2>
     <div class="rmap">
       <div class="corner"></div>
-      <div class="colh now"><span class="ct">Now</span><span class="cs">Shipped</span></div>
       <div class="colh next"><span class="ct">Next</span><span class="cs">~6 months</span></div>
       <div class="colh later"><span class="ct">Later</span><span class="cs">12 months →</span></div>
 
       <div class="lane engine"><span class="ln1">Models</span><span class="ln2">the engine — powers both motions</span></div>
-      <div class="rcell now"><span><b>Maya 1 &amp; 2, Listen &amp; Veena</b> — open Apache-2.0, <span class="em">31 Indian languages</span>, frontier Elo</span></div>
       <div class="rcell next"><span><b>Maya 3</b> — full-duplex <span class="em">speech-to-speech</span> + hosted Flagship / Pro tier · first <span class="em">SEA</span> languages</span></div>
       <div class="rcell later"><span><b>40+ languages</b> — expanding beyond India · reducing model cost to <span class="em">1/4th</span></span></div>
 
       <div class="lane"><span class="ln1">Consumer</span><span class="ln2">the app — data flywheel + B2C revenue</span></div>
-      <div class="rcell now"><span><b>3M downloads · 50K DAU</b> — loved across relationships, faith, shopping &amp; learning</span></div>
       <div class="rcell next"><span><b>Retention</b>: proactive Maya, memory &amp; personas, richer first session</span></div>
       <div class="rcell later"><span><b>Grow 50K → 5M DAU</b> · consumer monetization — subscriptions, then voice-native ads &amp; commerce</span></div>
 
       <div class="lane"><span class="ln1">Enterprise</span><span class="ln2">the funnel — B2B revenue</span></div>
-      <div class="rcell now"><span><b>Open weights on Fal &amp; Hugging Face</b> = top of funnel · <span class="em">500K downloads</span> · inbound from conglomerates &amp; startups</span></div>
       <div class="rcell next"><span><b>Paid API</b> — hosted models · convert inbound into <span class="em">first paid pilots</span></span></div>
-      <div class="rcell later"><span><b>Scale paid API customers</b> across the rest of the world</span></div>
+      <div class="rcell later"><span><b>Scale paid API customers</b> across India</span></div>
     </div>
   </section>
 
