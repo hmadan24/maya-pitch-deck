@@ -158,8 +158,8 @@
   .cap3 b { color:var(--blue); font-weight:700; }
   .chartcap { font-size:.9rem; color:var(--ink-faint); font-weight:600; margin-top:.65rem; line-height:1.35; }
   /* appendix — audio quality compare */
-  .aud3 { display:grid; grid-template-columns:repeat(3,1fr); gap:2vw; margin-top:2.4rem; }
-  .aud3 .ac { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.6rem 1.4rem 1.7rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); text-align:center; }
+  .aud3 { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; margin-top:2.2rem; }
+  .aud3 .ac { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.3rem 1rem 1.4rem; box-shadow:0 6px 18px -12px rgba(2,31,68,.2); text-align:center; }
   .aud3 .ac.me { background:var(--accent-wash); border-color:#cfe0f7; box-shadow:0 16px 40px -22px rgba(3,80,175,.5); }
   .aud3 .ac .nm { font-weight:700; font-size:clamp(1.05rem,1.5vw,1.35rem); color:var(--ink); margin-bottom:1.1rem; letter-spacing:-0.01em; }
   .aud3 .ac.me .nm { color:var(--blue); }
@@ -450,55 +450,28 @@
 
   <!-- 3 — THE SHIFT -->
   <section class="slide">
+    <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.65rem .85rem; max-width:210px; font-size:.76rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Confirm these figures before sharing externally.</div>
     <div class="eyebrow">The big change</div>
-    <h2 style="max-width:none;">Voice will be the default way<br>the next five billion <em>access everything.</em></h2>
-    <p class="kicker" style="max-width:54ch;">Five billion people across the rest of the world can't type their way in — but everyone can talk. Voice is the interface that finally lets them in.</p>
-    <div class="stepper">
-      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">1970s</span><span class="nm2">Command line</span></div>
-      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">1984</span><span class="nm2">GUI + mouse</span></div>
-      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">2000s</span><span class="nm2">Keypad phone</span></div>
-      <div class="step"><span class="ln"></span><span class="dot"></span><span class="yr">2007</span><span class="nm2">Touchscreen</span></div>
-      <div class="step now"><span class="dot"></span><span class="yr">Now</span><span class="nm2">Voice interface</span></div>
+    <h2 style="max-width:24ch;">People already live in <em>voice</em> — AI just hasn't met them there.</h2>
+    <p class="kicker" style="max-width:58ch;">Across the rest of the world, people would rather talk than type — but today's AI is still text-first and English-first. That gap is the pull.</p>
+    <div class="vstats">
+      <div class="vn">7B+</div><div class="vc"><b>voice messages sent on WhatsApp every day</b> — people would rather talk than type.</div>
+      <div class="vn">~90%</div><div class="vc"><b>of India's next users are vernacular &amp; non-English</b> — they can't type their way in.</div>
+      <div class="vn">~28%</div><div class="vc"><b>of searches in India are already voice</b> — and it's the fastest-growing input.</div>
+      <div class="vn">44M</div><div class="vc"><b>conversations on Maya already</b> — the pull, proven on our own product.</div>
     </div>
   </section>
 
-  <!-- 4 — THE BIG GAP -->
+  <!-- 4 — VOICE QUALITY COMPARISON -->
   <section class="slide">
-    <div class="eyebrow">The big gap</div>
-    <h2 style="max-width:24ch;">The models are nowhere close to how <em>real conversations happen.</em></h2>
-    <div class="vs">
-      <div class="panel aud human">
-        <div class="ptag">▶ How five billion people talk</div>
-        <audio controls preload="metadata" src="maya-assets/human.mp3"></audio>
-        <div class="pfoot">Conversational. Real. Overlapping. Alive.</div>
-        <div style="margin-top:.6rem; font-size:.95rem; font-weight:700; letter-spacing:.02em; opacity:.9;">Source: real phone conversation</div>
-      </div>
-      <div class="panel aud model">
-        <div class="ptag">▶ How today's models talk</div>
-        <audio controls preload="metadata" src="maya-assets/model.mp3"></audio>
-        <div class="pfoot">Flat. High latency. Robotic. No context.</div>
-        <div style="margin-top:.6rem; font-size:.95rem; font-weight:700; letter-spacing:.02em; opacity:.9;">Source: ElevenLabs v3</div>
-      </div>
-    </div>
-    <p class="foot">Same words, but <b>leading models don't speak like real people yet.</b></p>
-  </section>
-
-  <!-- WHAT IT TAKES — TEAM + CONVERSATIONAL MODEL (merged) -->
-  <section class="slide">
-    <div class="eyebrow">What it takes</div>
-    <h2 style="max-width:28ch;">Winning the next 5 billion people takes a <em>rare combination</em> — a team and a conversational model.</h2>
-    <div class="split" style="grid-template-columns:1.06fr 0.94fr; gap:4vw; margin-top:1.6rem; align-items:center;">
-      <div>
-        <div class="reqlist" style="gap:1.1rem; margin-top:0;">
-          <div class="req"><span class="rn">1</span><span><b>One conversational model</b> — thinks and speaks like the people it serves.</span></div>
-          <div class="req"><span class="rn">2</span><span><b>Cultural fluency</b> — close enough to get every nuance right.</span></div>
-          <div class="req"><span class="rn">3</span><span><b>Frugal data sourcing</b> — the right data, where big labs overspend.</span></div>
-          <div class="req"><span class="rn">4</span><span><b>Built from inside India</b> — the hardest language market on earth.</span></div>
-        </div>
-      </div>
-      <div class="figure bare" style="max-width:40vw; margin:0 auto;">
-        <img src="maya-assets/crowd.jpg" alt="The next five billion people coming online" style="border-radius:12px; height:62vh; width:100%; object-fit:cover; display:block;" />
-      </div>
+    <div class="eyebrow">Hear it for yourself</div>
+    <h2 style="max-width:24ch;">Maya already sounds the <em>most human.</em></h2>
+    <p class="apx-lead" style="margin-top:.6rem;">Same line, four models — press play.</p>
+    <div class="aud3">
+      <div class="ac me"><div class="nm">Maya</div><audio controls preload="none" src="maya-assets/sample-maya.wav"></audio></div>
+      <div class="ac"><div class="nm">ElevenLabs</div><audio controls preload="none" src="maya-assets/model.mp3"></audio></div>
+      <div class="ac"><div class="nm">Smallest AI</div><audio controls preload="none" src="maya-assets/sample-smallest.mp3"></audio></div>
+      <div class="ac"><div class="nm">Sarvam</div><audio controls preload="none" src="maya-assets/sample-sarvam.mp3"></audio></div>
     </div>
   </section>
 
@@ -814,16 +787,44 @@
     <p class="apx-note">A frontier model line, a consumer app and an enterprise motion — run by ~15 people. Staying lean is the strategy, not a constraint.</p>
   </section>
 
-  <!-- APPENDIX · AUDIO QUALITY -->
-  <section class="slide" id="audio-quality">
-    <div style="position:absolute; top:7vh; right:4vw; z-index:6; background:#FFF3C4; color:#5b4a16; border:1px solid #ecd98a; border-radius:4px; padding:.65rem .85rem; max-width:215px; font-size:.76rem; font-weight:700; line-height:1.35; transform:rotate(2deg); box-shadow:0 8px 20px -10px rgba(2,31,68,.35);">✎ Drop in matched samples (same sentence) for each.</div>
-    <div class="eyebrow">Appendix · 02</div>
-    <h2>Hear the difference</h2>
-    <p class="apx-lead" style="margin-top:1rem;">Same sentence, three models. <b>Maya sounds the most human.</b></p>
-    <div class="aud3">
-      <div class="ac me"><div class="nm">Maya</div><audio controls preload="none" src="maya-assets/sample-maya.mp3"></audio></div>
-      <div class="ac"><div class="nm">Smallest AI</div><audio controls preload="none" src="maya-assets/sample-smallest.mp3"></audio></div>
-      <div class="ac"><div class="nm">Sarvam</div><audio controls preload="none" src="maya-assets/sample-sarvam.mp3"></audio></div>
+  <!-- APPENDIX · moved from main: gap + what it takes -->
+  <!-- 4 — THE BIG GAP -->
+  <section class="slide">
+    <div class="eyebrow">The big gap</div>
+    <h2 style="max-width:24ch;">The models are nowhere close to how <em>real conversations happen.</em></h2>
+    <div class="vs">
+      <div class="panel aud human">
+        <div class="ptag">▶ How five billion people talk</div>
+        <audio controls preload="metadata" src="maya-assets/human.mp3"></audio>
+        <div class="pfoot">Conversational. Real. Overlapping. Alive.</div>
+        <div style="margin-top:.6rem; font-size:.95rem; font-weight:700; letter-spacing:.02em; opacity:.9;">Source: real phone conversation</div>
+      </div>
+      <div class="panel aud model">
+        <div class="ptag">▶ How today's models talk</div>
+        <audio controls preload="metadata" src="maya-assets/model.mp3"></audio>
+        <div class="pfoot">Flat. High latency. Robotic. No context.</div>
+        <div style="margin-top:.6rem; font-size:.95rem; font-weight:700; letter-spacing:.02em; opacity:.9;">Source: ElevenLabs v3</div>
+      </div>
+    </div>
+    <p class="foot">Same words, but <b>leading models don't speak like real people yet.</b></p>
+  </section>
+
+  <!-- WHAT IT TAKES — TEAM + CONVERSATIONAL MODEL (merged) -->
+  <section class="slide">
+    <div class="eyebrow">What it takes</div>
+    <h2 style="max-width:28ch;">Winning the next 5 billion people takes a <em>rare combination</em> — a team and a conversational model.</h2>
+    <div class="split" style="grid-template-columns:1.06fr 0.94fr; gap:4vw; margin-top:1.6rem; align-items:center;">
+      <div>
+        <div class="reqlist" style="gap:1.1rem; margin-top:0;">
+          <div class="req"><span class="rn">1</span><span><b>One conversational model</b> — thinks and speaks like the people it serves.</span></div>
+          <div class="req"><span class="rn">2</span><span><b>Cultural fluency</b> — close enough to get every nuance right.</span></div>
+          <div class="req"><span class="rn">3</span><span><b>Frugal data sourcing</b> — the right data, where big labs overspend.</span></div>
+          <div class="req"><span class="rn">4</span><span><b>Built from inside India</b> — the hardest language market on earth.</span></div>
+        </div>
+      </div>
+      <div class="figure bare" style="max-width:40vw; margin:0 auto;">
+        <img src="maya-assets/crowd.jpg" alt="The next five billion people coming online" style="border-radius:12px; height:62vh; width:100%; object-fit:cover; display:block;" />
+      </div>
     </div>
   </section>
 
