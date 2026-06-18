@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maya Pitch — Investor Q&amp;A Playbook</title>
+<style>
+  :root {
+    --bg: #fdfcfa;
+    --ink: #1c1b19;
+    --muted: #6b6862;
+    --accent: #b8472d;
+    --accent-soft: #f6e9e4;
+    --line: #e7e3dc;
+    --card: #ffffff;
+    --wip: #8a7f6a;
+    --wip-bg: #f3f0ea;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 120px; }
+  header.hero {
+    padding: 56px 0 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 12px; letter-spacing: -.02em; }
+  .sub { color: var(--muted); font-size: 16px; margin: 0; max-width: 640px; }
+  .howto {
+    background: var(--accent-soft);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 24px 0 0;
+    font-size: 15px;
+    color: #4a3a34;
+  }
+  .howto strong { color: var(--accent); }
+  /* Sticky table of contents */
+  nav.toc {
+    position: sticky; top: 0;
+    background: rgba(253,252,250,.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    margin: 32px 0 8px;
+    padding: 12px 0;
+    z-index: 10;
+    display: flex; flex-wrap: wrap; gap: 6px 8px;
+  }
+  nav.toc a {
+    font-size: 12.5px; font-weight: 600;
+    color: var(--muted); text-decoration: none;
+    padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line);
+    white-space: nowrap; transition: all .15s;
+  }
+  nav.toc a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  nav.toc a.wip { opacity: .6; }
+  section { padding-top: 28px; }
+  h2 {
+    font-size: 22px; letter-spacing: -.01em;
+    margin: 16px 0 4px; padding-top: 8px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  h2 .num {
+    color: var(--accent); font-weight: 800; font-size: 18px;
+    min-width: 26px;
+  }
+  .wip-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--wip);
+    background: var(--wip-bg); border: 1px solid #e0dacd;
+    padding: 2px 8px; border-radius: 999px; align-self: center;
+  }
+  .section-note { color: var(--muted); font-size: 14px; font-style: italic; margin: 0 0 8px 36px; }
+  .qa {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  }
+  .qa.is-wip { background: var(--wip-bg); border-style: dashed; box-shadow: none; }
+  .q {
+    font-weight: 700; font-size: 16px; margin: 0 0 10px;
+    color: var(--ink); display: flex; gap: 9px; align-items: baseline;
+  }
+  .q .mark { color: var(--accent); font-weight: 800; flex: none; }
+  .qa.is-wip .q { margin: 0; }
+  .qa ul { margin: 0; padding-left: 20px; }
+  .qa li { margin: 6px 0; }
+  .qa li::marker { color: var(--accent); }
+  .wip-note { margin: 8px 0 0; color: var(--wip); font-style: italic; font-size: 14px; }
+  strong { color: #111; }
+  .pill {
+    display: inline-block; background: var(--accent-soft); color: var(--accent);
+    font-weight: 700; font-size: 13px; padding: 1px 8px; border-radius: 6px;
+  }
+  .delivery {
+    background: #1c1b19; color: #f2efe9; border-radius: 14px;
+    padding: 26px 28px; margin-top: 36px;
+  }
+  .delivery h2 { color: #fff; }
+  .delivery h2 .num { color: #ffb59e; }
+  .delivery ul { padding-left: 20px; }
+  .delivery li { margin: 9px 0; }
+  .delivery strong { color: #ffd9cd; }
+  .delivery li::marker { color: #ffb59e; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+  a.back { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Investor Q&amp;A Playbook</p>
+    <h1>Maya Pitch — Anticipated Questions &amp; Best Answers</h1>
+    <p class="sub">Built from the questions actually asked across <strong>Pitch&nbsp;-2</strong> (Jun&nbsp;12), <strong>-2.5</strong> (Jun&nbsp;16), and <strong>-3</strong> (Jun&nbsp;17), plus the Series&nbsp;A memo &amp; deck.</p>
+
+    <div class="howto">
+      <strong>How to use this:</strong> These questions come up every time. Don't wait to be asked — pull the strongest ones (retention, monetization, moat) <em>into</em> the pitch so you answer on the front foot. Every answer leads with strength, then concedes the nuance. Never answer a hard question defensively.
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#s1">1 · Retention</a>
+    <a href="#s2">2 · Business Model</a>
+    <a href="#s3">3 · Market &amp; "Rest of World"</a>
+    <a class="wip" href="#s4">4 · Technical Moat</a>
+    <a class="wip" href="#s5">5 · Competition</a>
+    <a class="wip" href="#s6">6 · Data &amp; Flywheel</a>
+    <a class="wip" href="#s7">7 · Fundraise</a>
+    <a class="wip" href="#s8">8 · Team</a>
+    <a href="#delivery">Delivery</a>
+  </nav>
+
+  <section id="s1">
+    <h2><span class="num">1</span> Retention &amp; Engagement</h2>
+    <p class="section-note">Historically the weakest section — fix this.</p>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> Why is DAU only a fraction of downloads? Why do users explore and drop off?</p>
+      <ul>
+        <li>You're right — our DAU numbers are quite low vs. the install base. This is primarily because we're still <strong>shaping our product + technology</strong>. It's been just 6 months that we've been building the consumer interface, and we're doing it for the first time — so we're learning on the go.</li>
+        <li>I strongly believe our engagement rates will improve drastically when we move to <strong>Maya 3</strong> — which will have way better latency, memory, and reasoning.</li>
+        <li>We'll also work toward better UX for our hero use cases (like shopping and other assistant tasks).</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> What do your daily users actually do?</p>
+      <ul>
+        <li>Users who stick around primarily use Maya as a combination of <strong>assistant + companion</strong>.</li>
+        <li><strong>Assistant (hero use cases):</strong> image generation, then product discovery for shopping, and searching for news and information.</li>
+        <li><strong>Companionship:</strong> people talk about relationships, faith, and just generally chat about their day-to-day life.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span> Business Model &amp; Monetization</h2>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> Why are you doing enterprise? How will you maintain focus?</p>
+      <ul>
+        <li>We believe enterprise will be critical to making the company a lot more resilient — for two reasons.</li>
+        <li><strong>(1) It's not a drastic detour for us.</strong> The core of the enterprise solution is the same thing: the <strong>quality of our models</strong>. If you're building great models, it's relatively easy to package them and sell to enterprises, especially in the form of paid APIs.</li>
+        <li><strong>(2) Monetization is more deterministic in enterprise than in consumer.</strong> The biggest proof: all the big labs do both — they definitely have an enterprise motion going, and some also do consumer. Enterprise is part of the playbook for every big tech lab.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> What will be your enterprise GTM?</p>
+      <ul>
+        <li>Fortunately, Maya has seen a lot of inbound interest. The model has been downloaded <strong>~500K (5 lakh) times on Hugging Face</strong>, so there's deep awareness in the developer community — and we get inbounds from the developer, startup, and big-tech ecosystem.</li>
+        <li><strong>(1)</strong> We'll cater to these inbound requests.</li>
+        <li><strong>(2)</strong> We'll set up a <strong>self-serve motion for our paid APIs</strong>, banking on the popularity Maya already has in the developer ecosystem.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> Will you also do managed and on-prem?</p>
+      <ul>
+        <li>For now, no. First we'll go to market with <strong>paid APIs only</strong>, scale that, and then consider managed / on-prem.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span> Market &amp; the "Rest of the World" Thesis</h2>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> People who've tried apps in local Indian languages still prefer English. Why is this different?</p>
+      <ul>
+        <li>Two parts. First, the previous generation of "local language" was built on inferior, broken technology — it was <strong>transliterating, not really translating</strong>. As a result users got a very subpar experience.</li>
+        <li>Second, and more importantly, language is just <em>one part</em> of the interface. The interface also includes the entire navigation — which button to click, which card to tap. Navigating all of those paths is beyond translation and is still tricky.</li>
+        <li>Only a <strong>voice + reasoning layer</strong> can navigate those elements of the interface — and that is possible only now, with the latest voice models.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> How do you scale the India data-collection playbook globally?</p>
+      <ul>
+        <li>India is a single country, but an extremely complex language market — each state has its own dialects, and there are tons of languages: <strong>~30 languages with thousands of dialects</strong>.</li>
+        <li>Our belief: if we can navigate India, we can use the same playbook across the world — and that's held true so far. We're Telugu-native founders, yet we've cracked English, Bengali, and a few other major languages.</li>
+        <li>If we can crack those, we believe we can go beyond India and crack the languages of other countries too.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q"><span class="mark">Q</span> How big is this really? Quantify "the rest of the world."</p>
+      <ul>
+        <li>We believe the entire world <em>excluding English-speaking countries</em> is the addressable "rest of the world."</li>
+        <li>That primarily means <strong>India, MENA, and other developing parts of the world</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span> Technical Moat &amp; Defensibility <span class="wip-badge">WIP</span></h2>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> Isn't this just distillation / fine-tuning on open source? The data is public.</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> You did this for ~$1M. How? (vs. GPT ~$250M, ElevenLabs ~$10–15M+)</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> Your latency matches ChatGPT realtime — why care? Who uses ChatGPT realtime?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span> Competition <span class="wip-badge">WIP</span></h2>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> How are you different from Sarvam / Smallest AI / ElevenLabs / Hydra?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span> Data — Collection, Flywheel &amp; Cost <span class="wip-badge">WIP</span></h2>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> What exactly is the flywheel? Why is your data better and cheaper?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> Why not just become the world's most efficient voice-data company? You could make $1.4M selling data.</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span> The Fundraise <span class="wip-badge">WIP</span></h2>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> Why only $8M? Why not raise $25M?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> What does the money buy / what's the milestone?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span> Team <span class="wip-badge">WIP</span></h2>
+
+    <div class="qa is-wip">
+      <p class="q"><span class="mark">Q</span> Why you two?</p>
+      <p class="wip-note">🚧 Answer being drafted.</p>
+    </div>
+  </section>
+
+  <div class="delivery" id="delivery">
+    <h2><span class="num">★</span> Delivery reminders <span style="font-weight:400;font-size:14px;color:#bdb6ad;">(cross-cutting, from the debriefs)</span></h2>
+    <ul>
+      <li><strong>Open with the audio.</strong> Play the 3 comparison clips (Maya vs. others) <em>before</em> slides to anchor quality instantly. Don't name competitors — let the audience pick.</li>
+      <li><strong>Bring the demo early</strong>, right after the audio anchor.</li>
+      <li><strong>Lead with the "why."</strong> Don't wait to be asked why Maya is better — the cost hook ($1M vs $250M) and #4-global ranking go early.</li>
+      <li><strong>One idea at a time.</strong> Finish a point before the next; the architecture slide reveals one quadrant at a time.</li>
+      <li><strong>Bharath controls the mouse when he talks</strong>; agree a shared signal to hand energy back and forth.</li>
+      <li><strong>Energy: read the room, take the audience with you.</strong> The conference pitch was the best version — confident and crisp; avoid going formal/rigid.</li>
+      <li><strong>Pick one lane:</strong> a consumer company that happens to own frontier voice models. Not a split consumer/enterprise story.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Sources: Granola — Maya Pitch -2 (Jun 12), -2.5 (Jun 16), -3 (Jun 17) · Maya Series A memo &amp; deck. &nbsp;|&nbsp; <a class="back" href="#">↑ Back to top</a>
+  </footer>
+
+</div>
+</body>
+</html>
